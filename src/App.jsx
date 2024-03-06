@@ -1,13 +1,12 @@
 import NavBar from "./component/navBar";
 import Input from "./component/inputs/input";
-import UserLogin from "./Pages/UserLogin";
-
+import EditS_admin from "./Pages/EditS_admin";
 function App() {
   return ( 
     <>
 {/* <NavBar/> */}
 {/* <Input classes='w-[30rem]'/> */}
-<UserLogin/>
+<EditS_admin/>
     </>
    );
 }
