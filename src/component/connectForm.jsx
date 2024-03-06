@@ -34,9 +34,9 @@ export default function ConnectForm(props) {
               />
             </div><br />
             <div className="">
-            <input type={props.chekbox} name="remember_me" id="" className="font-raleway"/>  <label htmlFor="checkbox" className="text-[#808080]  font-raleway">{props.remember}</label>
+            <input type={props.checkbox} name="remember_me" id="" className="font-raleway"/>  <label htmlFor="checkbox" className="text-[#808080]  font-raleway">{props.remember}</label>
             </div>
-            <button type="submit" className="ml-[30rem] bg-[#4886FF] text-white w-20 h-10 rounded-[8px] hover:bg-[#39527B]  font-raleway font-semibold">Sign up</button>
+            <button type="submit" className="ml-[30rem] bg-[#4886FF] text-white w-20 h-10 rounded-[8px] hover:bg-[#39527B]  font-raleway font-semibold">{props.button}</button>
           </form>
         </div>
       </div>
