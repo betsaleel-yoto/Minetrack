@@ -1,7 +1,7 @@
 function ElementUser(props) {
   return (
     <>
-    <div className="flex border-b border-[#A6A6A6]  pt-3">
+    <div className="flex border-b border-[#A6A6A6]  pt-3 w-[100%]">
 
   
       <div className="pl-3 pr-6 mt-1">

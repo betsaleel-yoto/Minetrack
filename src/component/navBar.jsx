@@ -2,7 +2,7 @@ import LinkElement from "./linkElement";
 function NavBar() {
   return (
     <>
-      <div className="bg-[#39527B] w-96 sticky top-0 h-[100vh]">
+      <div className="bg-[#39527B] w-[20%] sticky top-0 h-[100vh]">
         <div className="flex border border-white pb-7 pt-7">
           <img src="" alt="" className="px-12"/>
           <h1 className="relative font-bold text-white font-raleway left-5">MineTrack</h1>

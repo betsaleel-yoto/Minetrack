@@ -1,12 +1,17 @@
 import ElementUser from "../component/ElementUser";
+import NavBar from "../component/navBar";
 
 function Dashboard() {
   return (
     <>
+    <div className="flex w-[100%]">
+      
+   
+      <NavBar/>
       {/* div supreme */}
-      <div className="flex">
+      <div className="flex w-[80%] border border-red-600 h-auto">
         {/* première grande div */}
-        <div className="border border-[#565656] rounded-md w-[35%]">
+        <div className="border border-[#565656] rounded-md ml-[15rem]">
           <div className="flex bg-[#565656]">
             <h2>All User</h2>
             <div className="flex">
@@ -37,6 +42,7 @@ function Dashboard() {
           <form action=""></form>
         </div>
         {/* deuxième grande div */}
+      </div>
       </div>
     </>
   );
