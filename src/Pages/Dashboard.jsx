@@ -11,7 +11,7 @@ function Dashboard() {
       {/* div supreme */}
       <div className="flex w-[80%] border border-red-600 h-auto">
         {/* première grande div */}
-        <div className="border border-[#565656] rounded-md ml-[15rem]">
+        <div className="border border-[#565656] rounded-md ml-[15rem] mt-[20rem] w-[45%]">
           <div className="flex bg-[#565656]">
             <h2>All User</h2>
             <div className="flex">
@@ -24,12 +24,13 @@ function Dashboard() {
             </div>
           </div>
 
-          <div className="flex border border-[#565656] rounded-md">
+          <div className="flex border border-green-500 rounded-md">
             <div className="border border-[#565656] rounded-md">
             <ElementUser src='/src/img/Ellipse 8.svg' name='Betsaleel Yoto' title='Manager' className='border'/>
             <ElementUser src='/src/img/Ellipse 8.svg' name='Betsaleel Yoto' title='Manager' className='border'/>
             </div>
-            <div className="border border-[#565656] rounded-md">
+            <div className="ml-3 border border-red-500 rounded-md">
+              <ElementUser src='/src/img/Ellipse 13.svg' name='Betsaleel Yoto' title='Manager'/>
               <ElementUser src='/src/img/Ellipse 13.svg' name='Betsaleel Yoto' title='Manager'/>
             </div>
           </div>
