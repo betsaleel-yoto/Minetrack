@@ -1,7 +1,7 @@
 function DoubleButton() {
   return (
     <>
-      <div className="flex">
+      <div className="flex pt-4">
       <button
           type="submit"
           className="bg-[#60C84C] text-white w-20 h-8 rounded-[8px] hover:bg-[#349a20]  font-raleway font-semibold mr-5"
