@@ -5,6 +5,9 @@ import Select from "../component/inputs/Select";
 import DoubleButton from "../component/Button/DoubleBoutton";
 import Search from "../component/Search";
 import BarreDeNiveau from "../component/barreDeNiveau";
+import EnteteTableau from "../component/EnteteTableau";
+import LineTableu from "../component/LineTableau";
+import ElementTableau2 from "../component/ElementTableau2";
 function Dashboard() {
   return (
     <>
@@ -206,7 +209,12 @@ function Dashboard() {
 
 {/* premier Tableau */}
 
-
+<div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
+  <EnteteTableau/>
+  <LineTableu/>
+  <ElementTableau2 text1='Set up and maintain equipment for mineral extraction.' text2='100%'/>
+  <ElementTableau2 text1='Monitor environmental impact and implement mitigation measures.' text2='100%'/>
+</div>
           
         </div>
       </div>
