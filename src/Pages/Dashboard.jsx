@@ -56,7 +56,7 @@ function Dashboard() {
           </div>
           {/* div du dessus avec la bannière */}
 
-          <div className="flex w-[100%] h-[auto] mt-12 border border-[red]">
+          <div className="flex w-[100%] h-[auto] mt-12">
             {/* première grande div */}
             <div className="border  border-[#BCBCBC] rounded-[8px] ml-[10rem] w-[45%] p-5">
               {/* En tete */}
@@ -199,7 +199,15 @@ function Dashboard() {
          
           </div>
           {/* <BarreDeNiveau width='w-[40rem]' bgcl='bg-[#39527B]' h='h-[0.5rem]'/> */}
+
+          
           {/* partie tableaux des stats */}
+
+
+{/* premier Tableau */}
+
+
+          
         </div>
       </div>
     </>

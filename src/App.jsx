@@ -1,12 +1,10 @@
 import NavBar from "./component/navBar";
 import Input from "./component/inputs/input";
 import Dashboard from "./Pages/Dashboard";
-import BarreDeNiveau from "./component/barreDeNiveau";
+import EnteteTableau from "./component/EnteteTableau";
 function App() {
   return ( 
     <>
-{/* <NavBar/> */}
-{/* <Input classes='w-[30rem]'/> */}
 <Dashboard/>
     </>
    );
