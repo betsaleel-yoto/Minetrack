@@ -8,7 +8,7 @@ function ElementTableau2(props) {
             {props.text1}
           </p>
           <div className="w-[40%] m-auto">
-          <BarreDeNiveau width='w-[80%]' bgcl='bg-[#39527B]' h='h-[0.5rem]'/>
+          <BarreDeNiveau width='w-[80%]' bgcl={props.bg} h='h-[0.5rem]'/>
           </div>
 
         <p className="font-raleway text-[#5D5D5D] font-semibold w-[20%] m-auto">
@@ -20,3 +20,6 @@ function ElementTableau2(props) {
 }
 
 export default ElementTableau2;
+
+
+// Pour gerer la taille on va prendre le nombre de tache en pourcentage et puis on ramene le pourcentage sur base des 80%

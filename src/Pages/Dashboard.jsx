@@ -17,7 +17,7 @@ function Dashboard() {
         <div className="flex-col w-[80%]">
           {/* div du dessus avec la bannière */}
           <div className="w-[100%]">
-            <div className="flex border-b border-[#D8D4D4] pt-3">
+            <div className="flex border-b border-[#D8D4D4] pt-3 fixed top-0">
               <div className="border-r border-[#B6B6B6] pl-[2rem] pb-[1.77rem] pr-[2rem]">
                 <button type="button">
                   <img src="/src/img/Vector.svg" alt="" className="mt-[1rem]" />
@@ -45,7 +45,7 @@ function Dashboard() {
             </div>
             {/* partie bannière */}
             <div
-              className="h-40 w-[73%] ml-[10.3rem] mt-12 rounded-lg bg-center bg-cover"
+              className="h-40 w-[73%] ml-[10.3rem] mt-[8rem] rounded-lg bg-center bg-cover"
               style={{
                 backgroundImage:
                   "url('./src/img/istockphoto-1322302356-1024x1024 1.jpg')",
@@ -63,7 +63,7 @@ function Dashboard() {
             {/* première grande div */}
             <div className="border  border-[#BCBCBC] rounded-[8px] ml-[10rem] w-[45%] p-5">
               {/* En tete */}
-              <div className="flex bg-[#D9D9D9] w-[41.55rem] relative right-[1.3rem] h-16 bottom-6 rounded-t-lg">
+              <div className="flex bg-[#D9D9D9] w-[41.2rem] relative right-[1.3rem] h-16 bottom-6 rounded-t-lg">
                 <h2 className="font-bold font-raleway text-[#39527B] pl-8 border-r border-[#B2AEAE] pr-16 h-16 pt-5">
                   All User
                 </h2>
@@ -168,7 +168,7 @@ function Dashboard() {
 
             {/* Partie formmulaire */}
             <div className="border  border-[#BCBCBC] rounded-[8px] ml-[5rem] w-[23%] p-5">
-              <h2 className="bg-[#D9D9D9] w-[21.25rem] relative right-[1.3rem] h-16 bottom-6 rounded-t-lg font-raleway font-bold text-[#39527B] text-center pt-5">
+              <h2 className="bg-[#D9D9D9] w-[21rem] relative right-[1.3rem] h-16 bottom-6 rounded-t-lg font-raleway font-bold text-[#39527B] text-center pt-5">
                 Add User
               </h2>
               <form action="">
@@ -210,10 +210,15 @@ function Dashboard() {
 {/* premier Tableau */}
 
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
-  <EnteteTableau/>
-  <LineTableu/>
-  <ElementTableau2 text1='Set up and maintain equipment for mineral extraction.' text2='100%'/>
-  <ElementTableau2 text1='Monitor environmental impact and implement mitigation measures.' text2='100%'/>
+  <EnteteTableau text='Ongoing Expeditions'/>
+  <LineTableu text1='Title' text2='Progress' text3='%'/>
+  <ElementTableau2 text1='Set up and maintain equipment for mineral extraction.' text2='100%' bg='bg-[#39527B]'/>
+  <ElementTableau2 text1='Monitor environmental impact and implement mitigation measures.' text2='100%' bg='bg-[#FCCA4F]'/>
+   <ElementTableau2 text1='Conduct geological survey of the area.' text2='100%' bg='bg-[#FF7473]'/>
+</div>
+<div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
+  <EnteteTableau text='Stocks level'/>
+  <LineTableu text1='Material Name' text2='Shipment Name' text3='Consumed %'/>
 </div>
           
         </div>
@@ -223,3 +228,5 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+// Ici pour changer la couleur on va prendre la valeur ramener en 80 et la mettre en pourcentage et faire des conditions par rapport à cela

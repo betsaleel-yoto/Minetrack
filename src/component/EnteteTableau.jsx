@@ -3,7 +3,7 @@ function EnteteTableau(props) {
   return ( 
     <>
     <h2 className={classNames}>
-      Ongoing Expeditions
+    {props.text}
     </h2>
     </>
    );
