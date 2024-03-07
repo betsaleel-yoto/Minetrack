@@ -7,8 +7,7 @@ function App() {
     <>
 {/* <NavBar/> */}
 {/* <Input classes='w-[30rem]'/> */}
-{/* <Dashboard/> */}
-<BarreDeNiveau/>
+<Dashboard/>
     </>
    );
 }

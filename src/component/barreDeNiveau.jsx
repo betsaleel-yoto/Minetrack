@@ -1,7 +1,8 @@
-function BarreDeNiveau() {
+function BarreDeNiveau(props) {
+  const classNames=`rounded-xl ${props.width} ${props.bgcl} ${props.h}`
   return ( 
     <>
-    <div className="w-[6rem] h-3 bg-[#39527B] rounded-xl">
+    <div className={classNames}>
 
     </div>
     </>
