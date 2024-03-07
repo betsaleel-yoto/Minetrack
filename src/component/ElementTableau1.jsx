@@ -1,4 +1,5 @@
 function ElementTableau1(props) {
+  const classNames=`font-raleway ${props.cl} font-semibold w-[20%] m-auto`
   return (
     <>
       <div className="flex  w-[100%] pb-5 pt-2">
@@ -11,7 +12,7 @@ function ElementTableau1(props) {
           </p>
         </div>
 
-        <p className="font-raleway text-[#5D5D5D] font-semibold w-[20%] m-auto">
+        <p className={classNames}>
           {props.text3}
         </p>
       </div>

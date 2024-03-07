@@ -8,6 +8,7 @@ import BarreDeNiveau from "../component/barreDeNiveau";
 import EnteteTableau from "../component/EnteteTableau";
 import LineTableu from "../component/LineTableau";
 import ElementTableau2 from "../component/ElementTableau2";
+import ElementTableau1 from "../component/ElementTableau1";
 function Dashboard() {
   return (
     <>
@@ -219,6 +220,16 @@ function Dashboard() {
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
   <EnteteTableau text='Stocks level'/>
   <LineTableu text1='Material Name' text2='Shipment Name' text3='Consumed %'/>
+  <ElementTableau1 text1='Explosives' text2='Monitor environmental impact and implement mitigation measures.' text3='50%' cl='text-[#5D5D5D]'/>
+  <ElementTableau1 text1='Explosives' text2='Monitor environmental impact and implement mitigation measures.' text3='40%' cl='text-[#FF7473]'/>
+</div>
+
+<div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
+  <EnteteTableau text='Vehicle inspection'/>
+  <LineTableu text1='Vehicle Name' text2='Shipment Name' text3='Vehicle condition'/>
+  <ElementTableau1 text1='Name here' text2='Monitor environmental impact and implement mitigation measures.' text3='Good' cl='text-[#60C84C]'/>
+  <ElementTableau1 text1='Name here' text2='Monitor environmental impact and implement mitigation measures.' text3='Not Good' cl='text-[#FF7473]'/>
+  <ElementTableau1 text1='Name here' text2='Monitor environmental impact and implement mitigation measures.' text3='Good' cl='text-[#60C84C]'/>
 </div>
           
         </div>
