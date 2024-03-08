@@ -61,7 +61,7 @@ function CreateShipment() {
         
         {/* Partie Manipulation de l'expédition */}
 
-        <div className="flex w-[80%] m-auto pt-24 border-b border-[#BAB2B2]">
+        <div className="flex w-[80%] m-auto pt-24 border-b border-[#BAB2B2] pb-5">
 
           {/* Partie affichage */}
 <div className="w-[40%] h-auto border rounded-lg border-[#C9C9C9]">
@@ -118,6 +118,7 @@ function CreateShipment() {
 {/* formulaire de soumission des taches */}
 
 <FormTask text='Monitor environmental impact and implement mitigation measures.'/>
+<FormTask text='Set up and maintain equipment for mineral extraction.'/>
 <FormTask text='Set up and maintain equipment for mineral extraction.'/>
 </div>
 
