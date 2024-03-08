@@ -7,6 +7,7 @@ import SuperTitle from "../component/SuperTitle";
 import IconsEditDelete from "../component/IconsEditDelete";
 import ElementTableau1 from "../component/ElementTableau1";
 import UniqueButton from "../component/Button/UniqueButton";
+import Select from "../component/inputs/Select";
 function VehicleManage() {
   return (
     <>
@@ -59,9 +60,31 @@ function VehicleManage() {
                 </div>
               </div>
               <div className="flex">
-                <LineTableu text1="Vehicle" text2="Start of use" />
-                <LineTableu text1="Maintenance date" text2="Next maintenance" />
+                <LineTableu text1="Vehicle" />
+                <LineTableu text1="Start of use"/>
+                <LineTableu text1="Vehicle Condition" />
+                <LineTableu text1="Maintenance date" />
+                <LineTableu text1="Next maintenance" />
               </div>
+              <div className="flex">
+              <ElementTableau1 text1='Truck'/> 
+              <ElementTableau1 text1='12/12/2020'/> 
+              <div className="relative right-[7.5rem]  top-[1rem]">
+              <Select htmlFor='VehicleCondition' name='VehicleCondition'/>
+              </div>
+             
+              <ElementTableau1 text1='12/12/2020'/> 
+              <div className="relative right-[5rem]">
+              <Input
+                classes="w-[100%]"
+                type="date"
+                name="NextMaintenance"
+                htmlFor="NextMaintenance"
+              />
+              <UniqueButton text='Add'/>
+              </div>
+              </div>
+             
             </div>
           </div>
         </div>
