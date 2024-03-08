@@ -6,6 +6,7 @@ import SuperTitle from "../component/SuperTitle";
 import IconsEditDelete from "../component/IconsEditDelete";
 import ProfilShipment from "../component/ProfilShipment";
 import FormDriver from "../component/FormDriver";
+import FormTask from "../component/FormTask";
 function CreateShipment() {
   return ( 
     <>
@@ -113,6 +114,11 @@ function CreateShipment() {
                 <DoubleButton/>
 </form>
 
+
+{/* formulaire de soumission des taches */}
+
+<FormTask text='Monitor environmental impact and implement mitigation measures.'/>
+<FormTask text='Set up and maintain equipment for mineral extraction.'/>
 </div>
 
         </div>
