@@ -1,8 +1,14 @@
-import RoutePlanning from "./Pages/RoutePlanning";
+import AddMaterials from "./Pages/AddMaterials";
+import Dashboard from "./Pages/Dashboard";
+import VehicleManage from "./Pages/VehicleManage";
+
 function App() {
   return (
     <>
- <RoutePlanning/>
+ <VehicleManage/>
+ {/* <Dashboard/> */}
+
+ {/* <AddMaterials/> */}
     </>
   );
 }
