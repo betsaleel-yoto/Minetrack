@@ -69,7 +69,7 @@ function VehicleManage() {
               <div className="flex">
               <ElementTableau1 text1='Truck'/> 
               <ElementTableau1 text1='12/12/2020'/> 
-              <div className="relative right-[7.5rem]  top-[1rem]">
+              <div className="relative right-[7.5rem] top-[1rem]">
               <Select htmlFor='VehicleCondition' name='VehicleCondition'/>
               </div>
              
