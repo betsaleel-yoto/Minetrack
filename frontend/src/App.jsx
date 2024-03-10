@@ -8,8 +8,8 @@ import SubTitleReports from "./component/SubTitleReports";
 function App() {
   return (
     <>
-{/* <ReportsAnalysis/> */}
-<SubTitleReports/>
+<ReportsAnalysis/>
+{/* <SubTitleReports/> */}
     </>
   );
 }
