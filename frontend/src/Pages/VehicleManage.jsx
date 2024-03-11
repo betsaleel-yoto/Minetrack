@@ -1,4 +1,5 @@
 import EnteteTableau from "../component/EnteteTableau";
+import validator from 'validator';
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import DoubleButton from "../component/Button/DoubleBoutton";
@@ -9,6 +10,26 @@ import ElementTableau1 from "../component/ElementTableau1";
 import UniqueButton from "../component/Button/UniqueButton";
 import Select from "../component/inputs/Select";
 function VehicleManage() {
+  const textValidator = (e) => {
+    const inputValue = e.target.value;
+    if (!validator.isLength(inputValue, { min: 1 })) {
+        console.log('le champ ne doit pas être vide');
+    } else if (!validator.matches(inputValue, /^[^<>\s]+$/)) {
+        console.log("ces caractères ne sont pas autorisés");
+    } else {
+        console.log('valide');
+    }
+};
+
+const dateValidator = (e) => {
+  const inputValue = e.target.value;
+  const regexDate = /^\d{4}-\d{2}-\d{2}$/;
+  if (regexDate.test(inputValue)) {
+      console.log("La date est valide.");
+  } else {
+      console.log("La date n'est pas valide.");
+  }
+};
   return (
     <>
       <div className="flex w-[100%]">
@@ -26,6 +47,7 @@ function VehicleManage() {
                 name="Vehiclename"
                 label="Vehicle Name"
                 htmlFor="Vehiclename"
+                change={textValidator}
               />
 
               <Input
@@ -34,6 +56,7 @@ function VehicleManage() {
                 name="RegistrationNumber"
                 label="Vehicle registration number"
                 htmlFor="RegistrationNumber"
+                change={textValidator}
               />
 
               <Input
@@ -42,6 +65,7 @@ function VehicleManage() {
                 name="StartOfUse"
                 label="Start of use"
                 htmlFor="StartOfUse"
+                change={dateValidator}
               />
 
               <DoubleButton />
@@ -80,6 +104,7 @@ function VehicleManage() {
                 type="date"
                 name="NextMaintenance"
                 htmlFor="NextMaintenance"
+                change={dateValidator}
               />
               <UniqueButton text='Add'/>
               </div>
