@@ -5,8 +5,8 @@
   "repository": "https://github.com/kadea-academy-learners/capstone-l1-betsaleel-yoto",
   "author": "betsaleel-yoto <betsaleelyoto@gmail.com>",
   "license": "MIT",
-  "private":"true",
-  "workspaces":[
+  "private": true,
+  "workspaces": [
     "frontend",
     "backend"
   ]
