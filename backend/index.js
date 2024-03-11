@@ -8,6 +8,7 @@ const Vehicle = require("./Routes/vehicle");
 const Materials = require("./Routes/materials");
 const RoutePlanning = require("./Routes/RoutePlanning");
 const Shipments = require("./Routes/Shipments");
+const Orders = require("./Routes/Orders");
 // route
 
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use("/vehicle", Vehicle);
 app.use("/materials", Materials);
 app.use("/routePlanning", RoutePlanning);
 app.use("/shipments", Shipments);
+app.use("/orders",Orders);
 app.listen(port, () => {
   console.log("le serveur a démaré au port" + port);
 });
