@@ -5,6 +5,7 @@ const sAdminSignup = require("./Routes/signUp_sAdmin");
 const Login = require("./Routes/Login");
 const Users = require("./Routes/users");
 const Vehicle = require("./Routes/vehicle");
+const Materials = require("./Routes/materials");
 // route
 
 app.use(express.json());
@@ -13,6 +14,7 @@ app.use("/sAdminSignup", sAdminSignup);
 app.use("/login", Login);
 app.use("/users", Users);
 app.use("/vehicle", Vehicle);
+app.use("/materials", Materials);
 app.listen(port, () => {
   console.log("le serveur a démaré au port" + port);
 });
