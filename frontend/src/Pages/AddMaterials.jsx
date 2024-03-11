@@ -1,4 +1,5 @@
 import EnteteTableau from "../component/EnteteTableau";
+import validator from 'validator';
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import Select from "../component/inputs/Select";
@@ -15,8 +16,25 @@ function AddMaterials() {
     
     const textValidator=(e)=>{
       setTextValue(e.target.value)
-      alert(textValue)
+      if (!validator.isLength(textValue, { min: 1 })) {
+        console.log('le champs ne doit pas etre vide')
+    } else if (!validator.matches(textValue, /^[^<>\s]+$/)) {
+      console.log("ces caractères ne sont pas autorisé")
+    } else {
+      console.log('valide')
     }
+    }
+
+
+    const dateValidator=(e)=>{
+      setDateValue(e.target.value)
+      if (!validator.isDate(dateValue)) {
+        console.log('veuiller saisir en respectant le format des dates')
+        }else{
+          console.log('valide')
+        }
+    }
+    
     
   return (
     <>
@@ -35,6 +53,7 @@ function AddMaterials() {
                 name="name"
                 label="Name"
                 htmlFor="name"
+                change={textValidator}
               />
               <Select
                 htmlFor="shipment"
@@ -55,6 +74,7 @@ function AddMaterials() {
                 name="date"
                 label="Date"
                 htmlFor="date"
+                change={dateValidator}
               />
 
               <DoubleButton/>
