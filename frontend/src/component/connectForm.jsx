@@ -20,6 +20,7 @@ export default function ConnectForm(props) {
                 name="username"
                 placeholder="Enter your name"
                 className="p-4 border-2 rounded w-[35rem]"
+                onChange={props.change}
               />
             </div>
 
@@ -31,6 +32,7 @@ export default function ConnectForm(props) {
                 name="idnumber"
                 placeholder="Enter your ID number"
                 className="p-4 border-2 rounded w-[35rem]"
+                onChange={props.change}
               />
             </div><br />
             <div className="">
