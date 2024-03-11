@@ -1,4 +1,5 @@
 import EnteteTableau from "../component/EnteteTableau";
+import validator from 'validator';
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import Select from "../component/inputs/Select";
@@ -6,6 +7,16 @@ import DoubleButton from "../component/Button/DoubleBoutton";
 import SuperTitle from "../component/SuperTitle";
 import IconsEditDelete from "../component/IconsEditDelete";
 function RoutePlanning() {
+  const textValidator = (e) => {
+    const inputValue = e.target.value;
+    if (!validator.isLength(inputValue, { min: 1 })) {
+        console.log('le champ ne doit pas être vide');
+    } else if (!validator.matches(inputValue, /^[^<>\s]+$/)) {
+        console.log("ces caractères ne sont pas autorisés");
+    } else {
+        console.log('valide');
+    }
+};
   return ( 
     <>
      <div className="flex w-[100%]">
@@ -23,6 +34,7 @@ function RoutePlanning() {
                 name="Routename"
                 label="Route Name"
                 htmlFor="Routename"
+                change={textValidator}
               />
         
               <Input
@@ -31,6 +43,7 @@ function RoutePlanning() {
                 name="RouteDescription"
                 label="Describe your route"
                 htmlFor="RouteDescription"
+                change={textValidator}
               />
               <Select
                 htmlFor="material"

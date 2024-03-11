@@ -1,4 +1,5 @@
 import EnteteTableau from "../component/EnteteTableau";
+import validator from 'validator';
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import Select from "../component/inputs/Select";
@@ -8,7 +9,30 @@ import IconsEditDelete from "../component/IconsEditDelete";
 import LineTableu from "../component/LineTableau";
 import ElementTableau1 from "../component/ElementTableau1";
 import UniqueButton from "../component/Button/UniqueButton";
+import { useState } from "react";
 function AddMaterials() {
+  const textValidator = (e) => {
+    const inputValue = e.target.value;
+    if (!validator.isLength(inputValue, { min: 1 })) {
+        console.log('le champ ne doit pas être vide');
+    } else if (!validator.matches(inputValue, /^[^<>\s]+$/)) {
+        console.log("ces caractères ne sont pas autorisés");
+    } else {
+        console.log('valide');
+    }
+};
+
+const dateValidator = (e) => {
+  const inputValue = e.target.value;
+  const regexDate = /^\d{4}-\d{2}-\d{2}$/;
+  if (regexDate.test(inputValue)) {
+      console.log("La date est valide.");
+  } else {
+      console.log("La date n'est pas valide.");
+  }
+};
+
+    
   return (
     <>
       <div className="flex w-[100%]">
@@ -26,6 +50,7 @@ function AddMaterials() {
                 name="name"
                 label="Name"
                 htmlFor="name"
+                change={textValidator}
               />
               <Select
                 htmlFor="shipment"
@@ -38,6 +63,7 @@ function AddMaterials() {
                 name="initialQuantity"
                 label="Choose an initial quantity"
                 htmlFor="initialQuantity"
+                change={textValidator}
               />
               <Input
                 classes="w-[100%]"
@@ -45,9 +71,10 @@ function AddMaterials() {
                 name="date"
                 label="Date"
                 htmlFor="date"
+                change={dateValidator}
               />
 
-              <DoubleButton />
+              <DoubleButton/>
             </form>
           </div>
 
@@ -79,6 +106,7 @@ function AddMaterials() {
                 name="consumedT"
   
                 htmlFor="consumedT"
+            
               />
           <UniqueButton text='Add'/>
               </form>

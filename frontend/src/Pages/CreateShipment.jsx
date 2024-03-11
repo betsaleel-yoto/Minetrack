@@ -1,4 +1,5 @@
 import EnteteTableau from "../component/EnteteTableau";
+import validator from 'validator';
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import DoubleButton from "../component/Button/DoubleBoutton";
@@ -8,6 +9,26 @@ import ProfilShipment from "../component/ProfilShipment";
 import FormDriver from "../component/FormDriver";
 import FormTask from "../component/FormTask";
 function CreateShipment() {
+  const textValidator = (e) => {
+    const inputValue = e.target.value;
+    if (!validator.isLength(inputValue, { min: 1 })) {
+        console.log('le champ ne doit pas être vide');
+    } else if (!validator.matches(inputValue, /^[^<>\s]+$/)) {
+        console.log("ces caractères ne sont pas autorisés");
+    } else {
+        console.log('valide');
+    }
+};
+
+const dateValidator = (e) => {
+  const inputValue = e.target.value;
+  const regexDate = /^\d{4}-\d{2}-\d{2}$/;
+  if (regexDate.test(inputValue)) {
+      console.log("La date est valide.");
+  } else {
+      console.log("La date n'est pas valide.");
+  }
+};
   return ( 
     <>
      <div className="flex w-[100%]">
@@ -31,6 +52,7 @@ function CreateShipment() {
                   name="ShipmentTitle"
                   label="Shipment Title"
                   htmlFor="ShipmentTitle"
+                  change={textValidator}
                 />
                 <Input
                   classes="w-[100%]"
@@ -38,6 +60,7 @@ function CreateShipment() {
                   name="Description"
                   label="Description"
                   htmlFor="Description"
+                  change={textValidator}
                 />
                 <Input
                   classes="w-[100%]"
@@ -45,6 +68,7 @@ function CreateShipment() {
                   name="Begin"
                   label="Begin at"
                   htmlFor="Begin"
+                  change={dateValidator}
                 />
                  <Input
                   classes="w-[100%]"
@@ -52,6 +76,7 @@ function CreateShipment() {
                   name="End"
                   label="End"
                   htmlFor="End"
+                  change={dateValidator}
                 />
 
                 <DoubleButton/>
@@ -110,6 +135,7 @@ function CreateShipment() {
                   name="task"
                   label="add task to the shipment"
                   htmlFor="task"
+                  change={textValidator}
                 />
                 <DoubleButton/>
 </form>

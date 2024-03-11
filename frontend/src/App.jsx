@@ -1,3 +1,4 @@
+import AddMaterials from "./Pages/AddMaterials";
 import CreateS_admin from "./Pages/CreateS_admin";
 import CreateShipment from "./Pages/CreateShipment";
 import Dashboard from "./Pages/Dashboard";
@@ -14,7 +15,7 @@ import VehicleManage from "./Pages/VehicleManage";
 function App() {
   return (
     <>
-    <Dashboard/>
+<VehicleManage/>
     </>
   );
 }
