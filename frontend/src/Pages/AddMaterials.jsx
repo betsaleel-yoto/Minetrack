@@ -8,7 +8,16 @@ import IconsEditDelete from "../component/IconsEditDelete";
 import LineTableu from "../component/LineTableau";
 import ElementTableau1 from "../component/ElementTableau1";
 import UniqueButton from "../component/Button/UniqueButton";
+import { useState } from "react";
 function AddMaterials() {
+  const [textValue, setTextValue] = useState('');
+    const [dateValue, setDateValue] = useState('');
+    
+    const textValidator=(e)=>{
+      setTextValue(e.target.value)
+      alert(textValue)
+    }
+    
   return (
     <>
       <div className="flex w-[100%]">
@@ -38,6 +47,7 @@ function AddMaterials() {
                 name="initialQuantity"
                 label="Choose an initial quantity"
                 htmlFor="initialQuantity"
+                change={textValidator}
               />
               <Input
                 classes="w-[100%]"
@@ -47,7 +57,7 @@ function AddMaterials() {
                 htmlFor="date"
               />
 
-              <DoubleButton />
+              <DoubleButton/>
             </form>
           </div>
 
@@ -79,6 +89,7 @@ function AddMaterials() {
                 name="consumedT"
   
                 htmlFor="consumedT"
+            
               />
           <UniqueButton text='Add'/>
               </form>
