@@ -11,30 +11,27 @@ import ElementTableau1 from "../component/ElementTableau1";
 import UniqueButton from "../component/Button/UniqueButton";
 import { useState } from "react";
 function AddMaterials() {
-  const [textValue, setTextValue] = useState('');
-    const [dateValue, setDateValue] = useState('');
-    
-    const textValidator=(e)=>{
-      setTextValue(e.target.value)
-      if (!validator.isLength(textValue, { min: 1 })) {
-        console.log('le champs ne doit pas etre vide')
-    } else if (!validator.matches(textValue, /^[^<>\s]+$/)) {
-      console.log("ces caractères ne sont pas autorisé")
+  const textValidator = (e) => {
+    const inputValue = e.target.value;
+    if (!validator.isLength(inputValue, { min: 1 })) {
+        console.log('le champ ne doit pas être vide');
+    } else if (!validator.matches(inputValue, /^[^<>\s]+$/)) {
+        console.log("ces caractères ne sont pas autorisés");
     } else {
-      console.log('valide')
+        console.log('valide');
     }
-    }
+};
 
+const dateValidator = (e) => {
+  const inputValue = e.target.value;
+  const regexDate = /^\d{4}-\d{2}-\d{2}$/;
+  if (regexDate.test(inputValue)) {
+      console.log("La date est valide.");
+  } else {
+      console.log("La date n'est pas valide.");
+  }
+};
 
-    const dateValidator=(e)=>{
-      setDateValue(e.target.value)
-      if (!validator.isDate(dateValue)) {
-        console.log('veuiller saisir en respectant le format des dates')
-        }else{
-          console.log('valide')
-        }
-    }
-    
     
   return (
     <>
