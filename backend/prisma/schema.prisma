@@ -17,6 +17,16 @@ datasource db {
 model SuperAdmin {
   matriculationNumber String  @id @unique @db.VarChar(255)
   username String   @unique @db.VarChar(255)
+  users   User[]
+}
+
+model User {
+  matriculationNumber String  @id @unique @db.VarChar(255)
+  UserName String   @unique @db.VarChar(255)
+  UserRole String    @db.VarChar(255)
+  UserTitle String    @db.VarChar(255)
+  matriculationNumberSadmin String   @db.VarChar(255)
+  superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
 }
 
 
