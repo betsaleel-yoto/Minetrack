@@ -29,4 +29,9 @@ model User {
   superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
 }
 
+model Supplier{
+  SupplierId String  @id @unique @db.VarChar(255) 
+  SupplierName String   @unique @db.VarChar(255)
+}
+
 
