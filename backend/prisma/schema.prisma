@@ -117,3 +117,9 @@ DriverName String    @db.VarChar(20)
 VehicleRegistrationNumber String @db.VarChar(255)
 vehicle Vehicle @relation(fields: [VehicleRegistrationNumber],references: [VehicleRegistrationNumber])
 }
+
+model Participant{
+id Int      @id @default(autoincrement())
+ParticipantName String @db.VarChar(255)
+ParticipantRole String @db.VarChar(255)
+}
