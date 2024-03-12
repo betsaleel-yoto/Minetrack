@@ -20,6 +20,7 @@ model SuperAdmin {
   users   User[]
   orders Order[]
   materials Material[]
+  vehicle Vehicle[]
 }
 
 model User {
@@ -65,6 +66,16 @@ RelatedShipment String    @db.VarChar(255)
 InitialQte String    @db.VarChar(20)
 Date DateTime @default(now())
 CurrentQte String    @db.VarChar(20)
+matriculationNumberSadmin String   @db.VarChar(255)
+superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
+}
+
+model Vehicle{
+VehicleRegistrationNumber String  @id @unique @db.VarChar(255)
+VehicleName  String    @db.VarChar(255)
+StartOfUse DateTime @default(now())
+VehicleCondition String    @db.VarChar(6)
+MaintenanceDate DateTime
 matriculationNumberSadmin String   @db.VarChar(255)
 superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
 }
