@@ -99,5 +99,13 @@ BeginDate DateTime @default(now())
 EndDate DateTime
 matriculationNumberSadmin String   @db.VarChar(255)
 superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
+shipmentTasks ShipmentTasks[]
 }
 
+model ShipmentTasks{
+id        Int      @id @default(autoincrement())
+TaskDescription   String    @db.VarChar(255)
+Taskstate String    @db.VarChar(20)
+ShipmentId  Int    
+shipment Shipment @relation(fields: [ShipmentId], references: [id])
+}
