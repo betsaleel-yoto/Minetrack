@@ -15,7 +15,7 @@ import VehicleManage from "./Pages/VehicleManage";
 function App() {
   return (
     <>
-<RoutePlanning/>
+<CreateS_adm
     </>
   );
 }
