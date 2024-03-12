@@ -47,20 +47,20 @@ const dateValidator = (e) => {
               <Input
                 classes="w-[100%]"
                 type="text"
-                name="name"
+                name="MaterialName"
                 label="Name"
                 htmlFor="name"
                 change={textValidator}
               />
               <Select
-                htmlFor="shipment"
+                htmlFor="RelatedShipment"
                 label="Select the related shipment"
                 name="shipment"
               />
               <Input
                 classes="w-[100%]"
                 type="text"
-                name="initialQuantity"
+                name="initialQte"
                 label="Choose an initial quantity"
                 htmlFor="initialQuantity"
                 change={textValidator}
@@ -68,7 +68,7 @@ const dateValidator = (e) => {
               <Input
                 classes="w-[100%]"
                 type="date"
-                name="date"
+                name="Date"
                 label="Date"
                 htmlFor="date"
                 change={dateValidator}
@@ -103,7 +103,7 @@ const dateValidator = (e) => {
               <Input
                 classes="w-[100%]"
                 type="text"
-                name="consumedT"
+                name="dailyConsumption"
   
                 htmlFor="consumedT"
             

@@ -31,7 +31,7 @@ function RoutePlanning() {
               <Input
                 classes="w-[100%]"
                 type="text"
-                name="Routename"
+                name="RouteName"
                 label="Route Name"
                 htmlFor="Routename"
                 change={textValidator}
@@ -48,7 +48,7 @@ function RoutePlanning() {
               <Select
                 htmlFor="material"
                 label="Select the material"
-                name="material"
+                name="RelatedMaterial"
               />
              
               <DoubleButton />

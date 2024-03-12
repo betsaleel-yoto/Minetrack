@@ -29,7 +29,7 @@ export default function ConnectForm(props) {
               <br />
               <input
                 type="text"
-                name="idnumber"
+                name="matriculationNumber"
                 placeholder="Enter your ID number"
                 className="p-4 border-2 rounded w-[35rem]"
                 onChange={props.change}
