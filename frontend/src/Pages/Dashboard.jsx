@@ -176,22 +176,22 @@ function Dashboard() {
                 <Input
                   classes="w-[18rem]"
                   type="text"
-                  name="username"
+                  name="UserName"
                   label="Username"
                   htmlFor="username"
                 />
                 <Input
                   classes="w-[18rem]"
                   type="text"
-                  name="idnumber"
+                  name="matriculationNumber"
                   label="ID number"
                   htmlFor="idnumber"
                 />
-                <Select name="user_role" htmlFor="user_role" label="UserRole" />
+                <Select name="UserRole" htmlFor="user_role" label="UserRole" />
                 <Input
                   classes="w-[18rem]"
                   type="text"
-                  name="usertitle"
+                  name="UserTitle"
                   label="UserTitle"
                   htmlFor="usertitle"
                 />
