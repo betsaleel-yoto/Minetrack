@@ -101,6 +101,7 @@ EndDate DateTime
 matriculationNumberSadmin String   @db.VarChar(255)
 superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
 shipmentTasks ShipmentTasks[]
+faitPartie Fait_partie[]
 }
 
 model ShipmentTasks{
@@ -122,4 +123,13 @@ model Participant{
 id Int      @id @default(autoincrement())
 ParticipantName String @db.VarChar(255)
 ParticipantRole String @db.VarChar(255)
+faitPartie Fait_partie[]
+}
+
+model Fait_partie{
+  ParticipantId Int
+  participants Participant @relation(fields: [ParticipantId],references: [id])
+  ShipmentId Int
+  shipment Shipment @relation(fields: [ShipmentId],references: [id])
+  @@unique([ParticipantId, ShipmentId])
 }
