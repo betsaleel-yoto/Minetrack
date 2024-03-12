@@ -53,7 +53,7 @@ const dateValidator = (e) => {
                 change={textValidator}
               />
               <Select
-                htmlFor="shipment"
+                htmlFor="RelatedShipment"
                 label="Select the related shipment"
                 name="shipment"
               />
@@ -68,7 +68,7 @@ const dateValidator = (e) => {
               <Input
                 classes="w-[100%]"
                 type="date"
-                name="date"
+                name="Date"
                 label="Date"
                 htmlFor="date"
                 change={dateValidator}
