@@ -80,6 +80,7 @@ VehicleCondition String    @db.VarChar(6)
 MaintenanceDate DateTime
 matriculationNumberSadmin String   @db.VarChar(255)
 superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
+driver Driver[]
 }
 
 model Itinerary{
@@ -108,4 +109,11 @@ TaskDescription   String    @db.VarChar(255)
 Taskstate String    @db.VarChar(20)
 ShipmentId  Int    
 shipment Shipment @relation(fields: [ShipmentId], references: [id])
+}
+
+model Driver{
+id Int      @id @default(autoincrement())
+DriverName String    @db.VarChar(20)
+VehicleRegistrationNumber String @db.VarChar(255)
+vehicle Vehicle @relation(fields: [VehicleRegistrationNumber],references: [VehicleRegistrationNumber])
 }
