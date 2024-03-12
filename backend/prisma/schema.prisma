@@ -22,6 +22,7 @@ model SuperAdmin {
   materials Material[]
   vehicle Vehicle[]
   itinerary Itinerary[]
+  shipment Shipment[]
 }
 
 model User {
@@ -89,3 +90,14 @@ RelatedMaterial String    @db.VarChar(255)
 matriculationNumberSadmin String   @db.VarChar(255)
 superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
 }
+
+model Shipment{
+id        Int      @id @default(autoincrement())
+ShipmentTitle String    @db.VarChar(255)
+ShipmentDescription String    @db.VarChar(255)
+BeginDate DateTime @default(now())
+EndDate DateTime
+matriculationNumberSadmin String   @db.VarChar(255)
+superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
+}
+
