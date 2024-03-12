@@ -33,6 +33,7 @@ model User {
 model Supplier{
   SupplierId String  @id @unique @db.VarChar(255) 
   SupplierName String   @unique @db.VarChar(255)
+  recoit Recoit[]
 }
 
 model Order{
@@ -43,4 +44,15 @@ model Order{
   DeliveryDate DateTime
   matriculationNumberSadmin String   @db.VarChar(255)
   superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
+  recoit Recoit[]
+}
+
+
+model Recoit {
+  supplier Supplier @relation(fields: [supplierId], references: [SupplierId])
+  supplierId String
+  order Order @relation(fields: [orderId], references: [id])
+  orderId Int
+
+  @@unique([supplierId, orderId])
 }
