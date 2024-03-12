@@ -44,7 +44,7 @@ const dateValidator = (e) => {
               <Input
                 classes="w-[100%]"
                 type="text"
-                name="Vehiclename"
+                name="VehicleName"
                 label="Vehicle Name"
                 htmlFor="Vehiclename"
                 change={textValidator}
@@ -53,7 +53,7 @@ const dateValidator = (e) => {
               <Input
                 classes="w-[100%]"
                 type="text"
-                name="RegistrationNumber"
+                name="VehicleRegistrationNumber"
                 label="Vehicle registration number"
                 htmlFor="RegistrationNumber"
                 change={textValidator}
@@ -102,7 +102,7 @@ const dateValidator = (e) => {
               <Input
                 classes="w-[100%]"
                 type="date"
-                name="NextMaintenance"
+                name="MaintenanceDate"
                 htmlFor="NextMaintenance"
                 change={dateValidator}
               />
