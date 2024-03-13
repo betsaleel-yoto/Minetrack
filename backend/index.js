@@ -9,7 +9,7 @@ const Materials = require("./Routes/materials");
 const RoutePlanning = require("./Routes/RoutePlanning");
 const Shipments = require("./Routes/Shipments");
 const Orders = require("./Routes/Orders");
-// route
+// routes
 
 app.use(express.json());
 app.use(express.urlencoded({ extende: true }));
