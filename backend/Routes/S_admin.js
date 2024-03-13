@@ -39,7 +39,37 @@ router.post('/Signup', async (req,res) => {
   }
 })
 
-router.post('/Login', authenticate)
+router.post('/Login', async (req, res) => {
+  try {
+    // Récupérer le token depuis le corps de la requête ou l'en-tête d'autorisation
+    const token = req.body.token || req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+
+    // Décoder le token pour obtenir le matricule
+    const decoded = jwt.verify(token, 'zehfgueurfyerfieuyfui');
+    const matricule = decoded.matricule;
+
+    // Rechercher le matricule dans la base de données
+    const superAdmin = await prisma.superAdmin.findUnique({
+      where: {
+        matriculationNumber: matricule
+      }
+    });
+
+    if (superAdmin) {
+      return res.json({ message: 'Oui, il existe' });
+    } else {
+      return res.json({ message: 'Non, il n\'existe pas' });
+    }
+  } catch (error) {
+    console.error('Erreur lors de la vérification du token :', error);
+    return res.status(401).json({ message: 'Token verification failed' });
+  }
+});
+
 
 router.put('',(req,res)=>{
   
