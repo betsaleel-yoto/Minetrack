@@ -14,17 +14,20 @@ module.exports = (passport) => {
         try {
             let user;
             if (jwt_payload.matriculationNumber) {
+                //  d'abord un super administrateur
                 user = await prisma.SuperAdmin.findUnique({
                     where: {
                       matriculationNumber: jwt_payload.matriculationNumber
                     }
                 });
-            } else {
-                user = await prisma.User.findUnique({
-                    where: {
-                      matriculationNumber: jwt_payload.matriculationNumber
-                    }
-                });
+                if (!user) {
+                    // Si le super administrateur n'est pas trouvé, recherche un utilisateur ordinaire
+                    user = await prisma.User.findUnique({
+                        where: {
+                          matriculationNumber: jwt_payload.matriculationNumber
+                        }
+                    });
+                }
             }
             if (user) {
                 return done(null, user);
