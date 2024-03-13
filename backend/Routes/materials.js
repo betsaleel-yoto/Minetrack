@@ -3,10 +3,10 @@ const router = express.Router();
 
 
 router.get('',(req,res)=>{
-res.send('bonsoir materials')
+
 })
-router.post('',(req,res)=>{
-  
+router.post('/Create',(req,res)=>{
+  res.send('salut materials')
 })
 router.delete('',(req,res)=>{
   
