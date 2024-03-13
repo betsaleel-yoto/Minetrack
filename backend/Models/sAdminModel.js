@@ -35,6 +35,27 @@ const edit = async (req, res) => {
   }
 }
 
+
+const delet = async(req,res)=>{
+  try{
+    const { matriculation } = req.params;
+
+    await prisma.$transaction(async(prisma)=>{
+const SuperAdminDelete= await prisma.SuperAdmin.delete({
+  where:{
+    matriculationNumber: matriculation
+  }
+})
+   
+    console.log('SuperAdmin deleted:',SuperAdminDelete);
+
+    res.status(201).json({message: "SuperAdmin deleted successfully"})
+  });
+} catch(error){
+console.error('Error deleting SuperAdmin:',error)
+res.status(500).json({error:"Internal Server Error"})
+}
+}
 module.exports={
-getAll,edit
+getAll,edit,delet
 }
