@@ -10,9 +10,6 @@ const Shipments = require("./Routes/Shipments");
 const Orders = require("./Routes/Orders");
 
 
-
-
-
 app.use(express.json());
 // app.use(express.urlencoded({ extende: true }));
 
