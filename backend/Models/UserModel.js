@@ -37,6 +37,27 @@ const edit = async (req, res) => {
   }
 }
 
+
+const delet = async(req,res)=>{
+  try{
+    const { matriculation } = req.params;
+
+    await prisma.$transaction(async(prisma)=>{
+const deleteUser= await prisma.User.delete({
+  where:{
+    matriculationNumber: matriculation
+  }
+})
+   
+    console.log('User deleted:',deleteUser);
+
+    res.status(201).json({message: "User deleted successfully"})
+  });
+} catch(error){
+console.error('Error deleting user:',error)
+res.status(500).json({error:"Internal Server Error"})
+}
+}
 module.exports={
-  getAll,edit
+  getAll,edit,delet
 }

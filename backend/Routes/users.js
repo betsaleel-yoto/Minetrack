@@ -2,7 +2,7 @@ const {UserSignup,UserLogin} = require('../Controllers/UserControllers')
 const express = require("express");
 const router = express.Router();
 
-const {getAll,edit}=require('../Models/UserModel')
+const {getAll,edit,delet}=require('../Models/UserModel')
 
 router.get('/getAll',getAll);
 
@@ -12,8 +12,6 @@ router.post('/Login',UserLogin );
 
 router.put('/edit/:matriculation',edit);
 
-router.delete('/delete',(req,res)=>{
-
-})
+router.delete('/delete/:matriculation',delet)
 
 module.exports= router;
