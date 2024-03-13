@@ -8,12 +8,6 @@ const Materials = require("./Routes/materials");
 const RoutePlanning = require("./Routes/RoutePlanning");
 const Shipments = require("./Routes/Shipments");
 const Orders = require("./Routes/Orders");
-<<<<<<< HEAD
-// routes
-=======
-
-// route
->>>>>>> develop
 
 
 
