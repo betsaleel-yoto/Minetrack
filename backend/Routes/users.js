@@ -1,6 +1,5 @@
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const authenticate = require('../authenticationFunction/authenticate-jwt');
 const initializePassport = require('../authenticationFunction/passport-jwt-strategy');
 const express = require("express");
 const router = express.Router();
