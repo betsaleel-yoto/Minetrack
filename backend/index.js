@@ -8,12 +8,16 @@ const Materials = require("./Routes/materials");
 const RoutePlanning = require("./Routes/RoutePlanning");
 const Shipments = require("./Routes/Shipments");
 const Orders = require("./Routes/Orders");
-const initializePassport= require('./authenticationFunction/passport-config')
 const authenticate = require('./authenticationFunction/authenticate-jwt')
+const passport = require('passport');
+const initializePassport = require('./authenticationFunction/passport-jwt-strategy');
 // route
 
 
+
 initializePassport(passport);
+
+
 app.use(express.json());
 // app.use(express.urlencoded({ extende: true }));
 
