@@ -10,6 +10,6 @@ router.post('/Signup',sAdminSignup)
 router.post('/Login', sAdminLogin);
 
 
-router.put('/edit/:matriculationNumber',edit)
+router.put('/edit/:matriculation',edit)
 
 module.exports= router

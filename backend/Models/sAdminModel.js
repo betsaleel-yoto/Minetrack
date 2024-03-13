@@ -13,12 +13,12 @@ const getAll =  async(req,res)=>{
 
 const edit = async (req, res) => {
   try {
-    const { username } = req.body;
-    const { matriculationNumber } = req.params; // Récupérer le matriculationNumber des paramètres de la requête
+    const { matriculationNumber,username } = req.body;
+    const { matriculation } = req.params; // Récupérer le matriculationNumber des paramètres de la requête
     await prisma.$transaction(async(prisma)=>{
       const updatedSuperAdmin = await prisma.SuperAdmin.update({
         where: {
-          matriculationNumber: matriculationNumber
+          matriculationNumber: matriculation
         },
         data: {
           matriculationNumber,
