@@ -17,6 +17,7 @@ export default function ConnectForm(props) {
               <br />
               <input
                 type="text"
+                id="username"
                 name="username"
                 placeholder="Enter your name"
                 className="p-4 border-2 rounded w-[35rem]"
@@ -25,20 +26,21 @@ export default function ConnectForm(props) {
             </div>
 
             <div className="flex-col pt-10">
-              <label htmlFor="idnumber" className="font-semibold font-raleway text-[#808080]">ID number</label>
+              <label htmlFor="matriculationNumber" className="font-semibold font-raleway text-[#808080]">ID number</label>
               <br />
               <input
                 type="text"
+                id="matriculationNumber"
                 name="matriculationNumber"
                 placeholder="Enter your ID number"
                 className="p-4 border-2 rounded w-[35rem]"
-                onChange={props.change}
+                onChange={props.change1}
               />
             </div><br />
             <div className="">
             <input type={props.checkbox} name="remember_me" id="" className="font-raleway"/>  <label htmlFor="checkbox" className="text-[#808080]  font-raleway">{props.remember}</label>
             </div>
-            <button type="submit" className="ml-[30rem] bg-[#4886FF] text-white w-20 h-10 rounded-[8px] hover:bg-[#39527B]  font-raleway font-semibold">{props.button}</button>
+            <button type="submit" className="ml-[30rem] bg-[#4886FF] text-white w-20 h-10 rounded-[8px] hover:bg-[#39527B]  font-raleway font-semibold" onClick={props.click}>{props.button}</button>
           </form>
         </div>
       </div>

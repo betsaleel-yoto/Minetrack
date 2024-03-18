@@ -9,10 +9,12 @@ const RoutePlanning = require("./Routes/RoutePlanning");
 const Shipments = require("./Routes/Shipments");
 const Orders = require("./Routes/Orders");
 const passport = require('passport');
-
+const cors=require('cors')
 // route
 
-
+app.use(cors({
+  origin:'http://localhost:5173'
+}))
 
 
 
