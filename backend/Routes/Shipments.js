@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
-
+const {
+  getAllShipments,
+  editShipment,
+  deleteShipment,
+  addShipment
+}=require("../Models/shipmentModel")
 
 router.get('',(req,res)=>{
 
 })
-router.post('/Create',(req,res)=>{
-res.send('bonsoir expédition') 
-})
-router.delete('',(req,res)=>{
-  
-})
-router.put('',(req,res)=>{
-  
-})
+router.post('/Add',addShipment)
+router.delete('/delete/:id',deleteShipment)
+router.put('/edit/:id',editShipment)
+router.get('/getAll',getAllShipments)
 
 module.exports= router
