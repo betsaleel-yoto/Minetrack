@@ -11,7 +11,7 @@ export default function ConnectForm(props) {
       <div className="absolute inset-0 bg-black opacity-40"></div>
       <div className="bg-white w-[40rem] h-[25rem] ml-[37rem] relative top-[15rem] p-8 rounded-md shadow-2xl">
         <div>
-          <form action="" className="flex-col mt-[2.5rem]">
+          <form action="" method="POST" className="flex-col mt-[2.5rem]">
             <div>
               <label htmlFor="username" className="font-semibold font-raleway text-[#808080]">username</label>
               <br />
@@ -40,7 +40,7 @@ export default function ConnectForm(props) {
             <div className="">
             <input type={props.checkbox} name="remember_me" id="" className="font-raleway"/>  <label htmlFor="checkbox" className="text-[#808080]  font-raleway">{props.remember}</label>
             </div>
-            <button type="submit" className="ml-[30rem] bg-[#4886FF] text-white w-20 h-10 rounded-[8px] hover:bg-[#39527B]  font-raleway font-semibold" onClick={props.click}>{props.button}</button>
+            <button type="button" className="ml-[30rem] bg-[#4886FF] text-white w-20 h-10 rounded-[8px] hover:bg-[#39527B]  font-raleway font-semibold" onClick={props.click}>{props.button}</button>
           </form>
         </div>
       </div>

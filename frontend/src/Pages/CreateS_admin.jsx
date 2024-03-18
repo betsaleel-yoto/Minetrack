@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ConnectForm from '../component/connectForm';
 import validator from 'validator';
+import { Link } from 'react-router-dom';
 
 function CreateS_admin() {
   const [matriculationNumber, setMatriculationNumber] = useState(""); // Déclaration de l'état matriculationNumber
@@ -43,13 +44,17 @@ function CreateS_admin() {
         if (!response.ok) {
           throw new Error('Erreur lors de la requête');
         }
+        console.log('salut');
         // Si la réponse est ok, retournez les données en JSON
         return response.json();
       })
       .then(data => {
         // Gérer la réponse du serveur
         console.log('Réponse du serveur :', data);
-        // Vous pouvez traiter le token renvoyé ici
+        // Stocker le token dans sessionStorage
+        if(data.token) {
+          sessionStorage.setItem('token', data.token);
+        }
       })
       .catch(error => {
         // Gérer les erreurs éventuelles
