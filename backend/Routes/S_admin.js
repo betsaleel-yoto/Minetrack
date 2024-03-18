@@ -1,18 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const {sAdminSignup,sAdminLogin}=require('../Controllers/SadminControllers')
+const {getAll}=require('../Models/sAdminModel')
 
-
-router.get('',(req,res)=>{
-  
-})
+router.get('/getAll',getAll)
 
 router.post('/Signup',sAdminSignup)
 
 router.post('/Login', sAdminLogin);
 
 
-router.put('',(req,res)=>{
+router.put('/edit',(req,res)=>{
   
 })
 
