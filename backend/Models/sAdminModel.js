@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+
 const getAll =  async(req,res)=>{
   try {
     const superAdmins = await prisma.superAdmin.findMany();
@@ -11,43 +12,45 @@ const getAll =  async(req,res)=>{
   }
 }
 
-const edit = async (req, res) => {
+
+const edit =async(req,res)=>{
   try {
     const { matriculationNumber,username } = req.body;
-    const { matriculation } = req.params; // Récupérer le matriculationNumber des paramètres de la requête
+    const { imatriculation } = req.params; // Récupérer le matriculationNumber des paramètres de la requête
     await prisma.$transaction(async(prisma)=>{
       const updatedSuperAdmin = await prisma.SuperAdmin.update({
         where: {
-          matriculationNumber: matriculation
+          matriculationNumber: imatriculation
         },
         data: {
           matriculationNumber,
           username
         }
       });
-      console.log('sAdmin updated:',updatedSuperAdmin)
+      console.log('SuperAdmin updated:',updatedSuperAdmin)
       return res.status(201).json(updatedSuperAdmin);
     })
 
   } catch (error) {
-    console.error('Erreur lors de la mise à jour du SuperAdmin :', error);
+
+    console.error('Erreur lors de la mise à jour du updatedSuperAdmin :', error);
+
     return res.status(500).json({ error: 'Erreur lors de la mise à jour du SuperAdmin' });
   }
 }
 
-
 const delet = async(req,res)=>{
   try{
-    const { matriculation } = req.params;
+    const { imatriculation } = req.params;
 
     await prisma.$transaction(async(prisma)=>{
-const SuperAdminDelete= await prisma.SuperAdmin.delete({
+const DeleteSuperAdmin= await prisma.SuperAdmin.delete({
   where:{
-    matriculationNumber: matriculation
+    matriculationNumber: imatriculation
   }
 })
    
-    console.log('SuperAdmin deleted:',SuperAdminDelete);
+    console.log('SuperAdmin deleted:',DeleteSuperAdmin);
 
     res.status(201).json({message: "SuperAdmin deleted successfully"})
   });
@@ -56,6 +59,5 @@ console.error('Error deleting SuperAdmin:',error)
 res.status(500).json({error:"Internal Server Error"})
 }
 }
-module.exports={
-getAll,edit,delet
-}
+
+module.exports={getAll,edit,delet}

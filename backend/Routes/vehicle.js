@@ -1,18 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const  {
+  getAllVehicles,
+  editVehicle,
+  deleteVehicle,
+  addVehicle
+}=require('../Models/vehicleModel');
 
-
-router.get('',(req,res)=>{
-
-})
-router.post('/Create',(req,res)=>{
-res.send('bonsoir vehicle') 
-})
-router.delete('',(req,res)=>{
-  
-})
-router.put('',(req,res)=>{
-  
-})
-
+router.post('/Add',addVehicle)
+router.delete('/delete/:RegistrationNumber',deleteVehicle)
+router.put('/edit/:RegistrationNumber',editVehicle)
+router.get('/getAll',getAllVehicles)
 module.exports= router

@@ -10,8 +10,8 @@ router.post('/Signup',sAdminSignup)
 router.post('/Login', sAdminLogin);
 
 
-router.put('/edit/:matriculation',edit)
+router.put('/edit/:imatriculation',edit)
 
-router.delete('/delete/:matriculation',delet)
+router.delete('/delete/:imatriculation',delet)
 
 module.exports= router
