@@ -13,11 +13,10 @@ import ElementTableau1 from "../component/ElementTableau1";
 import { useState } from "react";
 function Dashboard() {
   
-const [Username,setUsername]=useState('')
-const [matriculationNumber,setmatriculationNumber]=useState('')
-const [UserRole,setUserRole]=useState('')
-const [UserTitle,setUserTitle]=useState('')
-
+  const [Username,setUsername]=useState('')
+  const [matriculationNumber,setmatriculationNumber]=useState('')
+  const [UserRole,setUserRole]=useState('')
+  const [UserTitle,setUserTitle]=useState('')
 
   const textValidator = (inputValueA, inputValueB) => {
     try {

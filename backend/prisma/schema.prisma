@@ -72,16 +72,17 @@ matriculationNumberSadmin String   @db.VarChar(255)
 superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
 }
 
-model Vehicle{
-VehicleRegistrationNumber String  @id @unique @db.VarChar(255)
-VehicleName  String    @db.VarChar(255)
-StartOfUse DateTime @default(now())
-VehicleCondition String    @db.VarChar(6)
-MaintenanceDate DateTime
-matriculationNumberSadmin String   @db.VarChar(255)
-superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
-driver Driver[]
+model Vehicle {
+  VehicleRegistrationNumber String  @id @unique @db.VarChar(255)
+  VehicleName  String    @db.VarChar(255)
+  StartOfUse DateTime @default(now())
+  VehicleCondition String?    @db.VarChar(6)
+  MaintenanceDate DateTime?
+  matriculationNumberSadmin String   @db.VarChar(255)
+  superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
+  driver Driver[]
 }
+
 
 model Itinerary{
 id        Int      @id @default(autoincrement())

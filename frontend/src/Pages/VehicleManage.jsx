@@ -1,5 +1,6 @@
 import EnteteTableau from "../component/EnteteTableau";
 import validator from 'validator';
+import { useState } from "react";
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import DoubleButton from "../component/Button/DoubleBoutton";
@@ -10,28 +11,136 @@ import ElementTableau1 from "../component/ElementTableau1";
 import UniqueButton from "../component/Button/UniqueButton";
 import Select from "../component/inputs/Select";
 function VehicleManage() {
+const [Vehiclename,setVehiclename]=useState('')
+const [VehicleRegistrationNumber,setVehicleRegistrationNumber]=useState('')
+const [StartOfUse,setStartOfUse]=useState('')
+const [VehicleCondition,setVehicleCondition]=useState('')
+const [MaintenanceDate,setMaintenanceDate]=useState('')
 
   
-  const textValidator = (e) => {
-    const inputValue = e.target.value;
-    if (!validator.isLength(inputValue, { min: 1 })) {
-        console.log('le champ ne doit pas être vide');
-    } else if (!validator.matches(inputValue, /^[^<>\s]+$/)) {
-        console.log("ces caractères ne sont pas autorisés");
-    } else {
-        console.log('valide');
-    }
-};
 
-const dateValidator = (e) => {
-  const inputValue = e.target.value;
-  const regexDate = /^\d{4}-\d{2}-\d{2}$/;
-  if (regexDate.test(inputValue)) {
-      console.log("La date est valide.");
-  } else {
-      console.log("La date n'est pas valide.");
-  }
-};
+  const textValidator = (inputValueA, inputValueB) => {
+    try {
+      if (!validator.isLength(inputValueA, { min: 1 })) {
+        console.log('le champ A ne doit pas être vide');
+      } else if (!validator.matches(inputValueA, /^[^<>\s]+$/)) {
+        console.log("ces caractères ne sont pas autorisés pour le champ A");
+      } else if (!validator.isLength(inputValueB, { min: 1 })) {
+        console.log('le champ B ne doit pas être vide');
+      } else if (!validator.matches(inputValueB, /^[^<>\s]+$/)) {
+        console.log("ces caractères ne sont pas autorisés pour le champ B");
+      } else {
+        console.log('valide');
+      }
+    } catch (error) {
+      console.error('Une erreur est survenue lors de la validation :', error);
+    }
+  };
+
+  const dateValidator = (inputValue) => {
+    try {
+      const regexDate = /^\d{4}-\d{2}-\d{2}$/;
+      if (regexDate.test(inputValue)) {
+       console.log("La date est valide.");
+      } else {
+        console.log("La date n'est pas valide.");
+      }
+    } catch (error) {
+      console.error('Une erreur est survenue lors de la validation de la date :', error);
+      console.log('Une erreur est survenue lors de la validation de la date');
+    }
+  };
+
+
+  const sendData = () => {
+    const requestData = {
+      VehicleRegistrationNumber:VehicleRegistrationNumber,
+      VehicleName:Vehiclename,
+      StartOfUse:StartOfUse,
+      matriculationNumberSadmin: "jshfvdfrfreefrfejvjdfvjdfsdfsfdcsd"
+    };
+
+    // Effectuer la requête POST en utilisant fetch
+    fetch('http://localhost:3000/vehicle/Add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => {
+        // Vérifiez si la réponse est ok
+        if (!response.ok) {
+          throw new Error('Erreur lors de la requête');
+        }
+        console.log(' Vehicule Ajouté');
+        // Si la réponse est ok, retournez les données en JSON
+        return response.json();
+      })
+
+      .catch(error => {
+        // Gérer les erreurs éventuelles
+        console.error('Erreur lors de la requête :', error);
+      });
+  };
+
+  const sendData2 = () => {
+    const requestData = {
+    VehicleCondition:VehicleCondition,
+		MaintenanceDate:MaintenanceDate
+    };
+
+    // Effectuer la requête POST en utilisant fetch
+    fetch('http://localhost:3000/vehicle/Add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => {
+        // Vérifiez si la réponse est ok
+        if (!response.ok) {
+          throw new Error('Erreur lors de la requête');
+        }
+        console.log('mis à jour');
+        // Si la réponse est ok, retournez les données en JSON
+        return response.json();
+      })
+
+      .catch(error => {
+        // Gérer les erreurs éventuelles
+        console.error('Erreur lors de la requête :', error);
+      });
+  };
+  
+  const handleVehicleName = (e) => {
+    setVehiclename(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value, Vehiclename); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+
+  const handleVehicleRegistrationNumber = (e) => {
+    setVehicleRegistrationNumber(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value, VehicleRegistrationNumber); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+
+  const handleStartOfUse = (e) => {
+    setStartOfUse(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    dateValidator(e.target.value); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+
+
+  const handleVehicleCondition = (e) => {
+    setVehicleCondition(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value,VehicleCondition); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+
+  const handleMaintenanceDate = (e) => {
+    setMaintenanceDate(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    dateValidator(e.target.value); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+ 
+  
   return (
     <>
       <div className="flex w-[100%]">
@@ -49,7 +158,7 @@ const dateValidator = (e) => {
                 name="VehicleName"
                 label="Vehicle Name"
                 htmlFor="Vehiclename"
-                change={textValidator}
+                change={handleVehicleName}
               />
 
               <Input
@@ -58,7 +167,7 @@ const dateValidator = (e) => {
                 name="VehicleRegistrationNumber"
                 label="Vehicle registration number"
                 htmlFor="RegistrationNumber"
-                change={textValidator}
+                change={handleVehicleRegistrationNumber}
               />
 
               <Input
@@ -67,10 +176,10 @@ const dateValidator = (e) => {
                 name="StartOfUse"
                 label="Start of use"
                 htmlFor="StartOfUse"
-                change={dateValidator}
+                change={handleStartOfUse}
               />
 
-              <DoubleButton />
+              <DoubleButton click={sendData}/>
             </form>
           </div>
 
@@ -96,7 +205,7 @@ const dateValidator = (e) => {
               <ElementTableau1 text1='Truck'/> 
               <ElementTableau1 text1='12/12/2020'/> 
               <div className="relative right-[4rem] top-[1rem]">
-              <Select htmlFor='VehicleCondition' name='VehicleCondition' option1='Good' option2='Bad'/>
+              <Select htmlFor='VehicleCondition' name='VehicleCondition' option1='Good' option2='Bad' change={handleVehicleCondition}/>
               </div>
              
               <ElementTableau1 text1='12/12/2020'/> 
@@ -106,7 +215,7 @@ const dateValidator = (e) => {
                 type="date"
                 name="MaintenanceDate"
                 htmlFor="NextMaintenance"
-                change={dateValidator}
+                change={handleMaintenanceDate}
               />
               <UniqueButton text='Add' click/>
               </div>
