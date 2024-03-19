@@ -10,6 +10,7 @@ import LineTableu from "../component/LineTableau";
 import ElementTableau2 from "../component/ElementTableau2";
 import ElementTableau1 from "../component/ElementTableau1";
 function Dashboard() {
+  
   return (
     <>
       <div className="flex w-[100%]">
@@ -172,7 +173,7 @@ function Dashboard() {
               <h2 className="bg-[#D9D9D9] w-[21rem] relative right-[1.3rem] h-16 bottom-6 rounded-t-lg font-raleway font-bold text-[#39527B] text-center pt-5">
                 Add User
               </h2>
-              <form action="">
+              <form action="" method="POST">
                 <Input
                   classes="w-[18rem]"
                   type="text"
@@ -187,7 +188,7 @@ function Dashboard() {
                   label="ID number"
                   htmlFor="idnumber"
                 />
-                <Select name="UserRole" htmlFor="user_role" label="UserRole" />
+                <Select name="UserRole" htmlFor="user_role" label="UserRole" option1='Admin' option2='Supplier'  option3='Ordinary'/>
                 <Input
                   classes="w-[18rem]"
                   type="text"
