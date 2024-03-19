@@ -3,7 +3,7 @@ function DoubleButton(props) {
     <>
       <div className="flex pt-4">
       <button
-          type="submit"
+          type="button"
           className="bg-[#60C84C] text-white w-20 h-8 rounded-[8px] hover:bg-[#349a20]  font-raleway font-semibold mr-5" onClick={props.click}
           >Add</button>
         <button
