@@ -54,12 +54,12 @@ const [MaintenanceDate,setMaintenanceDate]=useState('')
 
   const sendData = () => {
     const requestData = {
-      VehicleRegistrationNumber:VehicleRegistrationNumber,
-      VehicleName:Vehiclename,
-      StartOfUse:StartOfUse,
+      VehicleRegistrationNumber: VehicleRegistrationNumber,
+      VehicleName: Vehiclename,
+      StartOfUse: StartOfUse,
       matriculationNumberSadmin: "jshfvdfrfreefrfejvjdfvjdfsdfsfdcsd"
     };
-
+  
     // Effectuer la requête POST en utilisant fetch
     fetch('http://localhost:3000/vehicle/Add', {
       method: 'POST',
@@ -73,33 +73,51 @@ const [MaintenanceDate,setMaintenanceDate]=useState('')
         if (!response.ok) {
           throw new Error('Erreur lors de la requête');
         }
-        console.log(' Vehicule Ajouté');
         // Si la réponse est ok, retournez les données en JSON
         return response.json();
       })
-
+      .then(data => {
+        
+        const vehicleRegistrationNumber = data.VehicleRegistrationNumber;
+        
+        localStorage.setItem('vehicleRegistrationNumber', vehicleRegistrationNumber);
+        
+        console.log('Véhicule ajouté');
+        
+        // Vous pouvez effectuer d'autres actions avec les données de la réponse si nécessaire
+      })
       .catch(error => {
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
       });
   };
+  
 
   const sendData2 = () => {
+    // Récupérer la valeur de VehicleRegistrationNumber depuis le localStorage
+    const vehicleRegistrationNumber = localStorage.getItem('vehicleRegistrationNumber');
+  
+    // Vérifier si la valeur est présente dans le localStorage
+    if (!vehicleRegistrationNumber) {
+      console.error('VehicleRegistrationNumber non trouvé dans le localStorage');
+      return; // Arrêter l'exécution de la fonction si la valeur n'est pas trouvée
+    }
+  
     const requestData = {
-    VehicleCondition:VehicleCondition,
-		MaintenanceDate:MaintenanceDate
+      VehicleCondition: VehicleCondition,
+      MaintenanceDate: MaintenanceDate
     };
-
-    // Effectuer la requête POST en utilisant fetch
-    fetch('http://localhost:3000/vehicle/Add', {
-      method: 'POST',
+  
+    // Effectuer la requête PUT en utilisant fetch
+    fetch(`http://localhost:3000/vehicle/edit/${vehicleRegistrationNumber}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(requestData)
     })
       .then(response => {
-        // Vérifiez si la réponse est ok
+        // Vérifier si la réponse est ok
         if (!response.ok) {
           throw new Error('Erreur lors de la requête');
         }
@@ -107,12 +125,13 @@ const [MaintenanceDate,setMaintenanceDate]=useState('')
         // Si la réponse est ok, retournez les données en JSON
         return response.json();
       })
-
       .catch(error => {
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
       });
   };
+  
+  
   
   const handleVehicleName = (e) => {
     setVehiclename(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
@@ -217,7 +236,7 @@ const [MaintenanceDate,setMaintenanceDate]=useState('')
                 htmlFor="NextMaintenance"
                 change={handleMaintenanceDate}
               />
-              <UniqueButton text='Add' click/>
+              <UniqueButton text='Add' click={sendData2}/>
               </div>
               </div>
              

@@ -77,7 +77,7 @@ model Vehicle {
   VehicleName  String    @db.VarChar(255)
   StartOfUse DateTime @default(now())
   VehicleCondition String?    @db.VarChar(6)
-  MaintenanceDate DateTime?
+  MaintenanceDate String?  @db.VarChar(12)
   matriculationNumberSadmin String   @db.VarChar(255)
   superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
   driver Driver[]

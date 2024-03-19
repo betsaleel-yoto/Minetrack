@@ -48,12 +48,13 @@ const addVehicle = async (req, res) => {
       data: { VehicleRegistrationNumber, VehicleName, VehicleCondition, MaintenanceDate, matriculationNumberSadmin },
     });
 
-    res.status(201).json({ message: 'Vehicle added successfully', data: newVehicle });
+    res.status(201).json({ message: 'Vehicle added successfully', VehicleRegistrationNumber: newVehicle.VehicleRegistrationNumber });
   } catch (error) {
     console.error('Erreur lors de l\'ajout du véhicule :', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-};
+}
+
 
 module.exports = {
   getAllVehicles,
