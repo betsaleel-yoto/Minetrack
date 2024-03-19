@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 initializePassport(passport);
 
-const UserSignup = async (req,res) => {
+const UserSignup = async (req, res) => {
   const { matriculationNumber, UserName, UserRole, UserTitle, matriculationNumberSadmin } = req.body;
   try {
     const user = await prisma.User.create({
@@ -19,7 +19,26 @@ const UserSignup = async (req,res) => {
       },
     });
 
-    // Ne génère pas le token ici
+    // Si le rôle de l'utilisateur est "Supplier", l'ajouter à la table Supplier
+    if (UserRole === "Supplier") {
+      await prisma.Supplier.create({
+        data: {
+          SupplierId: user.matriculationNumber,
+          SupplierName: user.UserName
+        }
+      });
+    }
+
+    // Si le titre de l'utilisateur est "Driver", l'ajouter à la table Driver
+    if (UserTitle === "Driver") {
+      await prisma.Driver.create({
+        data: {
+          DriverName: UserName,
+          // Vous devez ajuster cela en fonction de la manière dont vous obtenez VehicleRegistrationNumber dans la demande
+          VehicleRegistrationNumber: "jodiucosid"
+        }
+      });
+    }
 
     return res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
@@ -27,6 +46,7 @@ const UserSignup = async (req,res) => {
     res.status(500).json({ error: 'Erreur lors de la création de l\'utilisateur' })
   }
 }
+
 
 const UserLogin = async (req, res) => {
   try {
