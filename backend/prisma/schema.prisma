@@ -67,7 +67,7 @@ MaterialName String    @db.VarChar(255)
 RelatedShipment String    @db.VarChar(255)
 InitialQte String    @db.VarChar(20)
 Date DateTime @default(now())
-CurrentQte String    @db.VarChar(20)
+CurrentQte String?    @db.VarChar(20)
 matriculationNumberSadmin String   @db.VarChar(255)
 superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
 }
