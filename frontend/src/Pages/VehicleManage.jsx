@@ -10,6 +10,8 @@ import ElementTableau1 from "../component/ElementTableau1";
 import UniqueButton from "../component/Button/UniqueButton";
 import Select from "../component/inputs/Select";
 function VehicleManage() {
+
+  
   const textValidator = (e) => {
     const inputValue = e.target.value;
     if (!validator.isLength(inputValue, { min: 1 })) {
@@ -93,8 +95,8 @@ const dateValidator = (e) => {
               <div className="flex">
               <ElementTableau1 text1='Truck'/> 
               <ElementTableau1 text1='12/12/2020'/> 
-              <div className="relative right-[7.5rem] top-[1rem]">
-              <Select htmlFor='VehicleCondition' name='VehicleCondition'/>
+              <div className="relative right-[4rem] top-[1rem]">
+              <Select htmlFor='VehicleCondition' name='VehicleCondition' option1='Good' option2='Bad'/>
               </div>
              
               <ElementTableau1 text1='12/12/2020'/> 
@@ -106,7 +108,7 @@ const dateValidator = (e) => {
                 htmlFor="NextMaintenance"
                 change={dateValidator}
               />
-              <UniqueButton text='Add'/>
+              <UniqueButton text='Add' click/>
               </div>
               </div>
              
