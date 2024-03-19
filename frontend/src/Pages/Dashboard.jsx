@@ -41,11 +41,14 @@ const [UserTitle,setUserTitle]=useState('')
   const sendData = () => {
     const requestData = {
       matriculationNumber: matriculationNumber,
-      username: username
+      UserName: Username,
+      UserRole:UserRole,
+      UserTitle:UserTitle,
+      matriculationNumberSadmin:'jshfvdfjvjdfvjdfsdfsfdcsd',
     };
 
     // Effectuer la requête POST en utilisant fetch
-    fetch('http://localhost:3000/sAdmin/Signup', {
+    fetch('http://localhost:3000/users/Signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -57,18 +60,11 @@ const [UserTitle,setUserTitle]=useState('')
         if (!response.ok) {
           throw new Error('Erreur lors de la requête');
         }
-        console.log('salut');
+        console.log('Utilisateur Crée');
         // Si la réponse est ok, retournez les données en JSON
         return response.json();
       })
-      .then(data => {
-        // Gérer la réponse du serveur
-        console.log('Réponse du serveur :', data);
-        // Stocker le token dans sessionStorage
-        if(data.token) {
-          sessionStorage.setItem('token', data.token);
-        }
-      })
+
       .catch(error => {
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
@@ -283,7 +279,7 @@ const [UserTitle,setUserTitle]=useState('')
                   htmlFor="usertitle"
                   change={handleTitle}
                 />
-                <DoubleButton  click/>
+                <DoubleButton  click={sendData}/>
               </form>
               
             </div>
