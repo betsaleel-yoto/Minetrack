@@ -4,13 +4,14 @@ const prisma = new PrismaClient();
 
 const getAll =  async(req,res)=>{
   try {
-    const SuperAdmin = await prisma.SuperAdmin.findMany();
-    return res.status(201).json(SuperAdmin) ;
+    const superAdmins = await prisma.superAdmin.findMany();
+    return res.status(201).json(superAdmins) ;
   } catch (error) {
     console.error('Erreur lors de la récupération des SuperAdmins :', error);
     throw error;
   }
 }
+
 
 const edit =async(req,res)=>{
   try {
@@ -31,7 +32,9 @@ const edit =async(req,res)=>{
     })
 
   } catch (error) {
+
     console.error('Erreur lors de la mise à jour du updatedSuperAdmin :', error);
+
     return res.status(500).json({ error: 'Erreur lors de la mise à jour du SuperAdmin' });
   }
 }

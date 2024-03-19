@@ -74,7 +74,8 @@ const addMaterial = async (req, res) => {
       },
     });
 
-    res.status(201).json({ message: 'Material added successfully', data: newMaterial });
+    res.status(201).json({ message: 'Material added successfully', id: newMaterial.id, InitialQte: newMaterial.InitialQte });
+
   } catch (error) {
     console.error('Error adding material:', error);
     res.status(500).json({ error: 'Internal server error' });

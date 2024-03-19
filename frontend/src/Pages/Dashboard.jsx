@@ -3,13 +3,93 @@ import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import Select from "../component/inputs/Select";
 import DoubleButton from "../component/Button/DoubleBoutton";
+import validator from "validator";
 import Search from "../component/Search";
 import BarreDeNiveau from "../component/barreDeNiveau";
 import EnteteTableau from "../component/EnteteTableau";
 import LineTableu from "../component/LineTableau";
 import ElementTableau2 from "../component/ElementTableau2";
 import ElementTableau1 from "../component/ElementTableau1";
+import { useState } from "react";
 function Dashboard() {
+  
+  const [Username,setUsername]=useState('')
+  const [matriculationNumber,setmatriculationNumber]=useState('')
+  const [UserRole,setUserRole]=useState('')
+  const [UserTitle,setUserTitle]=useState('')
+
+  const textValidator = (inputValueA, inputValueB) => {
+    try {
+      if (!validator.isLength(inputValueA, { min: 1 })) {
+        console.log('le champ A ne doit pas être vide');
+      } else if (!validator.matches(inputValueA, /^[^<>\s]+$/)) {
+        console.log("ces caractères ne sont pas autorisés pour le champ A");
+      } else if (!validator.isLength(inputValueB, { min: 1 })) {
+        console.log('le champ B ne doit pas être vide');
+      } else if (!validator.matches(inputValueB, /^[^<>\s]+$/)) {
+        console.log("ces caractères ne sont pas autorisés pour le champ B");
+      } else {
+        console.log('valide');
+      }
+    } catch (error) {
+      console.error('Une erreur est survenue lors de la validation :', error);
+    }
+  };
+
+
+  const sendData = () => {
+    const requestData = {
+      matriculationNumber: matriculationNumber,
+      UserName: Username,
+      UserRole:UserRole,
+      UserTitle:UserTitle,
+      matriculationNumberSadmin:'jshfvdfjvjdfvjdfsdfsfdcsd',
+    };
+
+    // Effectuer la requête POST en utilisant fetch
+    fetch('http://localhost:3000/users/Signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => {
+        // Vérifiez si la réponse est ok
+        if (!response.ok) {
+          throw new Error('Erreur lors de la requête');
+        }
+        console.log('Utilisateur Crée');
+        // Si la réponse est ok, retournez les données en JSON
+        return response.json();
+      })
+
+      .catch(error => {
+        // Gérer les erreurs éventuelles
+        console.error('Erreur lors de la requête :', error);
+      });
+  };
+
+  const handleUserName = (e) => {
+    setUsername(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value, Username); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+
+  const handleMatriculation = (e) => {
+    setmatriculationNumber(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value, matriculationNumber); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+
+  const handleRole = (e) => {
+    setUserRole(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value, UserRole); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+
+  const handleTitle = (e) => {
+    setUserTitle(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value, UserTitle); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+  
   return (
     <>
       <div className="flex w-[100%]">
@@ -172,13 +252,14 @@ function Dashboard() {
               <h2 className="bg-[#D9D9D9] w-[21rem] relative right-[1.3rem] h-16 bottom-6 rounded-t-lg font-raleway font-bold text-[#39527B] text-center pt-5">
                 Add User
               </h2>
-              <form action="">
+              <form action="" method="POST">
                 <Input
                   classes="w-[18rem]"
                   type="text"
                   name="UserName"
                   label="Username"
                   htmlFor="username"
+                  change={handleUserName}
                 />
                 <Input
                   classes="w-[18rem]"
@@ -186,16 +267,18 @@ function Dashboard() {
                   name="matriculationNumber"
                   label="ID number"
                   htmlFor="idnumber"
+                  change={handleMatriculation}
                 />
-                <Select name="UserRole" htmlFor="user_role" label="UserRole" />
+                <Select name="UserRole" htmlFor="user_role" label="UserRole" option1='Admin' option2='Supplier'  option3='Ordinary' change={handleRole}/>
                 <Input
                   classes="w-[18rem]"
                   type="text"
                   name="UserTitle"
                   label="UserTitle"
                   htmlFor="usertitle"
+                  change={handleTitle}
                 />
-                <DoubleButton />
+                <DoubleButton  click={sendData}/>
               </form>
               
             </div>

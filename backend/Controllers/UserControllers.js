@@ -6,8 +6,7 @@ const prisma = new PrismaClient();
 
 initializePassport(passport);
 
-
-const UserSignup = async (req,res) => {
+const UserSignup = async (req, res) => {
   const { matriculationNumber, UserName, UserRole, UserTitle, matriculationNumberSadmin } = req.body;
   try {
     const user = await prisma.User.create({
@@ -19,25 +18,68 @@ const UserSignup = async (req,res) => {
         matriculationNumberSadmin
       },
     });
-    
-    // Générer le JWT avec le matricule de l'utilisateur
-    const token = jwt.sign({
-      matricule: user.matriculationNumber
-    }, 'zehfgueurfyerfieuyfui', { expiresIn: '1h' });
-    
-    // Renvoyer le token dans la réponse
-    return res.status(201).json({ token });
+
+    // Si le rôle de l'utilisateur est "Supplier", l'ajouter à la table Supplier
+    if (UserRole === "Supplier") {
+      await prisma.Supplier.create({
+        data: {
+          SupplierId: user.matriculationNumber,
+          SupplierName: user.UserName
+        }
+      });
+    }
+
+    // Si le titre de l'utilisateur est "Driver", l'ajouter à la table Driver
+    if (UserTitle === "Driver") {
+      await prisma.Driver.create({
+        data: {
+          DriverName: UserName,
+          // Vous devez ajuster cela en fonction de la manière dont vous obtenez VehicleRegistrationNumber dans la demande
+          VehicleRegistrationNumber: "jodiucosid"
+        }
+      });
+    }
+
+    return res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
     console.error('Erreur lors de la création de l\'utilisateur :', error);
     res.status(500).json({ error: 'Erreur lors de la création de l\'utilisateur' })
   }
 }
 
+
 const UserLogin = async (req, res) => {
   try {
-    // Récupérer le token depuis le corps de la requête ou l'en-tête d'autorisation
-    const token = req.body.token || req.headers.authorization?.split(' ')[1];
-    
+    const { matriculationNumber } = req.body;
+
+    // Rechercher l'utilisateur dans la base de données
+    const user = await prisma.User.findUnique({
+      where: {
+        matriculationNumber
+      }
+    });
+
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+
+    // Générer le JWT avec le matricule de l'utilisateur, valide pendant 24 heures
+    const token = jwt.sign({
+      matricule: user.matriculationNumber
+    }, 'zehfgueurfyerfieuyfui', { expiresIn: '24h' });
+
+    return res.json({ token });
+  } catch (error) {
+    console.error('Erreur lors de la connexion de l\'utilisateur :', error);
+    return res.status(500).json({ error: 'Erreur lors de la connexion de l\'utilisateur' });
+  }
+}
+
+const ProtectedResource = async (req, res) => {
+  try {
+    // Vérifier le token
+    const token = req.headers.authorization?.split(' ')[1];
+
     if (!token) {
       return res.status(401).json({ message: 'No token provided' });
     }
@@ -46,24 +88,32 @@ const UserLogin = async (req, res) => {
     const decoded = jwt.verify(token, 'zehfgueurfyerfieuyfui');
     const matricule = decoded.matricule;
 
-    // Rechercher le matricule dans la base de données
+    // Rechercher l'utilisateur dans la base de données
     const user = await prisma.User.findUnique({
       where: {
         matriculationNumber: matricule
       }
     });
 
-    if (user) {
-      return res.json({ message: 'Oui, il existe' });
-    } else {
-      return res.json({ message: 'Non, il n\'existe pas' });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid token' });
     }
+
+    // Si l'utilisateur est valide, autoriser l'accès à la ressource protégée
+    return res.json({ message: 'Protected resource accessed successfully' });
   } catch (error) {
-    console.error('Erreur lors de la vérification du token :', error);
-    return res.status(401).json({ message: 'Token verification failed' });
+    if (error.name === 'TokenExpiredError') {
+      // Si le token a expiré, renvoyer un message demandant de se reconnecter
+      return res.status(401).json({ message: 'Token expired, please log in again' });
+    } else {
+      console.error('Erreur lors de l\'accès à la ressource protégée :', error);
+      return res.status(401).json({ message: 'Access to protected resource failed' });
+    }
   }
 }
 
-module.exports={
-  UserSignup,UserLogin
+module.exports = {
+  UserSignup,
+  UserLogin,
+  ProtectedResource
 }
