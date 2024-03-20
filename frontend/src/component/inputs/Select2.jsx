@@ -1,4 +1,5 @@
 function Select2(props) {
+  const text=props.text
   return ( 
     <>
     <div className="pt-3 pb-5">
@@ -6,7 +7,7 @@ function Select2(props) {
     <select name={props.name} id="" onChange={props.change}>
       {props.options.map(shipment => (
           <option key={shipment.id} value={shipment.ShipmentTitle}>
-            {shipment.ShipmentTitle}
+            {props.optionText(shipment)}
           </option>
         ))}
     </select>

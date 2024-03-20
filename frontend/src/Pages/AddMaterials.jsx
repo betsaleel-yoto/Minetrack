@@ -213,6 +213,7 @@ const Total= number-modification
                 label="Select the related shipment"
                 name="shipment"
                 change={handleRelatedShipment}
+                optionText={shipment => shipment.ShipmentTitle}
                 options={shipments}
               />
               <Input
