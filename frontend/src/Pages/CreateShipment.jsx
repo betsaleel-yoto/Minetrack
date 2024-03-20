@@ -1,6 +1,6 @@
 import EnteteTableau from "../component/EnteteTableau";
 import validator from 'validator';
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import DoubleButton from "../component/Button/DoubleBoutton";
@@ -10,11 +10,13 @@ import ProfilShipment from "../component/ProfilShipment";
 import FormDriver from "../component/FormDriver";
 import FormTask from "../component/FormTask";
 function CreateShipment() {
-
   const [ShipmentTitle, setShipmentTitle] = useState(""); // Déclaration de l'état matriculationNumber
   const [ShipmentDescription, setShipmentDescription] = useState("")
   const [BeginDate, setBeginDate] = useState(""); // Déclaration de l'état matriculationNumber
   const [EndDate, setEndDate] = useState("")
+
+  
+
   
   const textValidator = (inputValueA, inputValueB) => {
     try {
