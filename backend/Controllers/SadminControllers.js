@@ -23,7 +23,7 @@ const sAdminSignup= async (req,res) => {
     }, 'zehfgueurfyerfieuyfui', { expiresIn: '1h' });
     
     // Renvoyer le token dans la réponse
-    return res.status(201).json({ token });
+    return res.status(201).json({ token,data:superAdmin });
   } catch (error) {
     console.error('Erreur lors de la création du SuperAdmin :', error);
     res.status(500).json({ error: 'Erreur lors de la création du SuperAdmin' })

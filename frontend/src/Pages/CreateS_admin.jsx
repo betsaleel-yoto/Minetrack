@@ -55,6 +55,13 @@ function CreateS_admin() {
         if(data.token) {
           sessionStorage.setItem('token', data.token);
         }
+        if (data.data && data.data.matriculationNumber) {
+          const matriculationNumberValue = data.data.matriculationNumber;
+          localStorage.setItem('matriculationNumber', matriculationNumberValue);
+          const matriculationNumber = localStorage.getItem('matriculationNumber');
+          console.log('Matriculation Number:', matriculationNumber);
+      }
+      
       })
       .catch(error => {
         // Gérer les erreurs éventuelles

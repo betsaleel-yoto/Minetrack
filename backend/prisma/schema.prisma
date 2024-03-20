@@ -45,7 +45,7 @@ model Order{
   MaterialName String    @db.VarChar(255)
   DateOf_Order DateTime @default(now())
   Quantity String    @db.VarChar(20)
-  DeliveryDate DateTime
+  DeliveryDate String
   matriculationNumberSadmin String   @db.VarChar(255)
   superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
   recoit Recoit[]
@@ -98,7 +98,7 @@ id        Int      @id @default(autoincrement())
 ShipmentTitle String    @db.VarChar(255)
 ShipmentDescription String    @db.VarChar(255)
 BeginDate DateTime @default(now())
-EndDate DateTime
+EndDate String
 matriculationNumberSadmin String   @db.VarChar(255)
 superAdmin      SuperAdmin @relation(fields: [matriculationNumberSadmin], references: [matriculationNumber])
 shipmentTasks ShipmentTasks[]

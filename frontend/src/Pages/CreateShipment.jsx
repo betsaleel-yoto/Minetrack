@@ -1,5 +1,7 @@
 import EnteteTableau from "../component/EnteteTableau";
 import validator from 'validator';
+import Select2 from '../component/inputs/Select2'
+import { useState,useEffect } from "react";
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import DoubleButton from "../component/Button/DoubleBoutton";
@@ -9,26 +11,155 @@ import ProfilShipment from "../component/ProfilShipment";
 import FormDriver from "../component/FormDriver";
 import FormTask from "../component/FormTask";
 function CreateShipment() {
-  const textValidator = (e) => {
-    const inputValue = e.target.value;
-    if (!validator.isLength(inputValue, { min: 1 })) {
-        console.log('le champ ne doit pas être vide');
-    } else if (!validator.matches(inputValue, /^[^<>\s]+$/)) {
-        console.log("ces caractères ne sont pas autorisés");
-    } else {
-        console.log('valide');
-    }
-};
+  const [shipments, setShipments] = useState([]);
+  const [showDisplay, setShowDisplay] = useState(false);
+  const [ShipmentTitle, setShipmentTitle] = useState(""); // Déclaration de l'état matriculationNumber
+  const [ShipmentDescription, setShipmentDescription] = useState("")
+  const [BeginDate, setBeginDate] = useState(""); // Déclaration de l'état matriculationNumber
+  const [EndDate, setEndDate] = useState("")
 
-const dateValidator = (e) => {
-  const inputValue = e.target.value;
-  const regexDate = /^\d{4}-\d{2}-\d{2}$/;
-  if (regexDate.test(inputValue)) {
-      console.log("La date est valide.");
-  } else {
-      console.log("La date n'est pas valide.");
-  }
-};
+  useEffect(() => {
+    fetch('http://localhost:3000/users/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setShipments(data);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  
+  const textValidator = (inputValueA, inputValueB) => {
+    try {
+      if (!validator.isLength(inputValueA, { min: 1 })) {
+        console.log('le champ A ne doit pas être vide');
+      } else if (!validator.matches(inputValueA, /^[^<>]+$/)) {
+        console.log("ces caractères ne sont pas autorisés pour le champ A");
+      } else if (!validator.isLength(inputValueB, { min: 1 })) {
+        console.log('le champ B ne doit pas être vide');
+      } else if (!validator.matches(inputValueB, /^[^<>]+$/)) {
+        console.log("ces caractères ne sont pas autorisés pour le champ B");
+      } else {
+        console.log('valide');
+      }
+    } catch (error) {
+      console.error('Une erreur est survenue lors de la validation :', error);
+    }
+  };
+  
+  const dateValidator = (inputValue) => {
+    try {
+      const regexDate = /^\d{4}-\d{2}-\d{2}$/;
+      if (regexDate.test(inputValue)) {
+       console.log("La date est valide.");
+      } else {
+        console.log("La date n'est pas valide.");
+      }
+    } catch (error) {
+      console.error('Une erreur est survenue lors de la validation de la date :', error);
+      console.log('Une erreur est survenue lors de la validation de la date');
+    }
+  };
+
+  const sendData = () => {
+    const matriculationNumber = localStorage.getItem('matriculationNumber');
+    const requestData = {
+      ShipmentTitle:ShipmentTitle,
+      ShipmentDescription:ShipmentDescription,
+      BeginDate:BeginDate,
+      EndDate:EndDate,
+      matriculationNumberSadmin:matriculationNumber
+      
+    };
+
+    // Effectuer la requête POST en utilisant fetch
+    fetch('http://localhost:3000/shipments/Add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => {
+        // Vérifiez si la réponse est ok
+        if (!response.ok) {
+          throw new Error('Erreur lors de la requête');
+        }
+        console.log('expédition lancée');
+        // Si la réponse est ok, retournez les données en JSON
+        return response.json();
+      })
+      .catch(error => {
+        // Gérer les erreurs éventuelles
+        console.error('Erreur lors de la requête :', error);
+      });
+  };
+
+
+  const sendData2 = (e) => {
+    const ParticipantName=e.target.value
+    const requestData = {
+      ParticipantName:ParticipantName
+    };
+
+    // Effectuer la requête POST en utilisant fetch
+    fetch('http://localhost:3000/participant/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => {
+        // Vérifiez si la réponse est ok
+        if (!response.ok) {
+          throw new Error('Erreur lors de la requête');
+        }
+        console.log('participant ajouté');
+        // Si la réponse est ok, retournez les données en JSON
+        return response.json();
+      })
+      .catch(error => {
+        // Gérer les erreurs éventuelles
+        console.error('Erreur lors de la requête :', error);
+      });
+  };
+  
+
+  const handleShipmentTitle = (e) => {
+    setShipmentTitle(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value, ShipmentTitle); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+
+  const handleShipmentDescription = (e) => {
+    setShipmentDescription(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value, ShipmentDescription); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+  
+  const handleBeginDate = (e) => {
+    setBeginDate(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    dateValidator(e.target.value); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+
+  const handleEndDate = (e) => {
+    setEndDate(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    dateValidator(e.target.value); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+  
+  const handledisplay = () => {
+    setShowDisplay(true);
+  };
+
+  const handledisplay2 = () => {
+    alert('salut')
+  };
   return ( 
     <>
      <div className="flex w-[100%]">
@@ -52,7 +183,7 @@ const dateValidator = (e) => {
                   name="ShipmentTitle"
                   label="Shipment Title"
                   htmlFor="ShipmentTitle"
-                  change={textValidator}
+                  change={handleShipmentTitle}
                 />
                 <Input
                   classes="w-[100%]"
@@ -60,7 +191,7 @@ const dateValidator = (e) => {
                   name="ShipmentDescription"
                   label="Description"
                   htmlFor="Description"
-                  change={textValidator}
+                  change={handleShipmentDescription}
                 />
                 <Input
                   classes="w-[100%]"
@@ -68,7 +199,7 @@ const dateValidator = (e) => {
                   name="BeginDate"
                   label="Begin at"
                   htmlFor="Begin"
-                  change={dateValidator}
+                  change={handleBeginDate}
                 />
                  <Input
                   classes="w-[100%]"
@@ -76,10 +207,10 @@ const dateValidator = (e) => {
                   name="EndDate"
                   label="End"
                   htmlFor="End"
-                  change={dateValidator}
+                  change={handleEndDate}
                 />
 
-                <DoubleButton/>
+                <DoubleButton click={sendData}/>
         </form>
         
       </div>
@@ -100,17 +231,18 @@ const dateValidator = (e) => {
 <div className="flex m-5">
   {/* info */}
   
-    <button type="button" className="flex"><img src="/src/img/info.svg" alt="" />
-    
+    <button type="button" className="flex"  onClick={handledisplay2}><img src="/src/img/info.svg" alt="" />
     <p className="font-semibold font-raleway text-[#6E6E6E] pl-2">Info</p>
     </button>
 
   {/* Add Participants */}
 
-  <button type="button" className="flex pl-[3rem]">
+  <button type="button" className="flex pl-[3rem]" onClick={handledisplay}>
     <img src="/src/img/Group (1).svg" alt="" />
     <p className="font-semibold font-raleway text-[#6E6E6E] pl-2">Add Participants</p>
   </button>
+  {showDisplay && <Select2 name='allUsers' change={sendData2} optionText={shipment => shipment.UserName}
+                options={shipments}/>}
 </div>
   </div>
   <div className="p-5">
