@@ -15,7 +15,7 @@ import VehicleManage from "./Pages/VehicleManage";
 function App() {
   return (
     <>
-<S_adminLogin/>
+<CreateS_admin/>
     </>
   );
 }
