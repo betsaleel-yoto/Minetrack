@@ -101,6 +101,36 @@ function CreateShipment() {
         console.error('Erreur lors de la requête :', error);
       });
   };
+
+
+  const sendData2 = (e) => {
+    const ParticipantName=e.target.value
+    const requestData = {
+      ParticipantName:ParticipantName
+    };
+
+    // Effectuer la requête POST en utilisant fetch
+    fetch('http://localhost:3000/participant/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => {
+        // Vérifiez si la réponse est ok
+        if (!response.ok) {
+          throw new Error('Erreur lors de la requête');
+        }
+        console.log('participant ajouté');
+        // Si la réponse est ok, retournez les données en JSON
+        return response.json();
+      })
+      .catch(error => {
+        // Gérer les erreurs éventuelles
+        console.error('Erreur lors de la requête :', error);
+      });
+  };
   
 
   const handleShipmentTitle = (e) => {
@@ -208,7 +238,7 @@ function CreateShipment() {
     <img src="/src/img/Group (1).svg" alt="" />
     <p className="font-semibold font-raleway text-[#6E6E6E] pl-2">Add Participants</p>
   </button>
-  {showDisplay && <Select2 name='allUsers' optionText={shipment => shipment.UserName}
+  {showDisplay && <Select2 name='allUsers' change={sendData2} optionText={shipment => shipment.UserName}
                 options={shipments}/>}
 </div>
   </div>
