@@ -156,6 +156,10 @@ function CreateShipment() {
   const handledisplay = () => {
     setShowDisplay(true);
   };
+
+  const handledisplay2 = () => {
+    alert('salut')
+  };
   return ( 
     <>
      <div className="flex w-[100%]">
@@ -227,8 +231,7 @@ function CreateShipment() {
 <div className="flex m-5">
   {/* info */}
   
-    <button type="button" className="flex"><img src="/src/img/info.svg" alt="" />
-    
+    <button type="button" className="flex"  onClick={handledisplay2}><img src="/src/img/info.svg" alt="" />
     <p className="font-semibold font-raleway text-[#6E6E6E] pl-2">Info</p>
     </button>
 
