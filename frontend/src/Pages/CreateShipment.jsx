@@ -1,5 +1,6 @@
 import EnteteTableau from "../component/EnteteTableau";
 import validator from 'validator';
+import Select2 from '../component/inputs/Select2'
 import { useState,useEffect } from "react";
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
@@ -10,12 +11,29 @@ import ProfilShipment from "../component/ProfilShipment";
 import FormDriver from "../component/FormDriver";
 import FormTask from "../component/FormTask";
 function CreateShipment() {
+  const [shipments, setShipments] = useState([]);
+  const [showDisplay, setShowDisplay] = useState(false);
   const [ShipmentTitle, setShipmentTitle] = useState(""); // Déclaration de l'état matriculationNumber
   const [ShipmentDescription, setShipmentDescription] = useState("")
   const [BeginDate, setBeginDate] = useState(""); // Déclaration de l'état matriculationNumber
   const [EndDate, setEndDate] = useState("")
 
-  
+  useEffect(() => {
+    fetch('http://localhost:3000/users/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setShipments(data);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
 
   
   const textValidator = (inputValueA, inputValueB) => {
@@ -105,6 +123,9 @@ function CreateShipment() {
     dateValidator(e.target.value); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
   };
   
+  const handledisplay = () => {
+    setShowDisplay(true);
+  };
   return ( 
     <>
      <div className="flex w-[100%]">
@@ -183,10 +204,12 @@ function CreateShipment() {
 
   {/* Add Participants */}
 
-  <button type="button" className="flex pl-[3rem]">
+  <button type="button" className="flex pl-[3rem]" onClick={handledisplay}>
     <img src="/src/img/Group (1).svg" alt="" />
     <p className="font-semibold font-raleway text-[#6E6E6E] pl-2">Add Participants</p>
   </button>
+  {showDisplay && <Select2 name='allUsers' optionText={shipment => shipment.UserName}
+                options={shipments}/>}
 </div>
   </div>
   <div className="p-5">
