@@ -17,6 +17,7 @@ function CreateShipment() {
   const [ShipmentDescription, setShipmentDescription] = useState("")
   const [BeginDate, setBeginDate] = useState(""); // Déclaration de l'état matriculationNumber
   const [EndDate, setEndDate] = useState("")
+  const[shipmentsDetails,setshipmentsDetails]=useState('')
 
   useEffect(() => {
     fetch('http://localhost:3000/users/getAll')
@@ -29,6 +30,23 @@ function CreateShipment() {
       .then(data => {
         // Données récupérées avec succès
         setShipments(data);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/shipments/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setshipmentsDetails(data);
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
@@ -96,6 +114,16 @@ function CreateShipment() {
         // Si la réponse est ok, retournez les données en JSON
         return response.json();
       })
+      .then(data => {
+        // Récupérer l'ID et l'InitialQte du matériau ajouté
+        const ShipmentId = data.data.id;
+  
+        // Stocker les données dans le localStorage
+        localStorage.setItem('ShipmentId', ShipmentId);
+        console.log( localStorage.getItem('ShipmentId'));
+        
+        // Vous pouvez effectuer d'autres actions avec les données de la réponse si nécessaire
+      })
       .catch(error => {
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
@@ -158,8 +186,12 @@ function CreateShipment() {
   };
 
   const handledisplay2 = () => {
-    alert('salut')
+    const id = parseInt(localStorage.getItem('ShipmentId'));
+    console.log(id)
+    const shipment = shipmentsDetails.find(element => element.id === id);
+    alert(shipment.ShipmentDescription);
   };
+  
   return ( 
     <>
      <div className="flex w-[100%]">
