@@ -22,9 +22,14 @@ function CreateShipment() {
   const [Driver,setDriver]=useState([])
   const [Others,setOthers]=useState([])
   const [DisplayTitle,setDisplayTitle]=useState([])
+  const [displayTasks,setdisplayTasks]=useState([])
   const [task,setTask]=useState('')
   const [taskState,setTaskState]=useState('in progress')
+  const [isChecked, setIsChecked] = useState(false);
 
+
+  //users
+  
   useEffect(() => {
     fetch('http://localhost:3000/users/getAll')
       .then(response => {
@@ -41,6 +46,8 @@ function CreateShipment() {
         console.error('Erreur lors de la récupération des données :', error);
       });
   }, []);
+
+  //shipment details
 
   useEffect(() => {
     fetch('http://localhost:3000/shipments/getAll')
@@ -59,7 +66,7 @@ function CreateShipment() {
       });
   }, []);
 
-  
+  // part driver
   useEffect(() => {
     fetch('http://localhost:3000/participant/getAll')
       .then(response => {
@@ -78,6 +85,7 @@ function CreateShipment() {
   }, []);
 
   
+//others
 
   useEffect(() => {
     fetch('http://localhost:3000/participant/getAll')
@@ -96,6 +104,8 @@ function CreateShipment() {
       });
   }, []);
 
+  //title
+
   useEffect(() => {
     const id =localStorage.getItem('ShipmentId')
     fetch('http://localhost:3000/shipments/getAll')
@@ -108,6 +118,26 @@ function CreateShipment() {
       .then(data => {
         // Données récupérées avec succès
         setDisplayTitle(data.filter(participant => participant.id == id))
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  // task
+
+  useEffect(() => {
+    const id =parseInt(localStorage.getItem('ShipmentTaskId'))
+    fetch('http://localhost:3000/shipmentTasks/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setdisplayTasks(data.filter(tasks => tasks.id == id))
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
@@ -259,6 +289,46 @@ function CreateShipment() {
         console.error('Erreur lors de la requête :', error);
       });
   };
+
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+    if (event.target.checked) {
+      // Déclarer la tâche comme terminée
+      const updatedTaskState = 'finished'; // Utilisation de la valeur mise à jour directement
+      setTaskState(updatedTaskState); // Mise à jour de taskState dans le composant
+  
+      const id = parseInt(localStorage.getItem('ShipmentTaskId'));
+      const requestData = {
+        Taskstate: updatedTaskState, // Utilisation de la valeur mise à jour
+      };
+  
+      // Effectuer la requête POST en utilisant fetch
+      fetch(`http://localhost:3000/shipmentTasks/edit/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      })
+        .then(response => {
+          // Vérifiez si la réponse est ok
+          if (!response.ok) {
+            throw new Error('Erreur lors de la requête');
+          }
+          console.log('task terminé');
+          // Si la réponse est ok, retournez les données en JSON
+          return response.json();
+        })
+        .catch(error => {
+          // Gérer les erreurs éventuelles
+          console.error('Erreur lors de la requête :', error);
+        });
+      
+      console.log('Tâche terminée :', task);
+    }
+  };
+  
 
 
   
@@ -433,9 +503,18 @@ console.log(Driver)
 
 {/* formulaire de soumission des taches */}
 
-<FormTask text='Monitor environmental impact and implement mitigation measures.' change/>
-<FormTask text='Set up and maintain equipment for mineral extraction.'/>
-<FormTask text='Set up and maintain equipment for mineral extraction.'/>
+{
+  displayTasks.map(task=>(
+    <FormTask 
+    key={task.id}
+    text={task.TaskDescription}
+    change={handleCheckboxChange}  
+    checked ={isChecked}/>   
+  ))
+}
+
+
+
 </div>
 
         </div>

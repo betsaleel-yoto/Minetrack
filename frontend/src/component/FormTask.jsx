@@ -6,6 +6,7 @@ function FormTask(props) {
           type="checkbox"
           name="taskFinished"
           id=""
+          checked={props.checked}
           className="font-semibold font-raleway"
           onChange={props.change}
         />{" "}
