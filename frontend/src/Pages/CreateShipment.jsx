@@ -383,7 +383,7 @@ console.log(Driver)
 
 {/* formulaire de soumission des taches */}
 
-<FormTask text='Monitor environmental impact and implement mitigation measures.'/>
+<FormTask text='Monitor environmental impact and implement mitigation measures.' change/>
 <FormTask text='Set up and maintain equipment for mineral extraction.'/>
 <FormTask text='Set up and maintain equipment for mineral extraction.'/>
 </div>

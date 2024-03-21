@@ -1,12 +1,13 @@
 function FormTask(props) {
   return (
     <>
-      <form action="" className="pt-4 pl-5">
+      <form action="" method="POST" className="pt-4 pl-5">
         <input
           type="checkbox"
           name="taskFinished"
           id=""
           className="font-semibold font-raleway"
+          onChange={props.change}
         />{" "}
         <label
           htmlFor="checkbox"

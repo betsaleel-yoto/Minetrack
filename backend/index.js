@@ -9,6 +9,7 @@ const RoutePlanning = require("./Routes/RoutePlanning");
 const Shipments = require("./Routes/Shipments");
 const Orders = require("./Routes/Orders");
 const participants = require('./Routes/participants')
+const tasks=require('./Routes/ShipmentTasks')
 const passport = require('passport');
 const cors=require('cors')
 // route
@@ -30,6 +31,7 @@ app.use("/routePlanning", RoutePlanning);
 app.use("/shipments", Shipments);
 app.use("/orders",Orders);
 app.use("/participant",participants)
+app.use("/shipmentTasks",tasks)
 app.listen(port, () => {
   console.log("le serveur a démaré au port" + port);
 });
