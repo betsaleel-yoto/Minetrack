@@ -10,6 +10,7 @@ import IconsEditDelete from "../component/IconsEditDelete";
 import ProfilShipment from "../component/ProfilShipment";
 import FormDriver from "../component/FormDriver";
 import FormTask from "../component/FormTask";
+import AffichageDriver from "../component/AffichageDriver";
 function CreateShipment() {
   const [shipments, setShipments] = useState([]);
   const [showDisplay, setShowDisplay] = useState(false);
@@ -18,6 +19,8 @@ function CreateShipment() {
   const [BeginDate, setBeginDate] = useState(""); // Déclaration de l'état matriculationNumber
   const [EndDate, setEndDate] = useState("")
   const[shipmentsDetails,setshipmentsDetails]=useState('')
+  const [Driver,setDriver]=useState([])
+  const [Others,setOthers]=useState([])
 
   useEffect(() => {
     fetch('http://localhost:3000/users/getAll')
@@ -52,6 +55,41 @@ function CreateShipment() {
         console.error('Erreur lors de la récupération des données :', error);
       });
   }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/participant/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setDriver(data.filter(participant => participant.ParticipantRole === 'Driver'));
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/participant/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setOthers(data.filter(participant => participant.ParticipantRole !== 'Driver'))
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
 
   
   const textValidator = (inputValueA, inputValueB) => {
@@ -160,7 +198,7 @@ function CreateShipment() {
       });
   };
   
-
+console.log(Driver)
   const handleShipmentTitle = (e) => {
     setShipmentTitle(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
     textValidator(e.target.value, ShipmentTitle); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
@@ -191,6 +229,7 @@ function CreateShipment() {
     const shipment = shipmentsDetails.find(element => element.id === id);
     alert(shipment.ShipmentDescription);
   };
+  
   
   return ( 
     <>
@@ -278,13 +317,24 @@ function CreateShipment() {
 </div>
   </div>
   <div className="p-5">
-  <ProfilShipment src='/src/img/Ellipse 13.svg' name='Ken Full' title='Driver'/>
-  {/* formulaire chauffeur */}
-<FormDriver/>
-  <ProfilShipment src='/src/img/Ellipse 8.svg' name='Rosen Yot' title='Human Resources Director'/>
-  <ProfilShipment src='/src/img/Ellipse 8.svg' name='Rosen Yot' title='Human Resources Director'/>
-  <ProfilShipment src='/src/img/Ellipse 13.svg' name='Kev Boys' title='Driver'/>
-  <FormDriver/>
+{Driver.map(participant=>(
+   <AffichageDriver
+   key={participant.id}
+   name={participant.ParticipantName}/>
+))}
+    
+ 
+  {
+  Others.map(participant => (
+    <ProfilShipment
+      key={participant.id}
+      src='/src/img/Ellipse 8.svg'
+      name={participant.ParticipantName}
+      title={participant.ParticipantRole}
+    />
+  ))
+}
+ 
 </div>
   
 </div>

@@ -110,7 +110,7 @@ const getAllParticipants = async (req, res) => {
     // Récupérez tous les participants en utilisant la méthode findMany de Prisma
     const participants = await prisma.Participant.findMany();
 
-    res.status(200).json({ participants });
+    res.status(200).json(participants);
   } catch (error) {
     console.error('Error fetching participants:', error);
     res.status(500).json({ error: 'Internal server error' });
