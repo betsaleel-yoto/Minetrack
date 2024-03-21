@@ -126,7 +126,7 @@ function CreateShipment() {
   // task
 
   useEffect(() => {
-    const id =parseInt(localStorage.getItem('ShipmentTaskId'))
+    const id =parseInt(localStorage.getItem('ShipmentId'))
     fetch('http://localhost:3000/shipmentTasks/getAll')
       .then(response => {
         if (!response.ok) {
@@ -136,7 +136,7 @@ function CreateShipment() {
       })
       .then(data => {
         // Données récupérées avec succès
-        setdisplayTasks(data)
+        setdisplayTasks(data.filter(task => task.ShipmentId == id))
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
