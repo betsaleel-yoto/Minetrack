@@ -46,12 +46,13 @@ const dateValidator = (inputValue) => {
 };
 
 const sendData = () => {
+  const matriculationNumberAdmin = localStorage.getItem('matriculationNumber');
   const requestData = {
     MaterialName: MaterialName ,
 		DateOf_Order:DateOf_Order,
 		Quantity:Quantity,
 		DeliveryDate:DeliveryDate,
-    matriculationNumberSadmin: "jshfvdfrfreefrfejvjdfvjdfsdfsfdcsd"
+    matriculationNumberSadmin: matriculationNumberAdmin
   };
 
   // Effectuer la requête POST en utilisant fetch

@@ -75,8 +75,9 @@ function CreateShipment() {
         return response.json();
       })
       .then(data => {
+        const id= parseInt(localStorage.getItem('ShipmentId'))
         // Données récupérées avec succès
-        setDriver(data.filter(participant => participant.ParticipantRole === 'Driver'));
+        setDriver(data.filter(participant => participant.ParticipantRole === 'Driver' && participant.ShipmentId=== id));
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
@@ -95,8 +96,9 @@ function CreateShipment() {
         return response.json();
       })
       .then(data => {
+        const id= parseInt(localStorage.getItem('ShipmentId'))
         // Données récupérées avec succès
-       setOthers(data.filter(participant => participant.ParticipantRole !== 'Driver'))
+       setOthers(data.filter(participant => participant.ParticipantRole !== 'Driver' && participant.ShipmentId===id))
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
@@ -221,9 +223,11 @@ function CreateShipment() {
 
 
   const sendData2 = (e) => {
+    const id= parseInt(localStorage.getItem('ShipmentId'))
     const ParticipantName=e.target.value
     const requestData = {
-      ParticipantName:ParticipantName
+      ParticipantName:ParticipantName,
+      ShipmentId:id
     };
 
     // Effectuer la requête POST en utilisant fetch

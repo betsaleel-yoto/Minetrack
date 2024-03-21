@@ -50,11 +50,12 @@ function RoutePlanning() {
 
 
   const sendData = () => {
+    const matriculationNumberAdmin = localStorage.getItem('matriculationNumber');
     const requestData = {
       RouteName:RouteName,
       RouteDescription:RouteDescription,
       RelatedMaterial:RelatedMaterial,
-      matriculationNumberSadmin: "jshfvdfrfreefrfejvjdfvjdfsdfsfdcsd"
+      matriculationNumberSadmin: matriculationNumberAdmin
     };
   
     // Effectuer la requête POST en utilisant fetch

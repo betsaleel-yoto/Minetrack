@@ -38,12 +38,13 @@ function Dashboard() {
 
 
   const sendData = () => {
+    const matriculationNumberAdmin = localStorage.getItem('matriculationNumber');
     const requestData = {
       matriculationNumber: matriculationNumber,
       UserName: Username,
       UserRole:UserRole,
       UserTitle:UserTitle,
-      matriculationNumberSadmin:'jshfvdfjvjdfvjdfsdfsfdcsd',
+      matriculationNumberSadmin:matriculationNumberAdmin,
     };
 
     // Effectuer la requête POST en utilisant fetch

@@ -77,12 +77,13 @@ const Total= number-modification
   };
 
   const sendData = () => {
+    const matriculationNumberAdmin = localStorage.getItem('matriculationNumber');
     const requestData = {
       MaterialName: MaterialName,
       RelatedShipment: RelatedShipment,
       InitialQte: InitialQte,
       CurrentQte: CurrentQte,
-      matriculationNumberSadmin: "jshfvdfrfreefrfejvjdfvjdfsdfsfdcsd"
+      matriculationNumberSadmin: matriculationNumberAdmin
     };
   
     // Effectuer la requête POST en utilisant fetch
