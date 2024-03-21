@@ -24,7 +24,6 @@ function CreateShipment() {
   const [DisplayTitle,setDisplayTitle]=useState([])
   const [displayTasks,setdisplayTasks]=useState([])
   const [task,setTask]=useState('')
-  const [taskState,setTaskState]=useState('in progress')
   const [isChecked, setIsChecked] = useState(false);
 
 
@@ -254,7 +253,7 @@ function CreateShipment() {
     const id =parseInt(localStorage.getItem('ShipmentId'))
     const requestData = {
       TaskDescription:task,
-      Taskstate:taskState,
+      Taskstate:'in progress',
       ShipmentId:id
     };
 
@@ -296,7 +295,7 @@ function CreateShipment() {
     if (event.target.checked) {
       // Déclarer la tâche comme terminée
       const updatedTaskState = 'finished'; // Utilisation de la valeur mise à jour directement
-      setTaskState(updatedTaskState); // Mise à jour de taskState dans le composant
+     
   
       const id = parseInt(localStorage.getItem('ShipmentTaskId'));
       const requestData = {
