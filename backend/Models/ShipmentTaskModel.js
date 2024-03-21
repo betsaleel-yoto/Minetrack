@@ -48,7 +48,7 @@ const add = async (req, res) => {
       data: { id, TaskDescription, Taskstate, ShipmentId },
     });
 
-    res.status(201).json({ message: 'Shipment added successfully', data: newTask });
+    res.status(201).json({ message: 'ShipmentTask added successfully', data: newTask });
   } catch (error) {
     console.error('Erreur lors de l\'ajout de l\'envoi :', error);
     res.status(500).json({ error: 'Internal server error' });

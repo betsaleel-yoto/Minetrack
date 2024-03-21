@@ -22,6 +22,8 @@ function CreateShipment() {
   const [Driver,setDriver]=useState([])
   const [Others,setOthers]=useState([])
   const [DisplayTitle,setDisplayTitle]=useState([])
+  const [task,setTask]=useState('')
+  const [taskState,setTaskState]=useState('in progress')
 
   useEffect(() => {
     fetch('http://localhost:3000/users/getAll')
@@ -217,6 +219,49 @@ function CreateShipment() {
         console.error('Erreur lors de la requête :', error);
       });
   };
+
+  const addTask = () => {
+    const id =parseInt(localStorage.getItem('ShipmentId'))
+    const requestData = {
+      TaskDescription:task,
+      Taskstate:taskState,
+      ShipmentId:id
+    };
+
+    // Effectuer la requête POST en utilisant fetch
+    fetch('http://localhost:3000/shipmentTasks/Create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => {
+        // Vérifiez si la réponse est ok
+        if (!response.ok) {
+          throw new Error('Erreur lors de la requête');
+        }
+        console.log('task ajouté');
+        // Si la réponse est ok, retournez les données en JSON
+        return response.json();
+      }).then(data => {
+        // Récupérer l'ID et l'InitialQte du matériau ajouté
+        const ShipmentTaskId = data.data.id;
+  
+        // Stocker les données dans le localStorage
+        localStorage.setItem('ShipmentTaskId', ShipmentTaskId);
+        console.log( localStorage.getItem('ShipmentTaskId'));
+        
+        // Vous pouvez effectuer d'autres actions avec les données de la réponse si nécessaire
+      })
+      .catch(error => {
+        // Gérer les erreurs éventuelles
+        console.error('Erreur lors de la requête :', error);
+      });
+  };
+
+
+  
   
 console.log(Driver)
   const handleShipmentTitle = (e) => {
@@ -248,6 +293,11 @@ console.log(Driver)
     console.log(id)
     const shipment = shipmentsDetails.find(element => element.id === id);
     alert(shipment.ShipmentDescription);
+  };
+
+  const handleTask = (e) => {
+    setTask(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value, task); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
   };
   
   
@@ -375,9 +425,9 @@ console.log(Driver)
                   name="task"
                   label="add task to the shipment"
                   htmlFor="task"
-                  change={textValidator}
+                  change={handleTask}
                 />
-                <DoubleButton/>
+                <DoubleButton click={addTask}/>
 </form>
 
 
