@@ -137,7 +137,7 @@ function CreateShipment() {
       })
       .then(data => {
         // Données récupérées avec succès
-        setdisplayTasks(data.filter(tasks => tasks.id == id))
+        setdisplayTasks(data)
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
