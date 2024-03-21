@@ -10,6 +10,7 @@ import IconsEditDelete from "../component/IconsEditDelete";
 import ProfilShipment from "../component/ProfilShipment";
 import FormDriver from "../component/FormDriver";
 import FormTask from "../component/FormTask";
+import AffichageDriver from "../component/AffichageDriver";
 function CreateShipment() {
   const [shipments, setShipments] = useState([]);
   const [showDisplay, setShowDisplay] = useState(false);
@@ -17,7 +18,17 @@ function CreateShipment() {
   const [ShipmentDescription, setShipmentDescription] = useState("")
   const [BeginDate, setBeginDate] = useState(""); // Déclaration de l'état matriculationNumber
   const [EndDate, setEndDate] = useState("")
+  const[shipmentsDetails,setshipmentsDetails]=useState('')
+  const [Driver,setDriver]=useState([])
+  const [Others,setOthers]=useState([])
+  const [DisplayTitle,setDisplayTitle]=useState([])
+  const [displayTasks,setdisplayTasks]=useState([])
+  const [task,setTask]=useState('')
+  const [isChecked, setIsChecked] = useState(false);
 
+
+  //users
+  
   useEffect(() => {
     fetch('http://localhost:3000/users/getAll')
       .then(response => {
@@ -35,6 +46,104 @@ function CreateShipment() {
       });
   }, []);
 
+  //shipment details
+
+  useEffect(() => {
+    fetch('http://localhost:3000/shipments/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setshipmentsDetails(data);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  // part driver
+  useEffect(() => {
+    fetch('http://localhost:3000/participant/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const id= parseInt(localStorage.getItem('ShipmentId'))
+        // Données récupérées avec succès
+        setDriver(data.filter(participant => participant.ParticipantRole === 'Driver' && participant.ShipmentId=== id));
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  
+//others
+
+  useEffect(() => {
+    fetch('http://localhost:3000/participant/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const id= parseInt(localStorage.getItem('ShipmentId'))
+        // Données récupérées avec succès
+       setOthers(data.filter(participant => participant.ParticipantRole !== 'Driver' && participant.ShipmentId===id))
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  //title
+
+  useEffect(() => {
+    const id =localStorage.getItem('ShipmentId')
+    fetch('http://localhost:3000/shipments/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setDisplayTitle(data.filter(participant => participant.id == id))
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  // task
+
+  useEffect(() => {
+    const id =parseInt(localStorage.getItem('ShipmentId'))
+    fetch('http://localhost:3000/shipmentTasks/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setdisplayTasks(data.filter(task => task.ShipmentId == id))
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
   
   const textValidator = (inputValueA, inputValueB) => {
     try {
@@ -96,6 +205,16 @@ function CreateShipment() {
         // Si la réponse est ok, retournez les données en JSON
         return response.json();
       })
+      .then(data => {
+        // Récupérer l'ID et l'InitialQte du matériau ajouté
+        const ShipmentId = data.data.id;
+  
+        // Stocker les données dans le localStorage
+        localStorage.setItem('ShipmentId', ShipmentId);
+        console.log( localStorage.getItem('ShipmentId'));
+        
+        // Vous pouvez effectuer d'autres actions avec les données de la réponse si nécessaire
+      })
       .catch(error => {
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
@@ -104,9 +223,11 @@ function CreateShipment() {
 
 
   const sendData2 = (e) => {
+    const id= parseInt(localStorage.getItem('ShipmentId'))
     const ParticipantName=e.target.value
     const requestData = {
-      ParticipantName:ParticipantName
+      ParticipantName:ParticipantName,
+      ShipmentId:id
     };
 
     // Effectuer la requête POST en utilisant fetch
@@ -131,8 +252,91 @@ function CreateShipment() {
         console.error('Erreur lors de la requête :', error);
       });
   };
+
+  const addTask = () => {
+    const id =parseInt(localStorage.getItem('ShipmentId'))
+    const requestData = {
+      TaskDescription:task,
+      Taskstate:'in progress',
+      ShipmentId:id
+    };
+
+    // Effectuer la requête POST en utilisant fetch
+    fetch('http://localhost:3000/shipmentTasks/Create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => {
+        // Vérifiez si la réponse est ok
+        if (!response.ok) {
+          throw new Error('Erreur lors de la requête');
+        }
+        console.log('task ajouté');
+        // Si la réponse est ok, retournez les données en JSON
+        return response.json();
+      }).then(data => {
+        // Récupérer l'ID et l'InitialQte du matériau ajouté
+        const ShipmentTaskId = data.data.id;
+  
+        // Stocker les données dans le localStorage
+        localStorage.setItem('ShipmentTaskId', ShipmentTaskId);
+        console.log( localStorage.getItem('ShipmentTaskId'));
+        
+        // Vous pouvez effectuer d'autres actions avec les données de la réponse si nécessaire
+      })
+      .catch(error => {
+        // Gérer les erreurs éventuelles
+        console.error('Erreur lors de la requête :', error);
+      });
+  };
+
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+    if (event.target.checked) {
+      // Déclarer la tâche comme terminée
+      const updatedTaskState = 'finished'; // Utilisation de la valeur mise à jour directement
+     
+  
+      const id = parseInt(localStorage.getItem('ShipmentTaskId'));
+      const requestData = {
+        Taskstate: updatedTaskState, // Utilisation de la valeur mise à jour
+      };
+  
+      // Effectuer la requête POST en utilisant fetch
+      fetch(`http://localhost:3000/shipmentTasks/edit/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      })
+        .then(response => {
+          // Vérifiez si la réponse est ok
+          if (!response.ok) {
+            throw new Error('Erreur lors de la requête');
+          }
+          console.log('task terminé');
+          // Si la réponse est ok, retournez les données en JSON
+          return response.json();
+        })
+        .catch(error => {
+          // Gérer les erreurs éventuelles
+          console.error('Erreur lors de la requête :', error);
+        });
+      
+      console.log('Tâche terminée :', task);
+    }
+  };
   
 
+
+  
+  
+console.log(Driver)
   const handleShipmentTitle = (e) => {
     setShipmentTitle(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
     textValidator(e.target.value, ShipmentTitle); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
@@ -158,8 +362,18 @@ function CreateShipment() {
   };
 
   const handledisplay2 = () => {
-    alert('salut')
+    const id = parseInt(localStorage.getItem('ShipmentId'));
+    console.log(id)
+    const shipment = shipmentsDetails.find(element => element.id === id);
+    alert(shipment.ShipmentDescription);
   };
+
+  const handleTask = (e) => {
+    setTask(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
+    textValidator(e.target.value, task); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+  };
+  
+  
   return ( 
     <>
      <div className="flex w-[100%]">
@@ -224,7 +438,14 @@ function CreateShipment() {
   {/* Entete */}
   <div className="border-b border-[#D2D2D2]">
 <div className="flex">
-  <SuperTitle text='Title of the Shipment'/>
+{DisplayTitle.map(title=>(
+  <SuperTitle
+  key={title.id}
+  text={title.ShipmentTitle}/>
+  
+))}
+  
+  
   <IconsEditDelete/>
 </div>
 
@@ -246,13 +467,24 @@ function CreateShipment() {
 </div>
   </div>
   <div className="p-5">
-  <ProfilShipment src='/src/img/Ellipse 13.svg' name='Ken Full' title='Driver'/>
-  {/* formulaire chauffeur */}
-<FormDriver/>
-  <ProfilShipment src='/src/img/Ellipse 8.svg' name='Rosen Yot' title='Human Resources Director'/>
-  <ProfilShipment src='/src/img/Ellipse 8.svg' name='Rosen Yot' title='Human Resources Director'/>
-  <ProfilShipment src='/src/img/Ellipse 13.svg' name='Kev Boys' title='Driver'/>
-  <FormDriver/>
+{Driver.map(participant=>(
+   <AffichageDriver
+   key={participant.id}
+   name={participant.ParticipantName}/>
+))}
+    
+ 
+  {
+  Others.map(participant => (
+    <ProfilShipment
+      key={participant.id}
+      src='/src/img/Ellipse 8.svg'
+      name={participant.ParticipantName}
+      title={participant.ParticipantRole}
+    />
+  ))
+}
+ 
 </div>
   
 </div>
@@ -267,17 +499,26 @@ function CreateShipment() {
                   name="task"
                   label="add task to the shipment"
                   htmlFor="task"
-                  change={textValidator}
+                  change={handleTask}
                 />
-                <DoubleButton/>
+                <DoubleButton click={addTask}/>
 </form>
 
 
 {/* formulaire de soumission des taches */}
 
-<FormTask text='Monitor environmental impact and implement mitigation measures.'/>
-<FormTask text='Set up and maintain equipment for mineral extraction.'/>
-<FormTask text='Set up and maintain equipment for mineral extraction.'/>
+{
+  displayTasks.map(task=>(
+    <FormTask 
+    key={task.id}
+    text={task.TaskDescription}
+    change={handleCheckboxChange}  
+    checked ={isChecked}/>   
+  ))
+}
+
+
+
 </div>
 
         </div>

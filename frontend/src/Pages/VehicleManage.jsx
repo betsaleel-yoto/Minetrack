@@ -53,11 +53,12 @@ const [MaintenanceDate,setMaintenanceDate]=useState('')
 
 
   const sendData = () => {
+    const matriculationNumberAdmin = localStorage.getItem('matriculationNumber');
     const requestData = {
       VehicleRegistrationNumber: VehicleRegistrationNumber,
       VehicleName: Vehiclename,
       StartOfUse: StartOfUse,
-      matriculationNumberSadmin: "jshfvdfrfreefrfejvjdfvjdfsdfsfdcsd"
+      matriculationNumberSadmin: matriculationNumberAdmin
     };
   
     // Effectuer la requête POST en utilisant fetch
