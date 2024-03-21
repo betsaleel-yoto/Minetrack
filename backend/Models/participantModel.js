@@ -27,7 +27,7 @@ const getParticipantRole = async (participantName) => {
 // Route pour ajouter un participant
 const addParticipant = async (req, res) => {
   try {
-    const { ParticipantName } = req.body;
+    const { ParticipantName,ShipmentId } = req.body;
 
     // Récupérez ParticipantRole en utilisant la fonction getParticipantRole
     const ParticipantRole = await getParticipantRole(ParticipantName);
@@ -36,7 +36,8 @@ const addParticipant = async (req, res) => {
     const participant = await prisma.Participant.create({
       data: {
         ParticipantName,
-        ParticipantRole
+        ParticipantRole,
+        ShipmentId
       },
     });
 
