@@ -10,13 +10,13 @@ function NavBar() {
         </div>
         
         <h3 className="pb-12 pt-3 text-[#9E9E9E] font-semibold font-raleway ml-5">Main Navigation</h3>
-        <LinkElement link='#' src='/src/img/🦆 icon _dashboard_.svg' titleLink='Dashboard'/>
-        <LinkElement link='#' src='/src/img/🦆 icon _rocket_.svg' titleLink='ShipmentMaster'/>
-        <LinkElement link='#' src='/src/img/🦆 icon _iconoir_.svg' titleLink='StockManager'/>
-        <LinkElement link='#' src='/src/img/🦆 icon _truck length_.svg' titleLink='RoutePlanning'/>
-        <LinkElement link='#' src='/src/img/🦆 icon _green vehicle_.svg' titleLink='VehiculeManage'/>
-        <LinkElement link='#' src='/src/img/🦆 icon _send pounds_.svg' titleLink='SupplierManage'/>
-        <LinkElement link='#' src='/src/img/🦆 icon _reports_.svg' titleLink='Reports Analysis'/>
+        <LinkElement link='/dashboard' src='/src/img/🦆 icon _dashboard_.svg' titleLink='Dashboard'/>
+        <LinkElement link='/shipment' src='/src/img/🦆 icon _rocket_.svg' titleLink='ShipmentMaster'/>
+        <LinkElement link='/material' src='/src/img/🦆 icon _iconoir_.svg' titleLink='StockManager'/>
+        <LinkElement link='/itinerary' src='/src/img/🦆 icon _truck length_.svg' titleLink='RoutePlanning'/>
+        <LinkElement link='/vehicle' src='/src/img/🦆 icon _green vehicle_.svg' titleLink='VehiculeManage'/>
+        <LinkElement link='/supplier' src='/src/img/🦆 icon _send pounds_.svg' titleLink='SupplierManage'/>
+        <LinkElement link='/Report' src='/src/img/🦆 icon _reports_.svg' titleLink='Reports Analysis'/>
       </div>
     </>
   );

@@ -11,11 +11,29 @@ import S_adminLogin from "./Pages/S_adminLogin";
 import SupplierManage from "./Pages/SupplierManage";
 import UserLogin from "./Pages/UserLogin";
 import VehicleManage from "./Pages/VehicleManage";
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <>
-<CreateShipment/>
+<BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Dashboard/>}/>
+                <Route path="/material" element={<AddMaterials/>} />
+                <Route path="/CreateS_admin" element={<CreateS_admin/>} />
+                <Route path="/shipment" element={<CreateShipment/>} />
+                <Route path="/editSadmin" element={<EditS_admin/>} />
+                <Route path="/ManageOrders" element={<ManageOfOrders/>} />
+                <Route path="/Report" element={<ReportsAnalysis/>} />
+                <Route path="/ze" element={<RoleAuth/>} exact/>
+                <Route path="/itinerary" element={<RoutePlanning/>} />
+                <Route path="/S_adminLogin" element={<S_adminLogin/>} />
+                <Route path="/supplier" element={<SupplierManage/>} />
+                <Route path="/login" element={<UserLogin/>} />
+                <Route path="/vehicle" element={<VehicleManage/>} />
+            </Routes>
+        </BrowserRouter>
     </>
   );
 }
