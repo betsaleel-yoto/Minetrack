@@ -2,14 +2,12 @@ import EnteteRapports from "../component/EnTeteRapports";
 import NormalTitle from "../component/NormalTitle";
 import SubTitleReports from "../component/SubTitleReports";
 import SuperLineBlue from "../component/SuperlineBlue";
-import NavBar from "../component/navBar";
 
 function ReportsAnalysis() {
   return ( 
     <>
     <div className="w-[100%] flex">
-<NavBar/>
-<div className="w-[80%] h-auto pt-6">
+<div className="w-[100%] h-auto pt-6">
 <EnteteRapports text='Logistics Performance Report'/>
 <SubTitleReports/>
 <SuperLineBlue text1='Indicator' text4='Value'/>
