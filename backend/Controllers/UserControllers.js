@@ -50,7 +50,7 @@ const UserSignup = async (req, res) => {
 
 const UserLogin = async (req, res) => {
   try {
-    const { matriculationNumber } = req.body;
+    const { matriculationNumber, username } = req.body;
 
     // Rechercher l'utilisateur dans la base de données
     const user = await prisma.User.findUnique({
@@ -59,8 +59,9 @@ const UserLogin = async (req, res) => {
       }
     });
 
-    if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+    // Vérifier si l'utilisateur existe et si le username correspond
+    if (!user || user.username !== username) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     // Générer le JWT avec le matricule de l'utilisateur, valide pendant 24 heures
@@ -74,6 +75,7 @@ const UserLogin = async (req, res) => {
     return res.status(500).json({ error: 'Erreur lors de la connexion de l\'utilisateur' });
   }
 }
+
 
 const ProtectedResource = async (req, res) => {
   try {
