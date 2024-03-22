@@ -19,14 +19,14 @@ function App() {
     <>
 <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Dashboard/>}/>
+                <Route path="/dashboard" element={<Dashboard/>}/>
                 <Route path="/material" element={<AddMaterials/>} />
                 <Route path="/CreateS_admin" element={<CreateS_admin/>} />
                 <Route path="/shipment" element={<CreateShipment/>} />
                 <Route path="/editSadmin" element={<EditS_admin/>} />
                 <Route path="/ManageOrders" element={<ManageOfOrders/>} />
                 <Route path="/Report" element={<ReportsAnalysis/>} />
-                <Route path="/ze" element={<RoleAuth/>} exact/>
+                <Route path="/" element={<RoleAuth/>} exact/>
                 <Route path="/itinerary" element={<RoutePlanning/>} />
                 <Route path="/S_adminLogin" element={<S_adminLogin/>} />
                 <Route path="/supplier" element={<SupplierManage/>} />
