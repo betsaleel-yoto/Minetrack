@@ -20,7 +20,7 @@ const sAdminSignup= async (req,res) => {
     // Générer le JWT avec le matricule du superAdmin
     const token = jwt.sign({
       matricule: superAdmin.matriculationNumber
-    }, 'zehfgueurfyerfieuyfui', { expiresIn: '1h' });
+    }, 'zehfgueurfyerfieuyfui', { expiresIn: '24h' });
     
     // Renvoyer le token dans la réponse
     return res.status(201).json({ token,data:superAdmin });
@@ -32,11 +32,14 @@ const sAdminSignup= async (req,res) => {
   }
 }
 
-const sAdminLogin=async (req, res) => {
+const sAdminLogin = async (req, res) => {
   try {
     // Récupérer le token depuis le corps de la requête ou l'en-tête d'autorisation
     const token = req.body.token || req.headers.authorization?.split(' ')[1];
-    
+
+    // Récupérer matriculationNumber et username depuis le corps de la requête
+    const { matriculationNumber, username } = req.body;
+
     if (!token) {
       return res.status(401).json({ message: 'No token provided' });
     }
@@ -52,7 +55,8 @@ const sAdminLogin=async (req, res) => {
       }
     });
 
-    if (superAdmin) {
+    // Vérifier si le superAdmin existe et si les informations matriculationNumber et username correspondent
+    if (superAdmin && superAdmin.matriculationNumber === matriculationNumber && superAdmin.username === username) {
       return res.json({ message: 'Oui, il existe' });
     } else {
       return res.json({ message: 'Non, il n\'existe pas' });
@@ -62,6 +66,7 @@ const sAdminLogin=async (req, res) => {
     return res.status(401).json({ message: 'Token verification failed' });
   }
 }
+
 
 module.exports={
 sAdminSignup,sAdminLogin
