@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link, Navigate } from 'react-router-dom'; // Importer Link et Navigate depuis react-router-dom
+import { Link} from 'react-router-dom'; // Importer Link et Navigate depuis react-router-dom
 
 function RoleAuth() {
 
