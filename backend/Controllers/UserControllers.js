@@ -50,7 +50,7 @@ const UserSignup = async (req, res) => {
 
 const UserLogin = async (req, res) => {
   try {
-    const { matriculationNumber, username } = req.body;
+    const { matriculationNumber, UserName } = req.body;
 
     // Rechercher l'utilisateur dans la base de données
     const user = await prisma.User.findUnique({
@@ -60,7 +60,7 @@ const UserLogin = async (req, res) => {
     });
 
     // Vérifier si l'utilisateur existe et si le username correspond
-    if (!user || user.username !== username) {
+    if (!user || user.UserName !== UserName) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 

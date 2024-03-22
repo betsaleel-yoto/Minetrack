@@ -11,6 +11,7 @@ import S_adminLogin from "./Pages/S_adminLogin";
 import SupplierManage from "./Pages/SupplierManage";
 import UserLogin from "./Pages/UserLogin";
 import VehicleManage from "./Pages/VehicleManage";
+import SupplierUserLogin from "./Pages/SupplierLogin";
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/supplier" element={<SupplierManage/>} />
                 <Route path="/login" element={<UserLogin/>} />
                 <Route path="/vehicle" element={<VehicleManage/>} />
+                <Route path="/supplierlogin" element={<SupplierUserLogin/>} />
             </Routes>
         </BrowserRouter>
     </>

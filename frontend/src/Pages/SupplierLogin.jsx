@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Navigate } from 'react-router-dom';
 import ConnectForm from "../component/connectForm";
 import validator from 'validator';
-function UserLogin() {
+function SupplierUserLogin() {
 const [redirect, setRedirect] = useState(false);
 const [Username,setUsername]=useState('')
 const [matriculationNumber,setmatriculationNumber]=useState('')
@@ -81,10 +81,10 @@ const [matriculationNumber,setmatriculationNumber]=useState('')
 
   return ( 
     <>
-    {redirect && <Navigate to="/Report" />}
+    {redirect && <Navigate to="/ManageOrders" />}
 <ConnectForm button='Log in' change={handleUserName} change1={handleMatriculation} click={sendData}/>
     </>
    );
 }
 
-export default UserLogin;
+export default SupplierUserLogin;

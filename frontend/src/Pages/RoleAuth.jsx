@@ -27,7 +27,7 @@ function RoleAuth() {
           </div>
 
           <div className='ml-[5rem] bg-[#4886FF]  w-32 h-10 rounded-[8px] hover:bg-[#39527B] mt-12'>
-          <Link to="/login" className="relative w-32 h-10 font-semibold text-white font-raleway left-[1.8rem] top-[5px]">Supplier</Link>
+          <Link to="/supplierlogin" className="relative w-32 h-10 font-semibold text-white font-raleway left-[1.8rem] top-[5px]">Supplier</Link>
           </div>
           </div>
 
