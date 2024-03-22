@@ -44,6 +44,7 @@ const [matriculationNumber,setmatriculationNumber]=useState('')
   .then(response => {
     // Vérifiez si la réponse est ok
     if (!response.ok) {
+      alert('soit cet utilisateur n\'existe pas il doit etre ajouter soit le mot le passe ou le username ne sont pas correctes')
       throw new Error('Erreur lors de la requête');
     }
     console.log('Utilisateur Connecté');
