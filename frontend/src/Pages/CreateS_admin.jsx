@@ -53,7 +53,7 @@ function CreateS_admin() {
         console.log('Réponse du serveur :', data);
         // Stocker le token dans sessionStorage
         if(data.token) {
-          sessionStorage.setItem('token', data.token);
+          sessionStorage.setItem('Admintoken', data.token);
         }
         if (data.data && data.data.matriculationNumber) {
           const matriculationNumberValue = data.data.matriculationNumber;

@@ -6,7 +6,7 @@ function S_adminLogin() {
 
 
   function token() {
-    const storedToken = sessionStorage.getItem('token');
+    const storedToken = sessionStorage.getItem('Admintoken');
     if (storedToken) {
       // Préparer les données de la requête
       const requestData = {

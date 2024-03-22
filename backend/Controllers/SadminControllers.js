@@ -20,7 +20,7 @@ const sAdminSignup= async (req,res) => {
     // Générer le JWT avec le matricule du superAdmin
     const token = jwt.sign({
       matricule: superAdmin.matriculationNumber
-    }, 'zehfgueurfyerfieuyfui', { expiresIn: '1h' });
+    }, 'zehfgueurfyerfieuyfui', { expiresIn: '24h' });
     
     // Renvoyer le token dans la réponse
     return res.status(201).json({ token,data:superAdmin });
