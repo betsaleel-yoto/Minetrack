@@ -8,7 +8,7 @@ function ElementTableau2(props) {
             {props.text1}
           </p>
           <div className="w-[40%] m-auto">
-          <BarreDeNiveau width='w-[80%]' bgcl={props.bg} h='h-[0.5rem]'/>
+          <BarreDeNiveau width={props.w} bgcl={props.bg} h='h-[0.5rem]'/>
           </div>
 
         <p className="font-raleway text-[#5D5D5D] font-semibold w-[20%] m-auto">

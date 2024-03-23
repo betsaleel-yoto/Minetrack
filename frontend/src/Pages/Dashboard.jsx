@@ -31,7 +31,6 @@ function Dashboard() {
         return response.json();
       })
       .then(data => {
-        const id= parseInt(localStorage.getItem('ShipmentId'))
         // Données récupérées avec succès
         setUser(data.filter(user => user.UserRole === 'Ordinary'));
       })
@@ -61,24 +60,50 @@ function Dashboard() {
   }, []);
 
   //shipment Title 
-
   useEffect(() => {
-    fetch('http://localhost:3000/shipments/getAll')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des données');
+    // Fonction pour récupérer les données de l'URL vers les expéditions
+    const fetchDisplayData = async () => {
+      const id= parseInt(localStorage.getItem('ShipmentId'))
+      try {
+        // Remplacez 'URL_VERS_VOTRE_API_EXPEDITIONS' par l'URL appropriée
+        const response = await fetch('http://localhost:3000/shipments/getAll');
+        const shipmentData = await response.json();
+
+        // Remplacez 'URL_VERS_VOTRE_API_TACHES' par l'URL appropriée
+        const taskResponse = await fetch('http://localhost:3000/shipmentTasks/getAll');
+        const taskData = await taskResponse.json();
+
+        const mergedData={
+          shipmentTitle:shipmentData.filter(title=>title.id==id),
+          tasks:taskData.filter(task=>task.ShipmentId==id)
         }
-        return response.json();
-      })
-      .then(data => {
-        const id= parseInt(localStorage.getItem('ShipmentId'))
-        // Données récupérées avec succès
-        setDisplayTitle(data);
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des données :', error);
-      });
+
+        // Mettez à jour l'état avec les données fusionnées
+        return setDisplayTitle(mergedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchDisplayData();
   }, []);
+
+  let task = DisplayTitle.tasks &&DisplayTitle.tasks.length
+  let task2= DisplayTitle.tasks &&DisplayTitle.tasks.filter(task=>task.Taskstate==='finished')
+  let task3=task2 && task2.length
+  const total = (parseInt(task3) * 100)/parseInt(task) || 0
+  const width= (total*80)/100 
+  let color=''
+  if(total>=50){
+    color='#39527B'
+  }else{
+    color='#FF7473'
+  }
+  
+console.log(width)
+
+
+  
   
   const textValidator = (inputValueA, inputValueB) => {
     try {
@@ -313,13 +338,15 @@ function Dashboard() {
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
   <EnteteTableau text='Ongoing Expeditions'/>
   <LineTableu text1='Title' text2='Progress' text3='%'/>
-  {DisplayTitle.map(title=>(
-    <ElementTableau2 
+  {DisplayTitle.shipmentTitle && DisplayTitle.shipmentTitle.map(title => (
+  <ElementTableau2 
     key={title.id}
     text1={title.ShipmentTitle}
-    text2='100%' 
-    bg='bg-[#39527B]'/>
-  ))}
+    text2={`${total}%`}
+    bg={`bg-[${color}]`}
+    w={`w-[${width}%]`}
+  />
+))}
   
 </div>
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
