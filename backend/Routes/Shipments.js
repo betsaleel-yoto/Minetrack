@@ -4,7 +4,8 @@ const {
   getAllShipments,
   editShipment,
   deleteShipment,
-  addShipment
+  addShipment,
+  shipmentTask 
 }=require("../Models/shipmentModel")
 
 router.get('',(req,res)=>{

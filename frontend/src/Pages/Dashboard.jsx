@@ -5,18 +5,170 @@ import Select from "../component/inputs/Select";
 import DoubleButton from "../component/Button/DoubleBoutton";
 import validator from "validator";
 import Search from "../component/Search";
-import BarreDeNiveau from "../component/barreDeNiveau";
 import EnteteTableau from "../component/EnteteTableau";
 import LineTableu from "../component/LineTableau";
 import ElementTableau2 from "../component/ElementTableau2";
 import ElementTableau1 from "../component/ElementTableau1";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 function Dashboard() {
   
   const [Username,setUsername]=useState('')
   const [matriculationNumber,setmatriculationNumber]=useState('')
   const [UserRole,setUserRole]=useState('')
   const [UserTitle,setUserTitle]=useState('')
+  const [User,setUser]=useState([])
+  const [admin,setadmin]=useState([])
+  const [DisplayTitle,setDisplayTitle]=useState([])
+  const [Materials,setMaterials]=useState([])
+const [Vehicles,setvehicles]=useState([])
+  
+//orinary
+
+  useEffect(() => {
+    fetch('http://localhost:3000/users/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setUser(data.filter(user => user.UserRole === 'Ordinary'));
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  //Admin
+
+  useEffect(() => {
+    fetch('http://localhost:3000/users/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const id= parseInt(localStorage.getItem('ShipmentId'))
+        // Données récupérées avec succès
+        setadmin(data.filter(user => user.UserRole !== 'Ordinary'));
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  //shipment Title 
+  useEffect(() => {
+    // Fonction pour récupérer les données de l'URL vers les expéditions
+    const fetchDisplayData = async () => {
+      const id= parseInt(localStorage.getItem('ShipmentId'))
+      try {
+        // Remplacez 'URL_VERS_VOTRE_API_EXPEDITIONS' par l'URL appropriée
+        const response = await fetch('http://localhost:3000/shipments/getAll');
+        const shipmentData = await response.json();
+
+        // Remplacez 'URL_VERS_VOTRE_API_TACHES' par l'URL appropriée
+        const taskResponse = await fetch('http://localhost:3000/shipmentTasks/getAll');
+        const taskData = await taskResponse.json();
+
+        const mergedData={
+          shipmentTitle:shipmentData.filter(title=>title.id==id),
+          tasks:taskData.filter(task=>task.ShipmentId==id)
+        }
+
+        // Mettez à jour l'état avec les données fusionnées
+        return setDisplayTitle(mergedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchDisplayData();
+  }, []);
+
+  let task = DisplayTitle.tasks &&DisplayTitle.tasks.length
+  let task2= DisplayTitle.tasks &&DisplayTitle.tasks.filter(task=>task.Taskstate==='finished')
+  let task3=task2 && task2.length
+  const total = (parseInt(task3) * 100)/parseInt(task) || 0
+  const width= (total*80)/100 
+  let color=''
+  if(total>=50){
+    color='#39527B'
+  }else{
+    color='#FF7473'
+  }
+  
+console.log(width)
+
+//Material
+
+useEffect(() => {
+  fetch('http://localhost:3000/materials/getAll')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des données');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Données récupérées avec succès
+      setMaterials(data);
+    })
+    .catch(error => {
+      console.error('Erreur lors de la récupération des données :', error);
+    });
+}, []);
+
+console.log(Vehicles)
+
+const materialId= localStorage.getItem('MaterialID');
+const element1= Materials && Materials.filter(material=>material.id=materialId)
+const tableauCurrentValue= (element1 && element1.map(mater=>mater.CurrentQte)).join('')
+const CurrentValue=parseInt(tableauCurrentValue)
+const tableauinitialValue= (element1 && element1.map(mater=>mater.InitialQte)).join('')
+const InitialQteValue=parseInt(tableauinitialValue)
+const totalStock =(CurrentValue * 100)/InitialQteValue
+console.log(totalStock)
+let color2=''
+if (totalStock<50){
+  color2='#60C84C'
+}else{
+  color2='#FF7473'
+}
+
+//Vehicle
+
+useEffect(() => {
+  fetch('http://localhost:3000/vehicle/getAll')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des données');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Données récupérées avec succès
+      setvehicles(data);
+    })
+    .catch(error => {
+      console.error('Erreur lors de la récupération des données :', error);
+    });
+}, []);
+
+const vehicleRegistrationNumber = localStorage.getItem('vehicleRegistrationNumber');
+const State= Vehicles && Vehicles.filter(vehicle=>vehicle.VehicleRegistrationNumber===vehicleRegistrationNumber)
+const VState= State.map(state=>state.VehicleCondition).join('')
+let color3=''
+console.log(VState)
+if(VState =='Good'){
+  color3='#60C84C'
+}else{
+  color3='#FF7473'
+}
 
   const textValidator = (inputValueA, inputValueB) => {
     try {
@@ -173,74 +325,28 @@ function Dashboard() {
               {/* Partie Liste des Utilisateurs */}
               <div className="flex border rounded-md">
                 <div className="border border-[#565656] rounded-md">
-                  <ElementUser
+
+                  {admin.map(user=>(
+                    <ElementUser
+                    key={user.matriculationNumber}
                     src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
+                    name={user.UserName}
+                    title={user.UserTitle}
                     className="border"
                   />
-                  <ElementUser
-                    src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                    className="border"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                    className="border"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                    className="border"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                    className="border"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                    className="border"
-                  />
+                  ))}
+                  
                 </div>
                 <div className="ml-3 border border-[#565656] rounded-md">
-                  <ElementUser
+                {User.map(user=>(
+                    <ElementUser
+                    key={user.matriculationNumber}
                     src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
+                    name={user.UserName}
+                    title={user.UserTitle}
+                    className="border"
                   />
-                  <ElementUser
-                    src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                  />
+                  ))}
                 </div>
               </div>
             </div>
@@ -297,23 +403,43 @@ function Dashboard() {
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
   <EnteteTableau text='Ongoing Expeditions'/>
   <LineTableu text1='Title' text2='Progress' text3='%'/>
-  <ElementTableau2 text1='Set up and maintain equipment for mineral extraction.' text2='100%' bg='bg-[#39527B]'/>
-  <ElementTableau2 text1='Monitor environmental impact and implement mitigation measures.' text2='100%' bg='bg-[#FCCA4F]'/>
-   <ElementTableau2 text1='Conduct geological survey of the area.' text2='100%' bg='bg-[#FF7473]'/>
+  {DisplayTitle.shipmentTitle && DisplayTitle.shipmentTitle.map(title => (
+  <ElementTableau2 
+    key={title.id}
+    text1={title.ShipmentTitle}
+    text2={`${total}%`}
+    bg={`bg-[${color}]`}
+    w={`w-[${width}%]`}
+  />
+))}
+  
 </div>
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
   <EnteteTableau text='Stocks level'/>
   <LineTableu text1='Material Name' text2='Shipment Name' text3='Consumed %'/>
-  <ElementTableau1 text1='Explosives' text2='Monitor environmental impact and implement mitigation measures.' text3='50%' cl='text-[#5D5D5D]'/>
-  <ElementTableau1 text1='Explosives' text2='Monitor environmental impact and implement mitigation measures.' text3='40%' cl='text-[#FF7473]'/>
+  {Materials.map(material=>(
+   <ElementTableau1 
+   key={material.id}
+   text1={material.MaterialName} 
+   text2={material.RelatedShipment}
+   text3={`${totalStock}%`} 
+   cl={`text-[${color2}]`}/> 
+  ))}
+  
 </div>
 
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
   <EnteteTableau text='Vehicle inspection'/>
-  <LineTableu text1='Vehicle Name' text2='Shipment Name' text3='Vehicle condition'/>
-  <ElementTableau1 text1='Name here' text2='Monitor environmental impact and implement mitigation measures.' text3='Good' cl='text-[#60C84C]'/>
-  <ElementTableau1 text1='Name here' text2='Monitor environmental impact and implement mitigation measures.' text3='Not Good' cl='text-[#FF7473]'/>
-  <ElementTableau1 text1='Name here' text2='Monitor environmental impact and implement mitigation measures.' text3='Good' cl='text-[#60C84C]'/>
+  <LineTableu text1='Vehicle Name' text3='Vehicle condition'/>
+  {
+  Vehicles.map(vehicle=>(
+    <ElementTableau1
+    key={vehicle.VehicleRegistrationNumber}
+    text1={vehicle.VehicleName}
+    text3={vehicle.VehicleCondition}
+    cl={`text-[${color3}]`}/>
+  ))}
+  
 </div>
           
         </div>
