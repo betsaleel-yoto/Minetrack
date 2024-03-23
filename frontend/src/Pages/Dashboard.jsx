@@ -135,9 +135,9 @@ const totalStock =(CurrentValue * 100)/InitialQteValue
 console.log(totalStock)
 let color2=''
 if (totalStock<50){
-  color2='#FF7473'
+  color2='#60C84C'
 }else{
-  color2='#39527B'
+  color2='#FF7473'
 }
 
 //Vehicle
@@ -159,11 +159,12 @@ useEffect(() => {
     });
 }, []);
 
-
-const State= Vehicles && Vehicles.map(vehicle=>vehicle.VehicleCondition).join('')
+const vehicleRegistrationNumber = localStorage.getItem('vehicleRegistrationNumber');
+const State= Vehicles && Vehicles.filter(vehicle=>vehicle.VehicleRegistrationNumber===vehicleRegistrationNumber)
+const VState= State.map(state=>state.VehicleCondition).join('')
 let color3=''
-
-if(State=='Good'){
+console.log(VState)
+if(VState =='Good'){
   color3='#60C84C'
 }else{
   color3='#FF7473'
@@ -430,7 +431,8 @@ if(State=='Good'){
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
   <EnteteTableau text='Vehicle inspection'/>
   <LineTableu text1='Vehicle Name' text3='Vehicle condition'/>
-  {Vehicles.map(vehicle=>(
+  {
+  Vehicles.map(vehicle=>(
     <ElementTableau1
     key={vehicle.VehicleRegistrationNumber}
     text1={vehicle.VehicleName}
