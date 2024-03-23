@@ -19,7 +19,9 @@ function Dashboard() {
   const [User,setUser]=useState([])
   const [admin,setadmin]=useState([])
   const [DisplayTitle,setDisplayTitle]=useState([])
-
+  const [Materials,setMaterials]=useState([])
+const [Vehicles,setvehicles]=useState([])
+  
 //orinary
 
   useEffect(() => {
@@ -102,9 +104,71 @@ function Dashboard() {
   
 console.log(width)
 
+//Material
 
-  
-  
+useEffect(() => {
+  fetch('http://localhost:3000/materials/getAll')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des données');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Données récupérées avec succès
+      setMaterials(data);
+    })
+    .catch(error => {
+      console.error('Erreur lors de la récupération des données :', error);
+    });
+}, []);
+
+console.log(Vehicles)
+
+const materialId= localStorage.getItem('MaterialID');
+const element1= Materials && Materials.filter(material=>material.id=materialId)
+const tableauCurrentValue= (element1 && element1.map(mater=>mater.CurrentQte)).join('')
+const CurrentValue=parseInt(tableauCurrentValue)
+const tableauinitialValue= (element1 && element1.map(mater=>mater.InitialQte)).join('')
+const InitialQteValue=parseInt(tableauinitialValue)
+const totalStock =(CurrentValue * 100)/InitialQteValue
+console.log(totalStock)
+let color2=''
+if (totalStock<50){
+  color2='#FF7473'
+}else{
+  color2='#39527B'
+}
+
+//Vehicle
+
+useEffect(() => {
+  fetch('http://localhost:3000/vehicle/getAll')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des données');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Données récupérées avec succès
+      setvehicles(data);
+    })
+    .catch(error => {
+      console.error('Erreur lors de la récupération des données :', error);
+    });
+}, []);
+
+
+const State= Vehicles && Vehicles.map(vehicle=>vehicle.VehicleCondition).join('')
+let color3=''
+
+if(State=='Good'){
+  color3='#60C84C'
+}else{
+  color3='#FF7473'
+}
+
   const textValidator = (inputValueA, inputValueB) => {
     try {
       if (!validator.isLength(inputValueA, { min: 1 })) {
@@ -352,16 +416,28 @@ console.log(width)
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
   <EnteteTableau text='Stocks level'/>
   <LineTableu text1='Material Name' text2='Shipment Name' text3='Consumed %'/>
-  <ElementTableau1 text1='Explosives' text2='Monitor environmental impact and implement mitigation measures.' text3='50%' cl='text-[#5D5D5D]'/>
-  <ElementTableau1 text1='Explosives' text2='Monitor environmental impact and implement mitigation measures.' text3='40%' cl='text-[#FF7473]'/>
+  {Materials.map(material=>(
+   <ElementTableau1 
+   key={material.id}
+   text1={material.MaterialName} 
+   text2={material.RelatedShipment}
+   text3={`${totalStock}%`} 
+   cl={`text-[${color2}]`}/> 
+  ))}
+  
 </div>
 
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
   <EnteteTableau text='Vehicle inspection'/>
-  <LineTableu text1='Vehicle Name' text2='Shipment Name' text3='Vehicle condition'/>
-  <ElementTableau1 text1='Name here' text2='Monitor environmental impact and implement mitigation measures.' text3='Good' cl='text-[#60C84C]'/>
-  <ElementTableau1 text1='Name here' text2='Monitor environmental impact and implement mitigation measures.' text3='Not Good' cl='text-[#FF7473]'/>
-  <ElementTableau1 text1='Name here' text2='Monitor environmental impact and implement mitigation measures.' text3='Good' cl='text-[#60C84C]'/>
+  <LineTableu text1='Vehicle Name' text3='Vehicle condition'/>
+  {Vehicles.map(vehicle=>(
+    <ElementTableau1
+    key={vehicle.VehicleRegistrationNumber}
+    text1={vehicle.VehicleName}
+    text3={vehicle.VehicleCondition}
+    cl={`text-[${color3}]`}/>
+  ))}
+  
 </div>
           
         </div>
