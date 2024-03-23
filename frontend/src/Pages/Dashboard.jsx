@@ -5,19 +5,81 @@ import Select from "../component/inputs/Select";
 import DoubleButton from "../component/Button/DoubleBoutton";
 import validator from "validator";
 import Search from "../component/Search";
-import BarreDeNiveau from "../component/barreDeNiveau";
 import EnteteTableau from "../component/EnteteTableau";
 import LineTableu from "../component/LineTableau";
 import ElementTableau2 from "../component/ElementTableau2";
 import ElementTableau1 from "../component/ElementTableau1";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 function Dashboard() {
   
   const [Username,setUsername]=useState('')
   const [matriculationNumber,setmatriculationNumber]=useState('')
   const [UserRole,setUserRole]=useState('')
   const [UserTitle,setUserTitle]=useState('')
+  const [User,setUser]=useState([])
+  const [admin,setadmin]=useState([])
+  const [DisplayTitle,setDisplayTitle]=useState([])
 
+//orinary
+
+  useEffect(() => {
+    fetch('http://localhost:3000/users/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const id= parseInt(localStorage.getItem('ShipmentId'))
+        // Données récupérées avec succès
+        setUser(data.filter(user => user.UserRole === 'Ordinary'));
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  //Admin
+
+  useEffect(() => {
+    fetch('http://localhost:3000/users/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const id= parseInt(localStorage.getItem('ShipmentId'))
+        // Données récupérées avec succès
+        setadmin(data.filter(user => user.UserRole !== 'Ordinary'));
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  //shipment Title 
+
+  useEffect(() => {
+    fetch('http://localhost:3000/shipments/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const id= parseInt(localStorage.getItem('ShipmentId'))
+        // Données récupérées avec succès
+        setDisplayTitle(data);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+  
   const textValidator = (inputValueA, inputValueB) => {
     try {
       if (!validator.isLength(inputValueA, { min: 1 })) {
@@ -173,74 +235,28 @@ function Dashboard() {
               {/* Partie Liste des Utilisateurs */}
               <div className="flex border rounded-md">
                 <div className="border border-[#565656] rounded-md">
-                  <ElementUser
+
+                  {admin.map(user=>(
+                    <ElementUser
+                    key={user.matriculationNumber}
                     src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
+                    name={user.UserName}
+                    title={user.UserTitle}
                     className="border"
                   />
-                  <ElementUser
-                    src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                    className="border"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                    className="border"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                    className="border"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                    className="border"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 8.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                    className="border"
-                  />
+                  ))}
+                  
                 </div>
                 <div className="ml-3 border border-[#565656] rounded-md">
-                  <ElementUser
+                {User.map(user=>(
+                    <ElementUser
+                    key={user.matriculationNumber}
                     src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
+                    name={user.UserName}
+                    title={user.UserTitle}
+                    className="border"
                   />
-                  <ElementUser
-                    src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                  />
-                  <ElementUser
-                    src="/src/img/Ellipse 13.svg"
-                    name="Betsaleel Yoto"
-                    title="Manager"
-                  />
+                  ))}
                 </div>
               </div>
             </div>
@@ -297,9 +313,14 @@ function Dashboard() {
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
   <EnteteTableau text='Ongoing Expeditions'/>
   <LineTableu text1='Title' text2='Progress' text3='%'/>
-  <ElementTableau2 text1='Set up and maintain equipment for mineral extraction.' text2='100%' bg='bg-[#39527B]'/>
-  <ElementTableau2 text1='Monitor environmental impact and implement mitigation measures.' text2='100%' bg='bg-[#FCCA4F]'/>
-   <ElementTableau2 text1='Conduct geological survey of the area.' text2='100%' bg='bg-[#FF7473]'/>
+  {DisplayTitle.map(title=>(
+    <ElementTableau2 
+    key={title.id}
+    text1={title.ShipmentTitle}
+    text2='100%' 
+    bg='bg-[#39527B]'/>
+  ))}
+  
 </div>
 <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
   <EnteteTableau text='Stocks level'/>
