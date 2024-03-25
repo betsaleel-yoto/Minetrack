@@ -93,9 +93,9 @@ const [Vehicles,setvehicles]=useState([])
   let task = DisplayTitle.tasks &&DisplayTitle.tasks.length
   let task2= DisplayTitle.tasks &&DisplayTitle.tasks.filter(task=>task.Taskstate==='finished')
   let task3=task2 && task2.length
-  const total = (parseInt(task3) * 100)/parseInt(task) || 0
+  const total = ((parseInt(task3) * 100)/parseInt(task)).toFixed(0) || 0
   const width= (total*80)/100 
-  let color=''
+  let color;
   if(total>=50){
     color='#39527B'
   }else{
@@ -133,7 +133,7 @@ const tableauinitialValue= (element1 && element1.map(mater=>mater.InitialQte)).j
 const InitialQteValue=parseInt(tableauinitialValue)
 const totalStock =(CurrentValue * 100)/InitialQteValue
 console.log(totalStock)
-let color2=''
+let color2;
 if (totalStock<50){
   color2='#60C84C'
 }else{

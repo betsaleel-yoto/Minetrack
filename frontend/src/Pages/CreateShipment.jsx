@@ -302,6 +302,7 @@ function CreateShipment() {
      
   
       const id = parseInt(localStorage.getItem('ShipmentTaskId'));
+      console.log(id)
       const requestData = {
         Taskstate: updatedTaskState, // Utilisation de la valeur mise à jour
       };
