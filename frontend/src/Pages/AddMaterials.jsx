@@ -28,7 +28,7 @@ const [Date,setDate]=useState('')
 let modification = parseInt(Daily)
 const Total= number-modification
   useEffect(() => {
-    fetch('http://localhost:3000/shipments/getAll')
+    fetch('http://localhost:3000/materials/getAll')
       .then(response => {
         if (!response.ok) {
           throw new Error('Erreur lors de la récupération des données');
@@ -160,12 +160,12 @@ const Total= number-modification
         console.error('Erreur lors de la requête :', error);
       });
   };
-const idShip= localStorage.getItem('MaterialID');
-const shipmentTitle=shipments.filter(shipment=>shipment.id===idShip)
+const idShip = parseInt(localStorage.getItem('MaterialID'));
+const shipmentTitle =shipments.filter(shipment=>shipment.id===idShip)
 
 
 
-console.log(shipmentTitle)
+console.log(shipments)
   
 
   const handleMaterialName = (e) => {
@@ -250,10 +250,10 @@ console.log(shipmentTitle)
               {/* Entete */}
               <div className="border-b border-[#D2D2D2]">
                 <div className="flex">
-                  {shipments.map(shipment=>(
+                  {shipmentTitle.map(shipment=>(
                   <SuperTitle 
                   key={shipment.id}
-                  text={shipment.ShipmentTitle} />
+                  text={shipment.MaterialName} />
                   ))}
                   
                   <IconsEditDelete />
@@ -261,13 +261,29 @@ console.log(shipmentTitle)
 
                 <div className="flex m-5">
                   <div></div>
-                  <p className="font-semibold font-raleway text-[#999EA6]">Linked to(Shipment Name)</p>
+                  {shipmentTitle.map(shipment=>(
+                    <p 
+                    key={shipment.id}
+                    className="font-semibold font-raleway text-[#999EA6]"
+                    >Linked to({shipment.RelatedShipment})
+                    </p>
+                  ))}
+                  
                 </div>
               </div>
 
               <LineTableu text1='Initial Qte' text2='Current Qte' text3='Consumed today'/>
               <div className="flex">
-              <ElementTableau1 text1='100' text2='80'/>
+              {
+                shipmentTitle.map(shipment=>(
+                  <ElementTableau1
+                  key={shipment.id}
+                  text1={shipment.InitialQte} 
+                  text2={shipment.CurrentQte}/>
+                ))
+              }  
+              
+             
               <form action="" className="mr-[1rem]">
               <Input
                 classes="w-[100%]"
