@@ -160,8 +160,12 @@ const Total= number-modification
         console.error('Erreur lors de la requête :', error);
       });
   };
-  
+const idShip= localStorage.getItem('MaterialID');
+const shipmentTitle=shipments.filter(shipment=>shipment.id===idShip)
 
+
+
+console.log(shipmentTitle)
   
 
   const handleMaterialName = (e) => {
@@ -246,7 +250,12 @@ const Total= number-modification
               {/* Entete */}
               <div className="border-b border-[#D2D2D2]">
                 <div className="flex">
-                  <SuperTitle text="Title of the Shipment" />
+                  {shipments.map(shipment=>(
+                  <SuperTitle 
+                  key={shipment.id}
+                  text={shipment.ShipmentTitle} />
+                  ))}
+                  
                   <IconsEditDelete />
                 </div>
 

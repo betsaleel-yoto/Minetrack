@@ -5,7 +5,7 @@ function FormTask(props) {
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
-    props.change(event); // Appel de la fonction de gestion de la case à cocher du composant parent
+    props.onChange(event,props.taskId); // Appel de la fonction de gestion de la case à cocher du composant parent
   };
 
   return (
