@@ -1,6 +1,6 @@
 import EnteteTableau from "../component/EnteteTableau";
 import validator from 'validator';
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import DoubleButton from "../component/Button/DoubleBoutton";
@@ -16,8 +16,8 @@ const [VehicleRegistrationNumber,setVehicleRegistrationNumber]=useState('')
 const [StartOfUse,setStartOfUse]=useState('')
 const [VehicleCondition,setVehicleCondition]=useState('')
 const [MaintenanceDate,setMaintenanceDate]=useState('')
+const [DisplayVehicle,setDisplayVehicle]=useState([])
 
-  
 
   const textValidator = (inputValueA, inputValueB) => {
     try {
@@ -93,6 +93,24 @@ const [MaintenanceDate,setMaintenanceDate]=useState('')
       });
   };
   
+
+  useEffect(() => {
+    fetch('http://localhost:3000/vehicle/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setDisplayVehicle(data);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, [])
+
 
   const sendData2 = () => {
     // Récupérer la valeur de VehicleRegistrationNumber depuis le localStorage
@@ -221,25 +239,43 @@ const [MaintenanceDate,setMaintenanceDate]=useState('')
                 <LineTableu text1="Maintenance date" />
                 <LineTableu text1="Next maintenance" />
               </div>
-              <div className="flex">
-              <ElementTableau1 text1='Truck'/> 
-              <ElementTableau1 text1='12/12/2020'/> 
-              <div className="relative right-[4rem] top-[1rem]">
-              <Select htmlFor='VehicleCondition' name='VehicleCondition' option1='Good' option2='Bad' change={handleVehicleCondition}/>
-              </div>
-             
-              <ElementTableau1 text1='12/12/2020'/> 
-              <div className="relative right-[5rem]">
-              <Input
-                classes="w-[100%]"
-                type="date"
-                name="MaintenanceDate"
-                htmlFor="NextMaintenance"
-                change={handleMaintenanceDate}
-              />
-              <UniqueButton text='Add' click={sendData2}/>
-              </div>
-              </div>
+              {DisplayVehicle.map(vehicle=>(
+                <div
+                key={vehicle.id}
+                 className="flex">
+                <ElementTableau1
+                
+                 text1={vehicle.VehicleName}/> 
+                <ElementTableau1
+                  
+                text1={vehicle.StartOfUse}/> 
+                <div
+                  
+                 className="relative right-[4rem] top-[1rem]">
+                <Select
+                 htmlFor='VehicleCondition'
+                  name='VehicleCondition'
+                   option1='Good'
+                    option2='Bad'
+                     change={handleVehicleCondition}/>
+                </div>
+                <ElementTableau1
+                 text1={vehicle.MaintenanceDate}/> 
+                <div
+                 className="relative right-[5rem]">
+                <Input
+                  classes="w-[100%]"
+                  type="date"
+                  name="MaintenanceDate"
+                  htmlFor="NextMaintenance"
+                  change={handleMaintenanceDate}
+                />
+                <UniqueButton
+                 text='Add' click={sendData2}/>
+                </div>
+                </div>
+              ))}
+              
              
             </div>
           </div>
