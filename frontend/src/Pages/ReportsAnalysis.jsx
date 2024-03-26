@@ -2,9 +2,12 @@ import EnteteRapports from "../component/EnTeteRapports";
 import NormalTitle from "../component/NormalTitle";
 import SubTitleReports from "../component/SubTitleReports";
 import SuperLineBlue from "../component/SuperlineBlue";
+import { useState,useEffect } from "react";
+
+const [Alldata,setAllData]=useState([])
 
 function ReportsAnalysis() {
-  return ( 
+  return (
     <>
     <div className="w-[100%] flex">
 <div className="w-[100%] h-auto pt-6">
