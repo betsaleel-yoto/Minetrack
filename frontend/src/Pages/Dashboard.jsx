@@ -131,8 +131,8 @@ const tableauCurrentValue= (element1 && element1.map(mater=>mater.CurrentQte)).j
 const CurrentValue=parseInt(tableauCurrentValue)
 const tableauinitialValue= (element1 && element1.map(mater=>mater.InitialQte)).join('')
 const InitialQteValue=parseInt(tableauinitialValue)
-const totalStock =(CurrentValue * 100)/InitialQteValue
-console.log(totalStock)
+const totalStock =((CurrentValue * 100)/InitialQteValue).toFixed(0)
+console.log(totalStock)J
 let color2;
 if (totalStock<50){
   color2='#60C84C'
