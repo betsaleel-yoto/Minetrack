@@ -28,7 +28,6 @@ const [Daily,setDaily]=useState('')
 const [Date,setDate]=useState('')
 
 let modification = parseInt(Daily)
-const Total= number-modification
   useEffect(() => {
     const id =parseInt(localStorage.getItem('ShipmentId'))
     console.log(id)
@@ -41,7 +40,26 @@ const Total= number-modification
       })
       .then(data => {
         // Données récupérées avec succès
-        setShipments(data.filter(ship=>ship.id===id));
+        setShipments(data);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const id =parseInt(localStorage.getItem('ShipmentId'))
+    console.log(id)
+    fetch('http://localhost:3000/shipments/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setDisplayShipment(data.filter(ship=>ship.id===id));
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
@@ -147,11 +165,10 @@ const Total= number-modification
   
   
 
-  const sendData2 = () => {
+  const sendData2 = (id) => {
     // Récupérer la valeur de VehicleRegistrationNumber depuis le localStorage
-    const id = parseInt(localStorage.getItem('MaterialID'));
    
-  
+    const Total= number-modification
     // Vérifier si la valeur est présente dans le localStorage
     if (!id) {
       console.error('id non trouvé dans le localStorage');
@@ -296,7 +313,7 @@ const Total= number-modification
                    change={handleDaily}
                
                  />
-             <UniqueButton text='Add' click={sendData2}/>
+             <UniqueButton text='Add' click={() => sendData2(mater.id)}/>
                  </form>
                  </div>
                 
