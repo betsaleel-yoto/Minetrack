@@ -19,7 +19,9 @@ console.log(number)
 
 const [shipments, setShipments] = useState([]);
 const [MaterialName,setMaterialName]=useState('')
+const [Materials,setMaterials]=useState([])
 const [RelatedShipment,setRelatedShipment]=useState('')
+const [DisplayShipment,setDisplayShipment]=useState([])
 const [InitialQte,setInitialQte]=useState('')
 const [CurrentQte,setCurrentQte]=useState('')
 const [Daily,setDaily]=useState('')
@@ -27,6 +29,26 @@ const [Date,setDate]=useState('')
 
 let modification = parseInt(Daily)
 const Total= number-modification
+  useEffect(() => {
+    const id =parseInt(localStorage.getItem('ShipmentId'))
+    console.log(id)
+    fetch('http://localhost:3000/shipments/getAll')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des données');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Données récupérées avec succès
+        setShipments(data.filter(ship=>ship.id===id));
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des données :', error);
+      });
+  }, []);
+
+
   useEffect(() => {
     fetch('http://localhost:3000/materials/getAll')
       .then(response => {
@@ -37,12 +59,14 @@ const Total= number-modification
       })
       .then(data => {
         // Données récupérées avec succès
-        setShipments(data);
+        setMaterials(data);
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
   }, []);
+
+  console.log(shipments && shipments)
   
   const textValidator = (inputValueA, inputValueB) => {
     try {
@@ -160,12 +184,8 @@ const Total= number-modification
         console.error('Erreur lors de la requête :', error);
       });
   };
-const idShip = parseInt(localStorage.getItem('MaterialID'));
-const shipmentTitle =shipments.filter(shipment=>shipment.id===idShip)
+  
 
-
-
-console.log(shipments)
   
 
   const handleMaterialName = (e) => {
@@ -246,59 +266,43 @@ console.log(shipments)
 
           <div className="flex w-[80%] m-auto pt-24 border-b border-[#BAB2B2] pb-5">
             {/* Partie affichage */}
-            <div className="w-[40%] h-auto border rounded-lg border-[#C9C9C9] pb-3">
-              {/* Entete */}
-              <div className="border-b border-[#D2D2D2]">
-                <div className="flex">
-                  {shipmentTitle.map(shipment=>(
-                  <SuperTitle 
-                  key={shipment.id}
-                  text={shipment.MaterialName} />
-                  ))}
-                  
-                  <IconsEditDelete />
-                </div>
-
-                <div className="flex m-5">
-                  <div></div>
-                  {shipmentTitle.map(shipment=>(
-                    <p 
-                    key={shipment.id}
-                    className="font-semibold font-raleway text-[#999EA6]"
-                    >Linked to({shipment.RelatedShipment})
-                    </p>
-                  ))}
-                  
-                </div>
-              </div>
-
-              <LineTableu text1='Initial Qte' text2='Current Qte' text3='Consumed today'/>
-              <div className="flex">
-              {
-                shipmentTitle.map(shipment=>(
-                  <ElementTableau1
-                  key={shipment.id}
-                  text1={shipment.InitialQte} 
-                  text2={shipment.CurrentQte}/>
-                ))
-              }  
-              
-             
-              <form action="" className="mr-[1rem]">
-              <Input
-                classes="w-[100%]"
-                type="text"
-                name="dailyConsumption"
-  
-                htmlFor="consumedT"
-                change={handleDaily}
-            
-              />
-          <UniqueButton text='Add' click={sendData2}/>
-              </form>
-              </div>
-             
-            </div>
+            {Materials.map(mater=>(
+               <div 
+               key={mater.id}
+               className="w-[40%] h-auto border rounded-lg border-[#C9C9C9] pb-3 ml-5">
+                 {/* Entete */}
+                 <div className="border-b border-[#D2D2D2]">
+                   <div className="flex">
+                     <SuperTitle text={mater.MaterialName} />
+                     <IconsEditDelete />
+                   </div>
+   
+                   <div className="flex m-5">
+                     <div></div>
+                     <p className="font-semibold font-raleway text-[#999EA6]">Linked to({mater.RelatedShipment})</p>
+                   </div>
+                 </div>
+   
+                 <LineTableu text1='Initial Qte' text2='Current Qte' text3='Consumed today'/>
+                 <div className="flex">
+                 <ElementTableau1 text1={mater.InitialQte} text2={mater.CurrentQte}/>
+                 <form action="" className="mr-[1rem]">
+                 <Input
+                   classes="w-[100%]"
+                   type="text"
+                   name="dailyConsumption"
+     
+                   htmlFor="consumedT"
+                   change={handleDaily}
+               
+                 />
+             <UniqueButton text='Add' click={sendData2}/>
+                 </form>
+                 </div>
+                
+               </div>
+            ))}
+           
           </div>
         </div>
       </div>
