@@ -1,6 +1,6 @@
 import EnteteTableau from "../component/EnteteTableau";
 import validator from 'validator';
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import DoubleButton from "../component/Button/DoubleBoutton";
@@ -12,6 +12,7 @@ const [MaterialName,setMaterialName]=useState('')
 const [DateOf_Order,setDateOf_Order]=useState('')
 const [Quantity,setQuantity]=useState('')
 const [DeliveryDate,setDeliveryDate]=useState('')
+const [Supplier,setSupplier]=useState([])
 
 const textValidator = (inputValueA, inputValueB) => {
   try {
@@ -45,6 +46,24 @@ const dateValidator = (inputValue) => {
   }
 };
 
+useEffect(() => {
+  fetch('http://localhost:3000/orders/getAll')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des données');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Données récupérées avec succès
+      setSupplier(data);
+    })
+    .catch(error => {
+      console.error('Erreur lors de la récupération des données :', error);
+    });
+}, [])
+
+console.log(Supplier)
 const sendData = () => {
   const matriculationNumberAdmin = localStorage.getItem('matriculationNumber');
   const requestData = {
@@ -170,17 +189,25 @@ const handleDeliveryDate = (e) => {
            <LineTableu text3='Delivery Date'/>
            <LineTableu text3='Quantity'/>
            </div>
-           <div className="flex">
-           <ElementTableau1 text1='12/12/2020' text2='Betsaleel yoto' text3='Material Name' cl='text-[#6E6E6E]'/>
-           <ElementTableau1 text3='12/12/2020' cl='text-[#6E6E6E]'/>
-           <ElementTableau1 text3='100'  cl='text-[#6E6E6E]'/>
-           </div>
+
+           {Supplier.map(supplier=>(
+            <div
+            key={supplier.id}
+             className="flex">
+            <ElementTableau1
+             text1={supplier.DateOf_Order}
+              text2='Betsaleel yoto'
+               text3={supplier.MaterialName}
+                cl='text-[#6E6E6E]'/>
+            <ElementTableau1
+             text3={supplier.DeliveryDate}
+              cl='text-[#6E6E6E]'/>
+            <ElementTableau1
+             text3={supplier.Quantity}
+               cl='text-[#6E6E6E]'/>
+            </div>
+           ))}
            
-           <div className="flex">
-           <ElementTableau1 text1='12/12/2020' text2='Betsaleel yoto' text3='Material Name' cl='text-[#6E6E6E]'/>
-           <ElementTableau1 text3='12/12/2020' cl='text-[#6E6E6E]'/>
-           <ElementTableau1 text3='100'  cl='text-[#6E6E6E]'/>
-           </div>
           
           
           </div>

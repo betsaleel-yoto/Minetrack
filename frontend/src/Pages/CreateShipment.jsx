@@ -294,43 +294,31 @@ function CreateShipment() {
   };
 
 
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-    if (event.target.checked) {
-      // Déclarer la tâche comme terminée
-      const updatedTaskState = 'finished'; // Utilisation de la valeur mise à jour directement
-     
+  const handleCheckboxChange = (event, taskId) => {
+    const updatedTaskState = event.target.checked ? 'finished' : 'in progress'; // Mettre à jour l'état de la tâche
   
-      const id = parseInt(localStorage.getItem('ShipmentTaskId'));
-      const requestData = {
-        Taskstate: updatedTaskState, // Utilisation de la valeur mise à jour
-      };
-  
-      // Effectuer la requête POST en utilisant fetch
-      fetch(`http://localhost:3000/shipmentTasks/edit/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData)
+    // Effectuer la requête PUT en utilisant fetch pour mettre à jour la tâche
+    fetch(`http://localhost:3000/shipmentTasks/edit/${taskId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ Taskstate: updatedTaskState }) // Envoyer la nouvelle valeur de l'état
+    })
+      .then(response => {
+        // Vérifier si la réponse est ok
+        if (!response.ok) {
+          throw new Error('Erreur lors de la requête');
+        }
+        console.log('Tâche mise à jour avec succès');
+        // Si la réponse est ok, vous pouvez effectuer d'autres actions si nécessaire
       })
-        .then(response => {
-          // Vérifiez si la réponse est ok
-          if (!response.ok) {
-            throw new Error('Erreur lors de la requête');
-          }
-          console.log('task terminé');
-          // Si la réponse est ok, retournez les données en JSON
-          return response.json();
-        })
-        .catch(error => {
-          // Gérer les erreurs éventuelles
-          console.error('Erreur lors de la requête :', error);
-        });
-      
-      console.log('Tâche terminée :', task);
-    }
+      .catch(error => {
+        // Gérer les erreurs éventuelles
+        console.error('Erreur lors de la requête :', error);
+      });
   };
+  
   
 
 
@@ -508,12 +496,14 @@ console.log(Driver)
 {/* formulaire de soumission des taches */}
 
 {
-  displayTasks.map(task=>(
+  displayTasks.map(task => (
     <FormTask 
-    key={task.id}
-    text={task.TaskDescription}
-    change={handleCheckboxChange}  
-    checked ={isChecked}/>   
+      key={task.id}
+      taskId={task.id} // Passer l'ID de la tâche comme prop taskId
+      text={task.TaskDescription}
+      onChange={handleCheckboxChange} // Utiliser la fonction handleCheckboxChange mise à jour
+      checked={isChecked} 
+    />   
   ))
 }
 
