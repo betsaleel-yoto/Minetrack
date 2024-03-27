@@ -175,35 +175,40 @@ function RoutePlanning() {
 
           <div className="flex w-[80%] m-auto pt-24 border-b border-[#BAB2B2] pb-5">
             {/* Partie affichage */}
-            <div className="w-[40%] h-auto border rounded-lg border-[#C9C9C9] pb-3">
-              {/* Entete */}
-              <div className="border-b border-[#D2D2D2]">
-                <div className="flex">
-                  {route.map(rout=>(
-                     <SuperTitle
-                     key={rout.id}
-                     text={rout.RouteName} /> 
-                  ))}
+            {Route.map(Rt=>(
+               <div
+               key={Rt.id}
+                className="w-[40%] h-auto border rounded-lg border-[#C9C9C9] pb-3 ml-5">
+               {/* Entete */}
+               <div className="border-b border-[#D2D2D2]">
+                 <div className="flex">
+                   
+                      <SuperTitle
                 
-                  <IconsEditDelete />
-                </div>
-
-                <div className="flex m-5">
-                  <div></div>
-                  <p className="font-semibold font-raleway text-[#999EA6]">Linked to(Material Name)</p>
-                </div>
-              </div>
-              {route.map(rout=>(
-                  <p 
-                  key={rout.id}
-                  className="font-semibold font-raleway text-[#999EA6] pb-24 pt-2 pl-3"
-                  >Description of the route: {rout.RouteDescription}
-                  </p>   
-                  ))}
+                      text={Rt.RouteName} /> 
+                   
+                 
+                   <IconsEditDelete />
+                 </div>
+ 
+                 <div className="flex m-5">
+                   <div></div>
+                   <p className="font-semibold font-raleway text-[#999EA6]">Linked to({Rt.RelatedMaterial})</p>
+                 </div>
+               </div>
               
-             
-             
-            </div>
+                   <p 
+                  
+                   className="font-semibold font-raleway text-[#999EA6] pb-24 pt-2 pl-3"
+                   >Description of the route: {Rt.RouteDescription}
+                   </p>   
+                  
+               
+              
+              
+             </div>
+            ))}
+           
           </div>
         </div>
       </div>
