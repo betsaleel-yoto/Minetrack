@@ -56,6 +56,7 @@ function CreateS_admin() {
         setMessage(data.message);
         // Si la création du SuperAdmin est réussie, activer la redirection
         if (data.message === 'SuperAdmin créé avec succès') {
+          alert('SuperAdmin créé avec succès')
           setRedirectToDashboard(true);
         }
       })
