@@ -112,9 +112,8 @@ const [DisplayVehicle,setDisplayVehicle]=useState([])
   }, [])
 
 
-  const sendData2 = () => {
+  const sendData2 = (vehicleRegistrationNumber) => {
     // Récupérer la valeur de VehicleRegistrationNumber depuis le localStorage
-    const vehicleRegistrationNumber = localStorage.getItem('vehicleRegistrationNumber');
   
     // Vérifier si la valeur est présente dans le localStorage
     if (!vehicleRegistrationNumber) {
@@ -241,7 +240,7 @@ const [DisplayVehicle,setDisplayVehicle]=useState([])
               </div>
               {DisplayVehicle.map(vehicle=>(
                 <div
-                key={vehicle.id}
+                key={vehicle.VehicleRegistrationNumber}
                  className="flex">
                 <ElementTableau1
                 
@@ -271,7 +270,7 @@ const [DisplayVehicle,setDisplayVehicle]=useState([])
                   change={handleMaintenanceDate}
                 />
                 <UniqueButton
-                 text='Add' click={sendData2}/>
+                 text='Add' click={()=>sendData2(vehicle.VehicleRegistrationNumber)}/>
                 </div>
                 </div>
               ))}
