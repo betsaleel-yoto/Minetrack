@@ -17,6 +17,25 @@ const [StartOfUse,setStartOfUse]=useState('')
 const [VehicleCondition,setVehicleCondition]=useState('')
 const [MaintenanceDate,setMaintenanceDate]=useState('')
 const [DisplayVehicle,setDisplayVehicle]=useState([])
+const [shipments, setShipments] = useState([]);
+
+useEffect(() => {
+  const id =localStorage.getItem('ShipmentId')
+  fetch('http://localhost:3000/shipments/getAll')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des données');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Données récupérées avec succès
+      setShipments(data.filter(shipment => shipment.id == id))
+    })
+    .catch(error => {
+      console.error('Erreur lors de la récupération des données :', error);
+    });
+}, []);
 
 
   const textValidator = (inputValueA, inputValueB) => {
@@ -227,7 +246,12 @@ const [DisplayVehicle,setDisplayVehicle]=useState([])
               {/* Entete */}
               <div className="border-b border-[#D2D2D2]">
                 <div className="flex">
-                  <SuperTitle text="Title of the Shipment" />
+                  {shipments.map(Sh=>(
+                    <SuperTitle
+                    key={Sh.id}
+                    text={Sh.ShipmentTitle} />
+                  ))}
+                  
                   <IconsEditDelete />
                 </div>
               </div>
