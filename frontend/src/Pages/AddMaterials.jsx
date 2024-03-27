@@ -11,12 +11,6 @@ import ElementTableau1 from "../component/ElementTableau1";
 import UniqueButton from "../component/Button/UniqueButton";
 import { useState,useEffect } from "react";
 function AddMaterials() {
-const initialQte = localStorage.getItem('InitialQte');
-let regex=/[0-9]/g
-let valeur=initialQte.match(regex).join('')
-let number= parseInt(valeur)
-console.log(number)
-
 const [shipments, setShipments] = useState([]);
 const [MaterialName,setMaterialName]=useState('')
 const [Materials,setMaterials]=useState([])
@@ -27,7 +21,6 @@ const [CurrentQte,setCurrentQte]=useState('')
 const [Daily,setDaily]=useState('')
 const [Date,setDate]=useState('')
 
-let modification = parseInt(Daily)
   useEffect(() => {
     const id =parseInt(localStorage.getItem('ShipmentId'))
     console.log(id)
@@ -124,7 +117,7 @@ let modification = parseInt(Daily)
       MaterialName: MaterialName,
       RelatedShipment: RelatedShipment,
       InitialQte: InitialQte,
-      CurrentQte: CurrentQte,
+      CurrentQte: InitialQte,
       matriculationNumberSadmin: matriculationNumberAdmin
     };
   
@@ -165,9 +158,14 @@ let modification = parseInt(Daily)
   
   
 
-  const sendData2 = (id) => {
+  const sendData2 = (id,CurrentValue) => {
     // Récupérer la valeur de VehicleRegistrationNumber depuis le localStorage
-   
+    let modification = parseInt(Daily)
+    let regex=/[0-9]/g
+    let valeur=CurrentValue.match(regex).join('')
+    let number= parseInt(valeur)
+    console.log(number)
+    
     const Total= number-modification
     // Vérifier si la valeur est présente dans le localStorage
     if (!id) {
@@ -313,7 +311,7 @@ let modification = parseInt(Daily)
                    change={handleDaily}
                
                  />
-             <UniqueButton text='Add' click={() => sendData2(mater.id)}/>
+             <UniqueButton text='Add' click={() => sendData2(mater.id,mater.CurrentQte)}/>
                  </form>
                  </div>
                 
