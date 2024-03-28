@@ -9,21 +9,22 @@ initializePassport(passport);
 const sAdminSignup = async (req, res) => {
   const { matriculationNumber, username } = req.body;
   try {
-    await prisma.superAdmin.create({
+    const createdAdmin = await prisma.superAdmin.create({
       data: {
         matriculationNumber,
         username
       },
     });
     console.log('SuperAdmin créé avec succès');
-    return res.status(201).json({ message: 'SuperAdmin créé avec succès' });
+    return res.status(201).json({ message: 'SuperAdmin créé avec succès', data: createdAdmin });
   } catch (error) {
     console.error('Erreur lors de la création du SuperAdmin :', error);
-    res.status(500).json({ error: 'Erreur lors de la création du SuperAdmin' })
+    res.status(500).json({ error: 'Erreur lors de la création du SuperAdmin' });
   } finally {
     await prisma.$disconnect();
   }
 }
+
 
 const sAdminLogin = async (req, res) => {
   try {

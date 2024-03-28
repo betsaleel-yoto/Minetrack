@@ -34,7 +34,7 @@ function CreateS_admin() {
       matriculationNumber: matriculationNumber,
       username: username
     };
-
+  
     // Effectuer la requête POST en utilisant fetch
     fetch('http://localhost:3000/sAdmin/Signup', {
       method: 'POST',
@@ -54,9 +54,14 @@ function CreateS_admin() {
       .then(data => {
         // Mettre à jour le message avec la réponse du serveur
         setMessage(data.message);
+        // Stocker le matriculationNumber dans le localStorage
+        if (data.data && data.data.matriculationNumber) {
+          localStorage.setItem('matriculationNumber', data.data.matriculationNumber);
+          console.log('matricule stocké')
+        }
         // Si la création du SuperAdmin est réussie, activer la redirection
         if (data.message === 'SuperAdmin créé avec succès') {
-          alert('SuperAdmin créé avec succès')
+          alert('SuperAdmin créé avec succès');
           setRedirectToDashboard(true);
         }
       })
@@ -65,6 +70,7 @@ function CreateS_admin() {
         console.error('Erreur lors de la requête :', error);
       });
   };
+  
 
   // Fonction pour mettre à jour l'état du matriculationNumber
   const handleMatriculationNumberChange = (e) => {
