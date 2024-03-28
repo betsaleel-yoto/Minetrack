@@ -394,9 +394,6 @@ function Dashboard() {
                         onClick={handleEditUserClick}
                         src="/src/img/Ellipse 8.svg"
                         user={user}
-                        // name={user.UserName}
-                        // matriculationNumber={user.matriculationNumber}
-                        // title={user.UserTitle}
                         className="border"
                       />
                     </div>
