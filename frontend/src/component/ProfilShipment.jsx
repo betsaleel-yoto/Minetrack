@@ -1,4 +1,3 @@
-import IconsEditDelete from "./IconsEditDelete";
 import IconProfile from "./icon_profil";
 
 function ProfilShipment(props) {
@@ -20,7 +19,8 @@ function ProfilShipment(props) {
       {/* icons Edit et delete */}
 
       <div>
-        <IconsEditDelete/>
+        {/* <IconsEditDelete/> */}
+        <button type="button" onClick={props.onClick2}><img src="/src/img/Group-1.svg" alt="" /></button>
       </div>
     </div>
     </>

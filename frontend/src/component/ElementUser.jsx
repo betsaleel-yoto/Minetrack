@@ -1,4 +1,4 @@
-function ElementUser({ user, onClick, src }) {
+function ElementUser({ user, onClick, src, onDelete }) {
   return (
     <>
       <div className="flex border-b border-[#A6A6A6]  pt-3 w-[100%]">
@@ -15,7 +15,7 @@ function ElementUser({ user, onClick, src }) {
           <button type="button" onClick={() => onClick(user)}>
             <img src="/src/img/edit.svg" alt="" className="px-6" />
           </button>
-          <button type="button">
+          <button type="button" onClick={() => onDelete(user)}>
             <img src="/src/img/Group-1.svg" alt="" />
           </button>
         </div>

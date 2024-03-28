@@ -397,8 +397,10 @@ function CreateShipment() {
                       />
                       
                   ))}
-                  
+                  <div className="relative top-8 left-36">
                   <IconsEditDelete onClick1={()=>setShowForm(true)}/>
+                  </div>
+                  
                 </div>
                 <div className="flex m-5">
                   <button type="button" className="flex" onClick={handledisplay2}><img src="/src/img/info.svg" alt="" />

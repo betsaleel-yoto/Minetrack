@@ -188,7 +188,8 @@ function RoutePlanning() {
                       text={Rt.RouteName} /> 
                    
                  
-                   <IconsEditDelete />
+                   {/* <IconsEditDelete /> */}
+                   <button type="button"><img src="/src/img/Group-1.svg" alt="" /></button>
                  </div>
  
                  <div className="flex m-5">
