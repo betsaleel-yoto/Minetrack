@@ -40,7 +40,7 @@ function Dashboard() {
       .catch((error) => {
         console.error("Erreur lors de la récupération des données :", error);
       });
-  }, []);
+  }, [User]);
 
   //Admin
 
@@ -60,7 +60,7 @@ function Dashboard() {
       .catch((error) => {
         console.error("Erreur lors de la récupération des données :", error);
       });
-  }, []);
+  }, [User]);
 
   //shipment Title
   useEffect(() => {

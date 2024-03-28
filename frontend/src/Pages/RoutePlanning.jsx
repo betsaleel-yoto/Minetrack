@@ -28,7 +28,7 @@ function RoutePlanning() {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [shipments]);
 
 
   useEffect(() => {
@@ -46,7 +46,7 @@ function RoutePlanning() {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [Route]);
  
   const textValidator = (inputValueA, inputValueB) => {
     try {

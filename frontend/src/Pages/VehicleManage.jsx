@@ -35,7 +35,7 @@ useEffect(() => {
     .catch(error => {
       console.error('Erreur lors de la récupération des données :', error);
     });
-}, []);
+}, [shipments]);
 
 
   const textValidator = (inputValueA, inputValueB) => {
@@ -128,7 +128,7 @@ useEffect(() => {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, [])
+  }, [DisplayVehicle])
 
 
   const sendData2 = (vehicleRegistrationNumber) => {

@@ -44,7 +44,7 @@ function CreateShipment() {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [shipments]);
 
   //shipment details
 
@@ -63,7 +63,7 @@ function CreateShipment() {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [shipmentsDetails]);
 
   // part driver
   useEffect(() => {
@@ -82,7 +82,7 @@ function CreateShipment() {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [Driver]);
 
   
 //others
@@ -103,7 +103,7 @@ function CreateShipment() {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [Others]);
 
   //title
 
@@ -123,7 +123,7 @@ function CreateShipment() {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [DisplayTitle]);
 
   // task
 
@@ -143,7 +143,7 @@ function CreateShipment() {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [displayTasks]);
   
   const textValidator = (inputValueA, inputValueB) => {
     try {

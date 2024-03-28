@@ -61,7 +61,7 @@ useEffect(() => {
     .catch(error => {
       console.error('Erreur lors de la récupération des données :', error);
     });
-}, [])
+}, [Supplier])
 
 console.log(Supplier)
 const sendData = () => {

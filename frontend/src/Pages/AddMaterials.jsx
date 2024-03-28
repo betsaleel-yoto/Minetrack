@@ -38,7 +38,7 @@ const [Date,setDate]=useState('')
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [shipments]);
 
   useEffect(() => {
     const id =parseInt(localStorage.getItem('ShipmentId'))
@@ -57,7 +57,7 @@ const [Date,setDate]=useState('')
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [DisplayShipment]);
 
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const [Date,setDate]=useState('')
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [Materials]);
 
   console.log(shipments && shipments)
   
