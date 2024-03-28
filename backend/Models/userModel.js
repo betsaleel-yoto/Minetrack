@@ -16,6 +16,9 @@ const edit =async(req,res)=>{
   try {
     const { matriculationNumber,UserName,UserRole,UserTitle,matriculationNumberSadmin } = req.body;
     const { imatriculation } = req.params; // Récupérer le matriculationNumber des paramètres de la requête
+    
+    console.log(imatriculation, matriculationNumber);
+
     await prisma.$transaction(async(prisma)=>{
       const updatedUsers = await prisma.User.update({
         where: {
