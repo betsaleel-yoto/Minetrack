@@ -25,6 +25,7 @@ function CreateShipment() {
   const [DisplayTitle,setDisplayTitle]=useState([]);
   const [displayTasks,setdisplayTasks]=useState([]);
   const [task,setTask]=useState('');
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:3000/users/getAll')
@@ -302,6 +303,45 @@ function CreateShipment() {
     setTask(e.target.value);
     textValidator(e.target.value, task);
   };
+  const EditData = () => {
+    let id= localStorage.getItem('ShipmentId');
+    const matriculationNumberAdmin = localStorage.getItem(
+      "matriculationNumber"
+    );
+    const requestData = {
+      ShipmentTitle:ShipmentTitle,
+      ShipmentDescription:ShipmentDescription,
+      BeginDate:BeginDate,
+      EndDate:EndDate ,    
+      matriculationNumberSadmin: matriculationNumberAdmin,
+    };
+
+    // Effectuer la requête POST en utilisant fetch
+    fetch(`http://localhost:3000/shipments/edit/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => {
+        // Vérifiez si la réponse est ok
+        // call function that fecth users list fetchUsers()
+        if (!response.ok) {
+          throw new Error("Erreur lors de la requête");
+        }
+        console.log("Utilisateur Modifié");
+        setShowForm(false);
+        // Si la réponse est ok, retournez les données en JSON
+        return response.json();
+      })
+
+      .catch((error) => {
+        // Gérer les erreurs éventuelles
+        console.error("Erreur lors de la requête :", error);
+      });
+  };  
+
   
   return ( 
     <>
@@ -353,9 +393,12 @@ function CreateShipment() {
                   {DisplayTitle.map(title=>(
                     <SuperTitle
                       key={title.id}
-                      text={title.ShipmentTitle}/>
+                      text={title.ShipmentTitle}
+                      />
+                      
                   ))}
-                  <IconsEditDelete/>
+                  
+                  <IconsEditDelete onClick1={()=>setShowForm(true)}/>
                 </div>
                 <div className="flex m-5">
                   <button type="button" className="flex" onClick={handledisplay2}><img src="/src/img/info.svg" alt="" />
@@ -410,6 +453,45 @@ function CreateShipment() {
             </div>
           </div>
         </div>
+        {showForm ? (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900">
+             <form action="" className="w-[90%] m-auto h-[40rem]">
+              <Input
+                classes="w-[100%]"
+                type="text"
+                name="ShipmentTitle"
+                label="Shipment Title"
+                htmlFor="ShipmentTitle"
+                change={handleShipmentTitle}
+              />
+              <Input
+                classes="w-[100%]"
+                type="text"
+                name="ShipmentDescription"
+                label="Description"
+                htmlFor="Description"
+                change={handleShipmentDescription}
+              />
+              <Input
+                classes="w-[100%]"
+                type="date"
+                name="BeginDate"
+                label="Begin at"
+                htmlFor="Begin"
+                change={handleBeginDate}
+              />
+              <Input
+                classes="w-[100%]"
+                type="date"
+                name="EndDate"
+                label="End"
+                htmlFor="End"
+                change={handleEndDate}
+              />
+              <DoubleButton click={EditData}/>
+            </form>
+          </div>
+        ) : null}
       </div>
     </>
   );
