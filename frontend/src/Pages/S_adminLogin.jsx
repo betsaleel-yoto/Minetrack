@@ -5,47 +5,41 @@ import validator from 'validator';
 
 function S_adminLogin() {
   const [redirect, setRedirect] = useState(null);
-  const [matriculationNumber, setMatriculationNumber] = useState(""); // Déclaration de l'état matriculationNumber
-  const [username, setUsername] = useState(""); // Déclaration de l'état username
+  const [matriculationNumber, setMatriculationNumber] = useState("");
+  const [username, setUsername] = useState("");
 
-  const token = () => {
-    const storedToken = sessionStorage.getItem('Admintoken');
-    if (storedToken) {
-      const requestData = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // Envoyer le token, matriculationNumber et username
-        body: JSON.stringify({ 
-          token: storedToken,
-          matriculationNumber: matriculationNumber,
-          username: username
-        })
-      };
-  
-      fetch('http://localhost:3000/sAdmin/Login', requestData)
-        .then(response => {
-          if (!response.ok) {
-            console.error('Erreur lors de la requête');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.message === 'Oui, il existe') {
-            setRedirect('/dashboard');
-          } else {
-            setRedirect('/CreateS_admin');
-          }
-        })
-        .catch(error => {
-          console.error('Erreur lors de la requête :', error);
-        });
-    } else {
-      console.error('Aucun token trouvé dans le sessionStorage');
-    }
+  const handleToken = () => {
+    const requestData = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        matriculationNumber: matriculationNumber,
+        username: username
+      })
+    };
+
+    fetch('http://localhost:3000/sAdmin/Login', requestData)
+      .then(response => {
+        if (!response.ok) {
+          console.error('Erreur lors de la requête');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.token) {
+          localStorage.setItem('Admintoken', data.token); // Stocker le token dans le localStorage
+          setRedirect('/dashboard'); // Rediriger vers '/dashboard'
+        } else {
+          console.error('Mauvaises informations d\'identification');
+          alert('mot de passe ou nom incorrect')
+        }
+      })
+      .catch(error => {
+        console.error('Erreur lors de la requête :', error);
+      });
   };
-  
 
   const textValidator = (inputValueA, inputValueB) => {
     try {
@@ -66,19 +60,19 @@ function S_adminLogin() {
   };
 
   const handleMatriculationNumberChange = (e) => {
-    setMatriculationNumber(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
-    textValidator(e.target.value, username); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+    setMatriculationNumber(e.target.value);
+    textValidator(e.target.value, username);
   };
 
   const handleUsernameChange = (e) => {
-    setUsername(e.target.value); // Mettre à jour l'état username avec la valeur entrée
-    textValidator(matriculationNumber, e.target.value); // Appel de textValidator avec la nouvelle valeur du username
+    setUsername(e.target.value);
+    textValidator(matriculationNumber, e.target.value);
   };
 
   return ( 
     <>
-      {redirect && <Navigate to={redirect} />}
-      <ConnectForm checkbox='checkbox' remember='Let go of the hand' button='Log in' change={handleUsernameChange} change1={handleMatriculationNumberChange} onMatriculationNumberChange={handleMatriculationNumberChange} onUsernameChange={handleUsernameChange} click={token}/>
+      {redirect && <Navigate to={redirect} />} {/* Redirection lorsque redirect est défini */}
+      <ConnectForm checkbox='checkbox' remember='Let go of the hand' button='Log in' change={handleUsernameChange} change1={handleMatriculationNumberChange} onMatriculationNumberChange={handleMatriculationNumberChange} onUsernameChange={handleUsernameChange} click={handleToken}/>
     </>
   );
 }

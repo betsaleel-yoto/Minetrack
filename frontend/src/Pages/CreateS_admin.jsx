@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import ConnectForm from '../component/connectForm';
 import validator from 'validator';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 function CreateS_admin() {
-  const [matriculationNumber, setMatriculationNumber] = useState(""); // Déclaration de l'état matriculationNumber
-  const [username, setUsername] = useState(""); // Déclaration de l'état username
+  const [matriculationNumber, setMatriculationNumber] = useState(""); // État pour stocker le matriculationNumber entré par l'utilisateur
+  const [username, setUsername] = useState(""); // État pour stocker le username entré par l'utilisateur
+  const [message, setMessage] = useState(""); // État pour stocker le message de réponse du serveur
+  const [redirectToDashboard, setRedirectToDashboard] = useState(false); // État pour gérer la redirection
 
+  // Fonction pour valider les entrées de texte
   const textValidator = (inputValueA, inputValueB) => {
     try {
       if (!validator.isLength(inputValueA, { min: 1 })) {
@@ -25,12 +28,13 @@ function CreateS_admin() {
     }
   };
 
+  // Fonction pour envoyer les données du formulaire au backend
   const sendData = () => {
     const requestData = {
       matriculationNumber: matriculationNumber,
       username: username
     };
-
+  
     // Effectuer la requête POST en utilisant fetch
     fetch('http://localhost:3000/sAdmin/Signup', {
       method: 'POST',
@@ -40,48 +44,56 @@ function CreateS_admin() {
       body: JSON.stringify(requestData)
     })
       .then(response => {
-        // Vérifiez si la réponse est ok
+        // Vérifier si la réponse est ok
         if (!response.ok) {
           throw new Error('Erreur lors de la requête');
         }
-        console.log('salut');
-        // Si la réponse est ok, retournez les données en JSON
+        // Si la réponse est ok, retourner les données en JSON
         return response.json();
       })
       .then(data => {
-        // Gérer la réponse du serveur
-        console.log('Réponse du serveur :', data);
-        // Stocker le token dans sessionStorage
-        if(data.token) {
-          sessionStorage.setItem('Admintoken', data.token);
-        }
+        // Mettre à jour le message avec la réponse du serveur
+        setMessage(data.message);
+        // Stocker le matriculationNumber dans le localStorage
         if (data.data && data.data.matriculationNumber) {
-          const matriculationNumberValue = data.data.matriculationNumber;
-          localStorage.setItem('matriculationNumber', matriculationNumberValue);
-          const matriculationNumber = localStorage.getItem('matriculationNumber');
-          console.log('Matriculation Number:', matriculationNumber);
-      }
-      
+          localStorage.setItem('matriculationNumber', data.data.matriculationNumber);
+          console.log('matricule stocké')
+        }
+        // Si la création du SuperAdmin est réussie, activer la redirection
+        if (data.message === 'SuperAdmin créé avec succès') {
+          alert('SuperAdmin créé avec succès');
+          setRedirectToDashboard(true);
+        }
       })
       .catch(error => {
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
       });
   };
+  
 
+  // Fonction pour mettre à jour l'état du matriculationNumber
   const handleMatriculationNumberChange = (e) => {
-    setMatriculationNumber(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
-    textValidator(e.target.value, username); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
+    setMatriculationNumber(e.target.value);
+    // Valider le matriculationNumber
+    textValidator(e.target.value, username);
   };
 
+  // Fonction pour mettre à jour l'état du username
   const handleUsernameChange = (e) => {
-    setUsername(e.target.value); // Mettre à jour l'état username avec la valeur entrée
-    textValidator(matriculationNumber, e.target.value); // Appel de textValidator avec la nouvelle valeur du username
+    setUsername(e.target.value);
+    // Valider le username
+    textValidator(matriculationNumber, e.target.value);
   };
 
   return (
     <>
+      {/* Si redirectToDashboard est true, rediriger vers '/dashboard' */}
+      {redirectToDashboard && <Navigate to="/dashboard" />}
+      {/* Afficher le formulaire de connexion */}
       <ConnectForm h1="Create the S.Administrator" button='Sign up' change={handleUsernameChange} change1={handleMatriculationNumberChange} click={sendData} onMatriculationNumberChange={handleMatriculationNumberChange} onUsernameChange={handleUsernameChange} />
+      {/* Afficher le message de réponse du serveur */}
+      <p>{message}</p>
     </>
   );
 }
