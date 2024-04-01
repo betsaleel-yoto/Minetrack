@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { authenticateUser } from "../fonctionAuth/ath";
 import EnteteTableau from "../component/EnteteTableau";
 import validator from 'validator';
+import { Navigate } from 'react-router-dom';
 import Select2 from '../component/inputs/Select2'
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
@@ -165,6 +166,12 @@ function CreateShipment() {
     try {
       // Appele authenticateUser pour vérifier l'authentification avant d'envoyer la demande
       await authenticateUser();
+
+      const Admintoken = localStorage.getItem('Admintoken');
+      if (!Admintoken) {
+        console.log('L\'authentification a échoué. Arrêt de l\'envoi de la demande.');
+        return;
+      }
   
       // Si l'authentification réussit, continue avec l'envoi de la demande
       const matriculationNumber = localStorage.getItem('matriculationNumber');

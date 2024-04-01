@@ -6,8 +6,8 @@ export const authenticateUser = async () => {
     console.log(Admintoken)
     if (!Admintoken) {
       // Si le token n'est pas présent, retourner une instance de Navigate pour effectuer la redirection
-      // return <Navigate to="/S_adminLogin" />;
       console.log('authentification échoué')
+      return;
     }
 
     // Envoyer la demande avec le token
@@ -29,6 +29,5 @@ export const authenticateUser = async () => {
   } catch (error) {
     console.error('Erreur lors de l\'authentification :', error);
     // Gérer l'erreur, par exemple, en redirigeant l'utilisateur vers la page de connexion
-    // return <Navigate to="/S_adminLogin" />;
   }
 };
