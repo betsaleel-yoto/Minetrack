@@ -165,11 +165,10 @@ function CreateShipment() {
   const sendData = async () => {
     try {
       // Appel authenticateUser pour vérifier l'authentification avant d'envoyer la demande
-      await authenticateUser();
-
-      const Admintoken = localStorage.getItem('Admintoken');
-      if (!Admintoken) {
-        console.log('L\'authentification a échoué. Arrêt de l\'envoi de la demande.');
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
         return;
       }
   
@@ -205,13 +204,12 @@ function CreateShipment() {
 
   const sendData2 = async(e) => {
 try{
-  await authenticateUser();
-
-      const Admintoken = localStorage.getItem('Admintoken');
-      if (!Admintoken) {
-        console.log('L\'authentification a échoué. Arrêt de l\'envoi de la demande.');
-        return;
-      }  
+  const isAuthenticated = await authenticateUser();
+  if (!isAuthenticated) {
+    // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+    console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+    return;
+  }
   
     const id= parseInt(localStorage.getItem('ShipmentId'))
     const ParticipantName=e.target.value
