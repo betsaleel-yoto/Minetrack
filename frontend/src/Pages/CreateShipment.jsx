@@ -14,7 +14,9 @@ import FormDriver from "../component/FormDriver";
 import FormTask from "../component/FormTask";
 import AffichageDriver from "../component/AffichageDriver";
 
+
 function CreateShipment() {
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
   const [shipments, setShipments] = useState([]);
   const [showDisplay, setShowDisplay] = useState(false);
   const [ShipmentTitle, setShipmentTitle] = useState("");
@@ -169,6 +171,7 @@ function CreateShipment() {
       if (!isAuthenticated) {
         // Si l'authentification échoue, ne pas continuer avec l'envoi de données
         console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        setRedirectToLogin(true);
         return;
       }
   
@@ -208,6 +211,7 @@ try{
   if (!isAuthenticated) {
     // Si l'authentification échoue, ne pas continuer avec l'envoi de données
     console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+    setRedirectToLogin(true);
     return;
   }
   
@@ -367,6 +371,7 @@ try{
   
   return ( 
     <>
+    {redirectToLogin && <Navigate to="/S_adminLogin" />}
      <div className="flex w-[100%]">
         <NavBar />
         <div className="flex-col w-[80%]">
