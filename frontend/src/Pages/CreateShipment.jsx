@@ -164,7 +164,7 @@ function CreateShipment() {
 
   const sendData = async () => {
     try {
-      // Appele authenticateUser pour vérifier l'authentification avant d'envoyer la demande
+      // Appel authenticateUser pour vérifier l'authentification avant d'envoyer la demande
       await authenticateUser();
 
       const Admintoken = localStorage.getItem('Admintoken');
@@ -203,7 +203,16 @@ function CreateShipment() {
     }
   };
 
-  const sendData2 = (e) => {
+  const sendData2 = async(e) => {
+try{
+  await authenticateUser();
+
+      const Admintoken = localStorage.getItem('Admintoken');
+      if (!Admintoken) {
+        console.log('L\'authentification a échoué. Arrêt de l\'envoi de la demande.');
+        return;
+      }  
+  
     const id= parseInt(localStorage.getItem('ShipmentId'))
     const ParticipantName=e.target.value
     const requestData = {
@@ -227,6 +236,9 @@ function CreateShipment() {
       .catch(error => {
         console.error('Erreur lors de la requête :', error);
       });
+    }catch(error){
+        console.error('Erreur lors de la requête : ',error)
+      }
   };
 
   const addTask = () => {

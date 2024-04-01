@@ -1,5 +1,3 @@
-import { Navigate } from 'react-router-dom';
-
 export const authenticateUser = async () => {
   try {
     const Admintoken = localStorage.getItem('Admintoken');
