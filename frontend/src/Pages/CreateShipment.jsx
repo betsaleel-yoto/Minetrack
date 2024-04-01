@@ -161,36 +161,39 @@ function CreateShipment() {
     }
   };
 
-  const sendData = () => {
-    const matriculationNumber = localStorage.getItem('matriculationNumber');
-    const requestData = {
-      ShipmentTitle:ShipmentTitle,
-      ShipmentDescription:ShipmentDescription,
-      BeginDate:BeginDate,
-      EndDate:EndDate,
-      matriculationNumberSadmin:matriculationNumber
-    };
-
-    fetch('http://localhost:3000/shipments/Add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestData)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de la requête');
-        }
-        return response.json();
-      })
-      .then(data => {
-        const ShipmentId = data.data.id;
-        localStorage.setItem('ShipmentId', ShipmentId);
-      })
-      .catch(error => {
-        console.error('Erreur lors de la requête :', error);
+  const sendData = async () => {
+    try {
+      // Appele authenticateUser pour vérifier l'authentification avant d'envoyer la demande
+      await authenticateUser();
+  
+      // Si l'authentification réussit, continue avec l'envoi de la demande
+      const matriculationNumber = localStorage.getItem('matriculationNumber');
+      const requestData = {
+        ShipmentTitle: ShipmentTitle,
+        ShipmentDescription: ShipmentDescription,
+        BeginDate: BeginDate,
+        EndDate: EndDate,
+        matriculationNumberSadmin: matriculationNumber
+      };
+  
+      const response = await fetch('http://localhost:3000/shipments/Add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
       });
+  
+      if (!response.ok) {
+        throw new Error('Erreur lors de la requête');
+      }
+  
+      const data = await response.json();
+      const ShipmentId = data.data.id;
+      localStorage.setItem('ShipmentId', ShipmentId);
+    } catch (error) {
+      console.error('Erreur lors de la requête :', error);
+    }
   };
 
   const sendData2 = (e) => {

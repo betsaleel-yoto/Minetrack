@@ -1,17 +1,18 @@
 export const authenticateUser = async () => {
-  const Admintoken=localStorage.setItem('Admintoken')
   try {
-    // Effectuer une requête au serveur pour obtenir le token d'authentification
-    const token = Admintoken; 
-    // Remplacez cela par la méthode appropriée pour obtenir le token (par exemple, à partir d'un cookie ou d'un autre moyen)
-    // Si le token n'est pas présent, gérer l'erreur ou demander à l'utilisateur de se connecter
+    const Admintoken = localStorage.getItem('Admintoken');
+    if (!Admintoken) {
+      // Si le token n'est pas présent, retourner une instance de Navigate pour effectuer la redirection
+      // return <Navigate to="/S_adminLogin" />;
+      console.log("accès refusée")
+    }
 
-    // Envoyer le token avec la demande
-    const response = await fetch('http://localhost:3000/authenticate', {
+    // Envoyer la demande avec le token
+    const response = await fetch('http://localhost:3000/auth', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${Admintoken}`
       }
     });
 

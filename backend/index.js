@@ -12,6 +12,7 @@ const participants = require('./Routes/participants')
 const tasks=require('./Routes/ShipmentTasks')
 const { authenticate } = require('./authenticationFunction/AuthFonction')
 const passport = require('passport');
+const auth=require('./Routes/AuthRoute')
 const cors=require('cors')
 // route
 
@@ -23,6 +24,7 @@ app.use(cors({
 
 app.use(express.json());
 // app.use(express.urlencoded({ extende: true }));
+app.use("/auth",auth)
 
 app.use("/sAdmin",sAdmin);
 app.use("/users", Users);
