@@ -30,6 +30,7 @@ function ReportsAnalysis() {
 
   useEffect(() => {
     const id =localStorage.getItem('ShipmentId')
+    console.log(id)
     fetch('http://localhost:3000/shipments/getAll')
       .then(response => {
         if (!response.ok) {
@@ -58,12 +59,14 @@ function ReportsAnalysis() {
       })
       .then(data => {
         // Données récupérées avec succès
-        setparticipants(data.filter(participant => participant.id == id))
+        setparticipants(data.filter(participant => participant.ShipmentId == id))
       })
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
   }, []);
+
+  console.log(participants)
 
   useEffect(() => {
     const id =localStorage.getItem('ShipmentId')
