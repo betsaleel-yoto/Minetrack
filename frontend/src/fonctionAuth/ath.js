@@ -1,10 +1,13 @@
+import { Navigate } from 'react-router-dom';
+
 export const authenticateUser = async () => {
   try {
     const Admintoken = localStorage.getItem('Admintoken');
+    console.log(Admintoken)
     if (!Admintoken) {
       // Si le token n'est pas présent, retourner une instance de Navigate pour effectuer la redirection
       // return <Navigate to="/S_adminLogin" />;
-      console.log("accès refusée")
+      console.log('authentification échoué')
     }
 
     // Envoyer la demande avec le token
@@ -19,8 +22,13 @@ export const authenticateUser = async () => {
     if (!response.ok) {
       throw new Error('Erreur lors de l\'authentification');
     }
+
+    // Si l'authentification réussit, vous pouvez continuer vers l'action suivante
+    console.log('Authentification réussie');
+    // Continuer vers l'action suivante, peut-être une autre requête ou une redirection vers une autre page
   } catch (error) {
     console.error('Erreur lors de l\'authentification :', error);
-    // Gérer l'erreur
+    // Gérer l'erreur, par exemple, en redirigeant l'utilisateur vers la page de connexion
+    // return <Navigate to="/S_adminLogin" />;
   }
 };
