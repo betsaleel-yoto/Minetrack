@@ -1,4 +1,5 @@
 import ElementUser from "../component/ElementUser";
+import { Navigate } from 'react-router-dom';
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import Select from "../component/inputs/Select";
@@ -9,8 +10,10 @@ import EnteteTableau from "../component/EnteteTableau";
 import LineTableu from "../component/LineTableau";
 import ElementTableau2 from "../component/ElementTableau2";
 import ElementTableau1 from "../component/ElementTableau1";
+import { authenticateUser } from "../fonctionAuth/ath";
 import { useState, useEffect } from "react";
 function Dashboard() {
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
   const [Username, setUsername] = useState("");
   const [matriculationNumber, setmatriculationNumber] = useState("");
   const [UserRole, setUserRole] = useState("");
@@ -205,7 +208,15 @@ function Dashboard() {
     }
   };
 
-  const sendData = () => {
+  const sendData = async() => {
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        setRedirectToLogin(true);
+        return;
+      }
     const matriculationNumberAdmin = localStorage.getItem(
       "matriculationNumber"
     );
@@ -239,11 +250,24 @@ function Dashboard() {
         // Gérer les erreurs éventuelles
         console.error("Erreur lors de la requête :", error);
       });
+    }catch(error){
+      console.error('Erreur lors de la requête : ',error)
+    }
   };
 
   //Edit
 
-  const EditData = (matriculationNumber) => {
+  const EditData = async(matriculationNumber) => {
+
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
+        setRedirectToLogin(true);
+        return;
+      }
     const matriculationNumberAdmin = localStorage.getItem(
       "matriculationNumber"
     );
@@ -279,6 +303,9 @@ function Dashboard() {
         // Gérer les erreurs éventuelles
         console.error("Erreur lors de la requête :", error);
       });
+    }catch(error){
+      console.error('Erreur lors de la requête : ',error)
+    }
   };
 
   const handleUserName = (e) => {
@@ -308,6 +335,7 @@ function Dashboard() {
 
   return (
     <>
+     {redirectToLogin && <Navigate to="/S_adminLogin" />}
       <div className="flex w-[100%]">
         <NavBar />
         {/* div supreme */}
