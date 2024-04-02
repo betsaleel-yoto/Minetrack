@@ -171,6 +171,7 @@ function CreateShipment() {
       if (!isAuthenticated) {
         // Si l'authentification échoue, ne pas continuer avec l'envoi de données
         console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
         setRedirectToLogin(true);
         return;
       }
@@ -211,6 +212,7 @@ try{
   if (!isAuthenticated) {
     // Si l'authentification échoue, ne pas continuer avec l'envoi de données
     console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+    alert('le token a expiré veuillez vous reconnecter')
     setRedirectToLogin(true);
     return;
   }
@@ -249,6 +251,7 @@ try{
       if (!isAuthenticated) {
         // Si l'authentification échoue, ne pas continuer avec l'envoi de données
         console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
         setRedirectToLogin(true);
         return;
       }
@@ -285,7 +288,17 @@ try{
     }
   };
 
-  const handleCheckboxChange = (event, taskId) => {
+  const handleCheckboxChange = async(event, taskId) => {
+
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
+        setRedirectToLogin(true);
+        return;
+      }
     const updatedTaskState = event.target.checked ? 'finished' : 'in progress';
   
     fetch(`http://localhost:3000/shipmentTasks/edit/${taskId}`, {
@@ -306,6 +319,9 @@ try{
       .catch(error => {
         console.error('Erreur lors de la requête :', error);
       });
+    }catch(error){
+      console.error('Erreur lors de la requête : ',error)
+    }
   };
 
   const handleShipmentTitle = (e) => {

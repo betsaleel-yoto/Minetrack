@@ -214,6 +214,7 @@ function Dashboard() {
       if (!isAuthenticated) {
         // Si l'authentification échoue, ne pas continuer avec l'envoi de données
         console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
         setRedirectToLogin(true);
         return;
       }

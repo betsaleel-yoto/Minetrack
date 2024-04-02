@@ -1,5 +1,6 @@
 import EnteteTableau from "../component/EnteteTableau";
 import validator from 'validator';
+import { Navigate } from 'react-router-dom';
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import Select2 from "../component/inputs/Select2";
@@ -8,9 +9,11 @@ import SuperTitle from "../component/SuperTitle";
 import IconsEditDelete from "../component/IconsEditDelete";
 import LineTableu from "../component/LineTableau";
 import ElementTableau1 from "../component/ElementTableau1";
+import { authenticateUser } from "../fonctionAuth/ath";
 import UniqueButton from "../component/Button/UniqueButton";
 import { useState,useEffect } from "react";
 function AddMaterials() {
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
 const [shipments, setShipments] = useState([]);
 const [MaterialName,setMaterialName]=useState('')
 const [Materials,setMaterials]=useState([])
@@ -111,7 +114,16 @@ const [Date,setDate]=useState('')
     }
   };
 
-  const sendData = () => {
+  const sendData = async() => {
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
+        setRedirectToLogin(true);
+        return;
+      }
     const matriculationNumberAdmin = localStorage.getItem('matriculationNumber');
     const requestData = {
       MaterialName: MaterialName,
@@ -154,11 +166,23 @@ const [Date,setDate]=useState('')
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
       });
+    }catch(error){
+        console.error('Erreur lors de la requête : ',error)
+      }
   };
   
   
 
-  const sendData2 = (id,CurrentValue) => {
+  const sendData2 = async(id,CurrentValue) => {
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
+        setRedirectToLogin(true);
+        return;
+      }
     // Récupérer la valeur de VehicleRegistrationNumber depuis le localStorage
     let modification = parseInt(Daily)
     let regex=/[0-9]/g
@@ -198,6 +222,9 @@ const [Date,setDate]=useState('')
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
       });
+    }catch(error){
+      console.error('Erreur lors de la requête : ',error)
+    }
   };
   
 
@@ -231,6 +258,7 @@ const [Date,setDate]=useState('')
     
   return (
     <>
+    {redirectToLogin && <Navigate to="/S_adminLogin" />}
       <div className="flex w-[100%]">
         <NavBar />
 
