@@ -99,7 +99,7 @@ function Dashboard() {
     DisplayTitle.tasks.filter((task) => task.Taskstate === "finished");
   let task3 = task2 && task2.length;
   const total = ((parseInt(task3) * 100) / parseInt(task)).toFixed(0) || 0;
-  const width = (total * 80) / 100;
+  const width = (total * 80) / 100 ;
   let color;
   if (total >= 50) {
     color = "#39527B";

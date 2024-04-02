@@ -243,7 +243,17 @@ try{
       }
   };
 
-  const addTask = () => {
+  const addTask = async() => {
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        setRedirectToLogin(true);
+        return;
+      }
+
+    
     const id =parseInt(localStorage.getItem('ShipmentId'))
     const requestData = {
       TaskDescription:task,
@@ -270,6 +280,9 @@ try{
       .catch(error => {
         console.error('Erreur lors de la requête :', error);
       });
+    }catch(error){
+      console.error('Erreur lors de la requête : ',error)
+    }
   };
 
   const handleCheckboxChange = (event, taskId) => {
