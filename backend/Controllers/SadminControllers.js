@@ -42,8 +42,8 @@ const sAdminLogin = async (req, res) => {
     if (superAdmin && superAdmin.username === username) {
       // Générer le token avec le matricule du superAdmin
       const token = jwt.sign({
-        matricule: superAdmin.matriculationNumber
-      }, 'zehfgueurfyerfieuyfui', { expiresIn: '24h' });
+        matriculationNumber: superAdmin.matriculationNumber
+      },'zehfgueurfyerfieuyfui', { expiresIn: '24h' });
       return res.json({ token });
     } else {
       return res.status(401).json({ message: 'Mauvaises informations d\'identification' });

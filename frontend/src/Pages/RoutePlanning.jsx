@@ -7,7 +7,10 @@ import Select2 from "../component/inputs/Select2";
 import DoubleButton from "../component/Button/DoubleBoutton";
 import SuperTitle from "../component/SuperTitle";
 import IconsEditDelete from "../component/IconsEditDelete";
+import { authenticateUser } from "../fonctionAuth/ath";
+import { Navigate } from 'react-router-dom';
 function RoutePlanning() {
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
   const [shipments, setShipments] = useState([]);
   const [RouteName, setRouteName] = useState('');
   const [RouteDescription, setRouteDescription] = useState('');
@@ -28,7 +31,7 @@ function RoutePlanning() {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [shipments]);
 
 
   useEffect(() => {
@@ -46,7 +49,7 @@ function RoutePlanning() {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, []);
+  }, [Route]);
  
   const textValidator = (inputValueA, inputValueB) => {
     try {
@@ -67,7 +70,16 @@ function RoutePlanning() {
   };
 
 
-  const sendData = () => {
+  const sendData = async() => {
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
+        setRedirectToLogin(true);
+        return;
+      }
     const matriculationNumberAdmin = localStorage.getItem('matriculationNumber');
     const requestData = {
       RouteName:RouteName,
@@ -105,6 +117,9 @@ function RoutePlanning() {
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
       });
+    }catch(error){
+      console.error('Erreur lors de la requête : ',error)
+    }
   };
 
 
@@ -132,6 +147,7 @@ function RoutePlanning() {
  
   return ( 
     <>
+    {redirectToLogin && <Navigate to="/S_adminLogin" />}
      <div className="flex w-[100%]">
         <NavBar />
 
@@ -173,12 +189,12 @@ function RoutePlanning() {
 
           {/* Partie Manipulation du matériau */}
 
-          <div className="flex w-[80%] m-auto pt-24 border-b border-[#BAB2B2] pb-5">
+          <div className="w-[80%] m-auto pt-24 border-b border-[#BAB2B2] pb-5">
             {/* Partie affichage */}
             {Route.map(Rt=>(
                <div
                key={Rt.id}
-                className="w-[40%] h-auto border rounded-lg border-[#C9C9C9] pb-3 ml-5">
+                className="w-[100%] h-auto border rounded-lg border-[#C9C9C9] pb-3 ml-5 mt-5">
                {/* Entete */}
                <div className="border-b border-[#D2D2D2]">
                  <div className="flex">
@@ -188,7 +204,8 @@ function RoutePlanning() {
                       text={Rt.RouteName} /> 
                    
                  
-                   <IconsEditDelete />
+                   {/* <IconsEditDelete /> */}
+                   <button type="button"><img src="/src/img/Group-1.svg" alt="" /></button>
                  </div>
  
                  <div className="flex m-5">

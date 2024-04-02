@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function FormTask(props) {
-  const [isChecked, setIsChecked] = useState(props.checked);
+  const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    const storedChecked = localStorage.getItem(`task_${props.taskId}`);
+    if (storedChecked !== null) {
+      setIsChecked(storedChecked === 'true');
+    }
+  }, [props.taskId]);
 
   const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-    props.onChange(event,props.taskId); // Appel de la fonction de gestion de la case à cocher du composant parent
+    const updatedChecked = event.target.checked;
+    setIsChecked(updatedChecked);
+    props.onChange(event, props.taskId); // Appel de la fonction de gestion de la case à cocher du composant parent
+    // Enregistrer l'état de la case cochée dans le stockage local
+    localStorage.setItem(`task_${props.taskId}`, updatedChecked);
   };
 
   return (

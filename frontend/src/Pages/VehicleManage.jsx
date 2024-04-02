@@ -8,9 +8,12 @@ import LineTableu from "../component/LineTableau";
 import SuperTitle from "../component/SuperTitle";
 import IconsEditDelete from "../component/IconsEditDelete";
 import ElementTableau1 from "../component/ElementTableau1";
+import { Navigate } from 'react-router-dom';
+import { authenticateUser } from "../fonctionAuth/ath";
 import UniqueButton from "../component/Button/UniqueButton";
 import Select from "../component/inputs/Select";
 function VehicleManage() {
+const [redirectToLogin, setRedirectToLogin] = useState(false);
 const [Vehiclename,setVehiclename]=useState('')
 const [VehicleRegistrationNumber,setVehicleRegistrationNumber]=useState('')
 const [StartOfUse,setStartOfUse]=useState('')
@@ -35,7 +38,7 @@ useEffect(() => {
     .catch(error => {
       console.error('Erreur lors de la récupération des données :', error);
     });
-}, []);
+}, [shipments]);
 
 
   const textValidator = (inputValueA, inputValueB) => {
@@ -71,7 +74,16 @@ useEffect(() => {
   };
 
 
-  const sendData = () => {
+  const sendData = async() => {
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
+        setRedirectToLogin(true);
+        return;
+      }
     const matriculationNumberAdmin = localStorage.getItem('matriculationNumber');
     const requestData = {
       VehicleRegistrationNumber: VehicleRegistrationNumber,
@@ -110,6 +122,9 @@ useEffect(() => {
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
       });
+    }catch(error){
+      console.error('Erreur lors de la requête : ',error)
+    }
   };
   
 
@@ -128,10 +143,19 @@ useEffect(() => {
       .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
       });
-  }, [])
+  }, [DisplayVehicle])
 
 
-  const sendData2 = (vehicleRegistrationNumber) => {
+  const sendData2 = async(vehicleRegistrationNumber) => {
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
+        setRedirectToLogin(true);
+        return;
+      }
     // Récupérer la valeur de VehicleRegistrationNumber depuis le localStorage
   
     // Vérifier si la valeur est présente dans le localStorage
@@ -166,6 +190,9 @@ useEffect(() => {
         // Gérer les erreurs éventuelles
         console.error('Erreur lors de la requête :', error);
       });
+    }catch(error){
+      console.error('Erreur lors de la requête : ',error)
+    }
   };
   
   
@@ -199,6 +226,7 @@ useEffect(() => {
   
   return (
     <>
+    {redirectToLogin && <Navigate to="/S_adminLogin" />}
       <div className="flex w-[100%]">
         <NavBar />
 

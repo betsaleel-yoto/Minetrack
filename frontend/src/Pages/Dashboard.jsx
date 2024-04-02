@@ -1,4 +1,5 @@
 import ElementUser from "../component/ElementUser";
+import { Navigate } from 'react-router-dom';
 import NavBar from "../component/navBar";
 import Input from "../component/inputs/input";
 import Select from "../component/inputs/Select";
@@ -9,218 +10,303 @@ import EnteteTableau from "../component/EnteteTableau";
 import LineTableu from "../component/LineTableau";
 import ElementTableau2 from "../component/ElementTableau2";
 import ElementTableau1 from "../component/ElementTableau1";
-import { useState,useEffect } from "react";
+import { authenticateUser } from "../fonctionAuth/ath";
+import { useState, useEffect } from "react";
 function Dashboard() {
-  
-  const [Username,setUsername]=useState('')
-  const [matriculationNumber,setmatriculationNumber]=useState('')
-  const [UserRole,setUserRole]=useState('')
-  const [UserTitle,setUserTitle]=useState('')
-  const [User,setUser]=useState([])
-  const [admin,setadmin]=useState([])
-  const [DisplayTitle,setDisplayTitle]=useState([])
-  const [Materials,setMaterials]=useState([])
-const [Vehicles,setvehicles]=useState([])
-  
-//orinary
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const [Username, setUsername] = useState("");
+  const [matriculationNumber, setmatriculationNumber] = useState("");
+  const [UserRole, setUserRole] = useState("");
+  const [UserTitle, setUserTitle] = useState("");
+  const [User, setUser] = useState([]);
+  const [admin, setadmin] = useState([]);
+  const [DisplayTitle, setDisplayTitle] = useState([]);
+  const [Materials, setMaterials] = useState([]);
+  const [Vehicles, setvehicles] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({});
+
+  //orinary
 
   useEffect(() => {
-    fetch('http://localhost:3000/users/getAll')
-      .then(response => {
+    fetch("http://localhost:3000/users/getAll")
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des données');
+          throw new Error("Erreur lors de la récupération des données");
         }
         return response.json();
       })
-      .then(data => {
+      .then((data) => {
         // Données récupérées avec succès
-        setUser(data.filter(user => user.UserRole === 'Ordinary'));
+        setUser(data.filter((user) => user.UserRole === "Ordinary"));
       })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des données :', error);
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des données :", error);
       });
-  }, []);
+  }, [User]);
 
   //Admin
 
   useEffect(() => {
-    fetch('http://localhost:3000/users/getAll')
-      .then(response => {
+    fetch("http://localhost:3000/users/getAll")
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Erreur lors de la récupération des données');
+          throw new Error("Erreur lors de la récupération des données");
         }
         return response.json();
       })
-      .then(data => {
-        const id= parseInt(localStorage.getItem('ShipmentId'))
+      .then((data) => {
+        const id = parseInt(localStorage.getItem("ShipmentId"));
         // Données récupérées avec succès
-        setadmin(data.filter(user => user.UserRole !== 'Ordinary'));
+        setadmin(data.filter((user) => user.UserRole !== "Ordinary"));
       })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des données :', error);
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des données :", error);
       });
-  }, []);
+  }, [User]);
 
-  //shipment Title 
+  //shipment Title
   useEffect(() => {
     // Fonction pour récupérer les données de l'URL vers les expéditions
     const fetchDisplayData = async () => {
-      const id= parseInt(localStorage.getItem('ShipmentId'))
+      const id = parseInt(localStorage.getItem("ShipmentId"));
       try {
         // Remplacez 'URL_VERS_VOTRE_API_EXPEDITIONS' par l'URL appropriée
-        const response = await fetch('http://localhost:3000/shipments/getAll');
+        const response = await fetch("http://localhost:3000/shipments/getAll");
         const shipmentData = await response.json();
 
         // Remplacez 'URL_VERS_VOTRE_API_TACHES' par l'URL appropriée
-        const taskResponse = await fetch('http://localhost:3000/shipmentTasks/getAll');
+        const taskResponse = await fetch(
+          "http://localhost:3000/shipmentTasks/getAll"
+        );
         const taskData = await taskResponse.json();
 
-        const mergedData={
-          shipmentTitle:shipmentData.filter(title=>title.id==id),
-          tasks:taskData.filter(task=>task.ShipmentId==id)
-        }
+        const mergedData = {
+          shipmentTitle: shipmentData.filter((title) => title.id == id),
+          tasks: taskData.filter((task) => task.ShipmentId == id),
+        };
 
         // Mettez à jour l'état avec les données fusionnées
         return setDisplayTitle(mergedData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchDisplayData();
   }, []);
 
-  let task = DisplayTitle.tasks &&DisplayTitle.tasks.length
-  let task2= DisplayTitle.tasks &&DisplayTitle.tasks.filter(task=>task.Taskstate==='finished')
-  let task3=task2 && task2.length
-  const total = ((parseInt(task3) * 100)/parseInt(task)).toFixed(0) || 0
-  const width= (total*80)/100 
+  let task = DisplayTitle.tasks && DisplayTitle.tasks.length;
+  let task2 =
+    DisplayTitle.tasks &&
+    DisplayTitle.tasks.filter((task) => task.Taskstate === "finished");
+  let task3 = task2 && task2.length;
+  const total = ((parseInt(task3) * 100) / parseInt(task)).toFixed(0) || 0;
+  const width = (total * 80) / 100 ;
   let color;
-  if(total>=50){
-    color='#39527B'
-  }else{
-    color='#FF7473'
+  if (total >= 50) {
+    color = "#39527B";
+  } else {
+    color = "#FF7473";
   }
-  
-console.log(width)
 
-//Material
+  console.log(width);
 
-useEffect(() => {
-  fetch('http://localhost:3000/materials/getAll')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des données');
-      }
-      return response.json();
-    })
-    .then(data => {
-      // Données récupérées avec succès
-      setMaterials(data);
-    })
-    .catch(error => {
-      console.error('Erreur lors de la récupération des données :', error);
-    });
-}, []);
+  //Material
 
-console.log(Vehicles)
+  useEffect(() => {
+    fetch("http://localhost:3000/materials/getAll")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erreur lors de la récupération des données");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Données récupérées avec succès
+        setMaterials(data);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des données :", error);
+      });
+  }, []);
 
-const materialId= localStorage.getItem('MaterialID');
-const element1= Materials && Materials.filter(material=>material.id=materialId)
-const tableauCurrentValue= (element1 && element1.map(mater=>mater.CurrentQte)).join('')
-const CurrentValue=parseInt(tableauCurrentValue)
-const tableauinitialValue= (element1 && element1.map(mater=>mater.InitialQte)).join('')
-const InitialQteValue=parseInt(tableauinitialValue)
-const totalStock =((CurrentValue * 100)/InitialQteValue).toFixed(0)
-console.log(totalStock)
-let color2;
-if (totalStock<50){
-  color2='#60C84C'
-}else{
-  color2='#FF7473'
-}
+  console.log(Vehicles);
 
-//Vehicle
+  const materialId = localStorage.getItem("MaterialID");
+  const element1 =
+    Materials && Materials.filter((material) => (material.id = materialId));
+  const tableauCurrentValue = (
+    element1 && element1.map((mater) => mater.CurrentQte)
+  ).join("");
+  const CurrentValue = parseInt(tableauCurrentValue);
+  const tableauinitialValue = (
+    element1 && element1.map((mater) => mater.InitialQte)
+  ).join("");
+  const InitialQteValue = parseInt(tableauinitialValue);
+  const totalStock = ((CurrentValue * 100) / InitialQteValue).toFixed(0);
+  console.log(totalStock);
+  let color2;
+  if (totalStock < 50) {
+    color2 = "#60C84C";
+  } else {
+    color2 = "#FF7473";
+  }
 
-useEffect(() => {
-  fetch('http://localhost:3000/vehicle/getAll')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des données');
-      }
-      return response.json();
-    })
-    .then(data => {
-      // Données récupérées avec succès
-      setvehicles(data);
-    })
-    .catch(error => {
-      console.error('Erreur lors de la récupération des données :', error);
-    });
-}, []);
+  //Vehicle
 
-const vehicleRegistrationNumber = localStorage.getItem('vehicleRegistrationNumber');
-const State= Vehicles && Vehicles.filter(vehicle=>vehicle.VehicleRegistrationNumber===vehicleRegistrationNumber)
-const VState= State.map(state=>state.VehicleCondition).join('')
-let color3=''
-console.log(VState)
-if(VState =='Good'){
-  color3='#60C84C'
-}else{
-  color3='#FF7473'
-}
+  useEffect(() => {
+    fetch("http://localhost:3000/vehicle/getAll")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Erreur lors de la récupération des données");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Données récupérées avec succès
+        setvehicles(data);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des données :", error);
+      });
+  }, []);
+
+  const vehicleRegistrationNumber = localStorage.getItem(
+    "vehicleRegistrationNumber"
+  );
+  const State =
+    Vehicles &&
+    Vehicles.filter(
+      (vehicle) =>
+        vehicle.VehicleRegistrationNumber === vehicleRegistrationNumber
+    );
+  const VState = State.map((state) => state.VehicleCondition).join("");
+  let color3 = "";
+  console.log(VState);
+  if (VState == "Good") {
+    color3 = "#60C84C";
+  } else {
+    color3 = "#FF7473";
+  }
 
   const textValidator = (inputValueA, inputValueB) => {
     try {
       if (!validator.isLength(inputValueA, { min: 1 })) {
-        console.log('le champ A ne doit pas être vide');
+        console.log("le champ A ne doit pas être vide");
       } else if (!validator.matches(inputValueA, /^[^<>\s]+$/)) {
         console.log("ces caractères ne sont pas autorisés pour le champ A");
       } else if (!validator.isLength(inputValueB, { min: 1 })) {
-        console.log('le champ B ne doit pas être vide');
+        console.log("le champ B ne doit pas être vide");
       } else if (!validator.matches(inputValueB, /^[^<>\s]+$/)) {
         console.log("ces caractères ne sont pas autorisés pour le champ B");
       } else {
-        console.log('valide');
+        console.log("valide");
       }
     } catch (error) {
-      console.error('Une erreur est survenue lors de la validation :', error);
+      console.error("Une erreur est survenue lors de la validation :", error);
     }
   };
 
-
-  const sendData = () => {
-    const matriculationNumberAdmin = localStorage.getItem('matriculationNumber');
+  const sendData = async() => {
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
+        setRedirectToLogin(true);
+        return;
+      }
+    const matriculationNumberAdmin = localStorage.getItem(
+      "matriculationNumber"
+    );
     const requestData = {
       matriculationNumber: matriculationNumber,
       UserName: Username,
-      UserRole:UserRole,
-      UserTitle:UserTitle,
-      matriculationNumberSadmin:matriculationNumberAdmin,
+      UserRole: UserRole,
+      UserTitle: UserTitle,
+      matriculationNumberSadmin: matriculationNumberAdmin,
     };
 
     // Effectuer la requête POST en utilisant fetch
-    fetch('http://localhost:3000/users/Signup', {
-      method: 'POST',
+    fetch("http://localhost:3000/users/Signup", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestData)
+      body: JSON.stringify(requestData),
     })
-      .then(response => {
+      .then((response) => {
         // Vérifiez si la réponse est ok
         if (!response.ok) {
-          throw new Error('Erreur lors de la requête');
+          throw new Error("Erreur lors de la requête");
         }
-        console.log('Utilisateur Crée');
+        console.log("Utilisateur Crée");
         // Si la réponse est ok, retournez les données en JSON
         return response.json();
       })
 
-      .catch(error => {
+      .catch((error) => {
         // Gérer les erreurs éventuelles
-        console.error('Erreur lors de la requête :', error);
+        console.error("Erreur lors de la requête :", error);
       });
+    }catch(error){
+      console.error('Erreur lors de la requête : ',error)
+    }
+  };
+
+  //Edit
+
+  const EditData = async(matriculationNumber) => {
+
+    try{
+      const isAuthenticated = await authenticateUser();
+      if (!isAuthenticated) {
+        // Si l'authentification échoue, ne pas continuer avec l'envoi de données
+        console.log("L'authentification a échoué. Arrêt de l'envoi de données.");
+        alert('le token a expiré veuillez vous reconnecter')
+        setRedirectToLogin(true);
+        return;
+      }
+    const matriculationNumberAdmin = localStorage.getItem(
+      "matriculationNumber"
+    );
+    const requestData = {
+      matriculationNumber: matriculationNumber,
+      UserName: Username,
+      UserRole: UserRole,
+      UserTitle: UserTitle,
+      matriculationNumberSadmin: matriculationNumberAdmin,
+    };
+
+    // Effectuer la requête POST en utilisant fetch
+    fetch(`http://localhost:3000/users/edit/${matriculationNumber}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => {
+        // Vérifiez si la réponse est ok
+        // call function that fecth users list fetchUsers()
+        if (!response.ok) {
+          throw new Error("Erreur lors de la requête");
+        }
+        console.log("Utilisateur Modifié");
+        setShowForm(false);
+        // Si la réponse est ok, retournez les données en JSON
+        return response.json();
+      })
+
+      .catch((error) => {
+        // Gérer les erreurs éventuelles
+        console.error("Erreur lors de la requête :", error);
+      });
+    }catch(error){
+      console.error('Erreur lors de la requête : ',error)
+    }
   };
 
   const handleUserName = (e) => {
@@ -242,9 +328,15 @@ if(VState =='Good'){
     setUserTitle(e.target.value); // Mettre à jour l'état matriculationNumber avec la valeur entrée
     textValidator(e.target.value, UserTitle); // Appel de textValidator avec la nouvelle valeur du matriculationNumber
   };
-  
+
+  const handleEditUserClick = (user) => {
+    setSelectedUser(user);
+    setShowForm(true);
+  };
+
   return (
     <>
+     {redirectToLogin && <Navigate to="/S_adminLogin" />}
       <div className="flex w-[100%]">
         <NavBar />
         {/* div supreme */}
@@ -325,27 +417,26 @@ if(VState =='Good'){
               {/* Partie Liste des Utilisateurs */}
               <div className="flex border rounded-md">
                 <div className="border border-[#565656] rounded-md">
-
-                  {admin.map(user=>(
-                    <ElementUser
-                    key={user.matriculationNumber}
-                    src="/src/img/Ellipse 8.svg"
-                    name={user.UserName}
-                    title={user.UserTitle}
-                    className="border"
-                  />
+                  {admin.map((user, index) => (
+                    <div key={index}>
+                      <ElementUser
+                        onClick={handleEditUserClick}
+                        src="/src/img/Ellipse 8.svg"
+                        user={user}
+                        className="border"
+                      />
+                    </div>
                   ))}
-                  
                 </div>
                 <div className="ml-3 border border-[#565656] rounded-md">
-                {User.map(user=>(
+                  {User.map((user, index) => (
                     <ElementUser
-                    key={user.matriculationNumber}
-                    src="/src/img/Ellipse 13.svg"
-                    name={user.UserName}
-                    title={user.UserTitle}
-                    className="border"
-                  />
+                      key={index}
+                      src="/src/img/Ellipse 13.svg"
+                      onClick={handleEditUserClick}
+                      user={user}
+                      className="border"
+                    />
                   ))}
                 </div>
               </div>
@@ -376,7 +467,15 @@ if(VState =='Good'){
                   htmlFor="idnumber"
                   change={handleMatriculation}
                 />
-                <Select name="UserRole" htmlFor="user_role" label="UserRole" option1='Admin' option2='Supplier'  option3='Ordinary' change={handleRole}/>
+                <Select
+                  name="UserRole"
+                  htmlFor="user_role"
+                  label="UserRole"
+                  option1="Admin"
+                  option2="Supplier"
+                  option3="Ordinary"
+                  change={handleRole}
+                />
                 <Input
                   classes="w-[18rem]"
                   type="text"
@@ -385,64 +484,104 @@ if(VState =='Good'){
                   htmlFor="usertitle"
                   change={handleTitle}
                 />
-                <DoubleButton  click={sendData}/>
+                <DoubleButton click={sendData} />
               </form>
-              
             </div>
             {/* deuxième grande div */}
-         
           </div>
           {/* <BarreDeNiveau width='w-[40rem]' bgcl='bg-[#39527B]' h='h-[0.5rem]'/> */}
 
-          
           {/* partie tableaux des stats */}
 
+          {/* premier Tableau */}
 
-{/* premier Tableau */}
+          <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
+            <EnteteTableau text="Ongoing Expeditions" />
+            <LineTableu text1="Title" text2="Progress" text3="%" />
+            {DisplayTitle.shipmentTitle &&
+              DisplayTitle.shipmentTitle.map((title) => (
+                <ElementTableau2
+                  key={title.id}
+                  text1={title.ShipmentTitle}
+                  text2={`${total}%`}
+                  bg={`bg-[${color}]`}
+                  w={`w-[${width}%]`}
+                />
+              ))}
+          </div>
+          <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
+            <EnteteTableau text="Stocks level" />
+            <LineTableu
+              text1="Material Name"
+              text2="Shipment Name"
+              text3="Consumed %"
+            />
+            {Materials.map((material) => (
+              <ElementTableau1
+                key={material.id}
+                text1={material.MaterialName}
+                text2={material.RelatedShipment}
+                text3={`${totalStock}%`}
+                cl={`text-[${color2}]`}
+              />
+            ))}
+          </div>
 
-<div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
-  <EnteteTableau text='Ongoing Expeditions'/>
-  <LineTableu text1='Title' text2='Progress' text3='%'/>
-  {DisplayTitle.shipmentTitle && DisplayTitle.shipmentTitle.map(title => (
-  <ElementTableau2 
-    key={title.id}
-    text1={title.ShipmentTitle}
-    text2={`${total}%`}
-    bg={`bg-[${color}]`}
-    w={`w-[${width}%]`}
-  />
-))}
-  
-</div>
-<div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
-  <EnteteTableau text='Stocks level'/>
-  <LineTableu text1='Material Name' text2='Shipment Name' text3='Consumed %'/>
-  {Materials.map(material=>(
-   <ElementTableau1 
-   key={material.id}
-   text1={material.MaterialName} 
-   text2={material.RelatedShipment}
-   text3={`${totalStock}%`} 
-   cl={`text-[${color2}]`}/> 
-  ))}
-  
-</div>
-
-<div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
-  <EnteteTableau text='Vehicle inspection'/>
-  <LineTableu text1='Vehicle Name' text3='Vehicle condition'/>
-  {
-  Vehicles.map(vehicle=>(
-    <ElementTableau1
-    key={vehicle.VehicleRegistrationNumber}
-    text1={vehicle.VehicleName}
-    text3={vehicle.VehicleCondition}
-    cl={`text-[${color3}]`}/>
-  ))}
-  
-</div>
-          
+          <div className="w-[80%] m-auto h-auto border border-[#D1D1D1] rounded-lg mt-[5rem]">
+            <EnteteTableau text="Vehicle inspection" />
+            <LineTableu text1="Vehicle Name" text3="Vehicle condition" />
+            {Vehicles.map((vehicle) => (
+              <ElementTableau1
+                key={vehicle.VehicleRegistrationNumber}
+                text1={vehicle.VehicleName}
+                text3={vehicle.VehicleCondition}
+                cl={`text-[${color3}]`}
+              />
+            ))}
+          </div>
         </div>
+        {showForm ? (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <form action="" method="POST">
+              <Input
+                classes="w-[18rem]"
+                type="text"
+                name="UserName"
+                label="Username"
+                htmlFor="username"
+                change={handleUserName}
+              />
+              <Input
+                classes="w-[18rem]"
+                type="text"
+                name="matriculationNumber"
+                label="ID number"
+                htmlFor="idnumber"
+                value={selectedUser.matriculationNumber}
+              />
+              <Select
+                name="UserRole"
+                htmlFor="user_role"
+                label="UserRole"
+                option1="Admin"
+                option2="Supplier"
+                option3="Ordinary"
+                change={handleRole}
+              />
+              <Input
+                classes="w-[18rem]"
+                type="text"
+                name="UserTitle"
+                label="UserTitle"
+                htmlFor="usertitle"
+                change={handleTitle}
+              />
+              <DoubleButton
+                click={() => EditData(selectedUser.matriculationNumber)}
+              />
+            </form>
+          </div>
+        ) : null}
       </div>
     </>
   );

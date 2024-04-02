@@ -30,6 +30,9 @@ function S_adminLogin() {
       .then(data => {
         if (data.token) {
           localStorage.setItem('Admintoken', data.token); // Stocker le token dans le localStorage
+          const token = localStorage.getItem('Admintoken'); 
+          console.log(token)
+          alert('utilisateur reconnu')
           setRedirect('/dashboard'); // Rediriger vers '/dashboard'
         } else {
           console.error('Mauvaises informations d\'identification');
