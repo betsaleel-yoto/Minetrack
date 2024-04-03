@@ -134,6 +134,19 @@ function Dashboard() {
   console.log(Vehicles);
 
 const regex=/[0-9]/g
+function colorMat(Current,initial){
+  let curr=parseInt((Current).match(regex).join(''))
+  let Init= parseInt((initial).match(regex).join(''))
+  let v='#60C84C'
+  let r='#FF7473';
+  if((curr*100)/Init >50){
+    return v
+  } else{
+    return r
+  } 
+
+}
+
 
   //Vehicle
 
@@ -504,7 +517,7 @@ const regex=/[0-9]/g
                 text1={material.MaterialName}
                 text2={material.RelatedShipment}
                 text3={`${((parseInt((material.InitialQte).match(regex).join(''))-parseInt((material.CurrentQte).match(regex).join('')))*100)/(parseInt((material.InitialQte).match(regex).join('')))}%`}
-                // cl={`text-[${color2}]`}
+                cl={`text-[${colorMat(material.CurrentQte,material.InitialQte)}]`}
               />
             ))}
           </div>
