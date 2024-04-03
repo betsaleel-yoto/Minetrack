@@ -159,6 +159,7 @@ const [Date,setDate]=useState('')
         localStorage.setItem('InitialQte', InitialQte);
   
         console.log('Matériau ajouté');
+        alert('materiau ajouté')
         
         // Vous pouvez effectuer d'autres actions avec les données de la réponse si nécessaire
       })
@@ -189,7 +190,6 @@ const [Date,setDate]=useState('')
     let valeur=CurrentValue.match(regex).join('')
     let number= parseInt(valeur)
     console.log(number)
-    
     const Total= number-modification
     // Vérifier si la valeur est présente dans le localStorage
     if (!id) {
