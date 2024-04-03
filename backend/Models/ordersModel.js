@@ -1,5 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const {textValidator}=require('../validation/TextValidation')
+const {dateValidator}=require('../validation/DateValidator')
+
 
 const getAllOrders = async (req, res) => {
   try {
@@ -15,6 +18,9 @@ const editOrder = async (req, res) => {
   try {
     const { MaterialName, Quantity, DeliveryDate } = req.body;
     const { id } = req.params;
+
+    textValidator(MaterialName,Quantity)
+    dateValidator(DeliveryDate)
 
     const updatedOrder = await prisma.order.update({
       where: { id: parseInt(id) },
@@ -43,6 +49,10 @@ const deleteOrder = async (req, res) => {
 const addOrder = async (req, res) => {
   try {
     const { MaterialName, Quantity, DeliveryDate, matriculationNumberSadmin } = req.body;
+
+textValidator(MaterialName,Quantity)
+dateValidator(DeliveryDate)
+textValidator(matriculationNumberSadmin,matriculationNumberSadmin)
 
     const newOrder = await prisma.order.create({
       data: { MaterialName, Quantity, DeliveryDate, matriculationNumberSadmin },
