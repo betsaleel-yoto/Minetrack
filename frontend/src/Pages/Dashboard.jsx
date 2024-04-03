@@ -133,25 +133,20 @@ function Dashboard() {
 
   console.log(Vehicles);
 
-  const materialId = localStorage.getItem("MaterialID");
-  const element1 =
-    Materials && Materials.filter((material) => (material.id = materialId));
-  const tableauCurrentValue = (
-    element1 && element1.map((mater) => mater.CurrentQte)
-  ).join("");
-  const CurrentValue = parseInt(tableauCurrentValue);
-  const tableauinitialValue = (
-    element1 && element1.map((mater) => mater.InitialQte)
-  ).join("");
-  const InitialQteValue = parseInt(tableauinitialValue);
-  const totalStock = ((CurrentValue * 100) / InitialQteValue).toFixed(0);
-  console.log(totalStock);
-  let color2;
-  if (totalStock < 50) {
-    color2 = "#60C84C";
-  } else {
-    color2 = "#FF7473";
-  }
+const regex=/[0-9]/g
+function colorMat(Current,initial){
+  let curr=parseInt((Current).match(regex).join(''))
+  let Init= parseInt((initial).match(regex).join(''))
+  let v='#60C84C'
+  let r='#FF7473';
+  if((curr*100)/Init >50){
+    return v
+  } else{
+    return r
+  } 
+
+}
+
 
   //Vehicle
 
@@ -521,8 +516,8 @@ function Dashboard() {
                 key={material.id}
                 text1={material.MaterialName}
                 text2={material.RelatedShipment}
-                text3={`${totalStock}%`}
-                cl={`text-[${color2}]`}
+                text3={`${((parseInt((material.InitialQte).match(regex).join(''))-parseInt((material.CurrentQte).match(regex).join('')))*100)/(parseInt((material.InitialQte).match(regex).join('')))}%`}
+                cl={`text-[${colorMat(material.CurrentQte,material.InitialQte)}]`}
               />
             ))}
           </div>

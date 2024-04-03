@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const {textValidator}=require('../validation/TextValidation')
 
 const getAllItineraries = async (req, res) => {
   try {
@@ -15,6 +16,11 @@ const editItinerary = async (req, res) => {
   try {
     const { RouteName, RouteDescription, RelatedMaterial } = req.body;
     const { id } = req.params;
+
+//Validation
+
+  textValidator(RouteName,RouteDescription)
+  textValidator(RelatedMaterial,RelatedMaterial)
 
     const updatedItinerary = await prisma.itinerary.update({
       where: { id: parseInt(id) },
@@ -43,6 +49,10 @@ const deleteItinerary = async (req, res) => {
 const addItinerary = async (req, res) => {
   try {
     const { RouteName, RouteDescription, RelatedMaterial, matriculationNumberSadmin } = req.body;
+//Validations
+
+    textValidator(RouteName,RouteDescription)
+    textValidator(RelatedMaterial,matriculationNumberSadmin)
 
     const newItinerary = await prisma.itinerary.create({
       data: { RouteName, RouteDescription, RelatedMaterial, matriculationNumberSadmin },

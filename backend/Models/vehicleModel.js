@@ -1,5 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const {textValidator}=require('../validation/TextValidation')
+const {dateValidator}=require('../validation/DateValidator')
+
 
 const getAllVehicles = async (req, res) => {
   try {
@@ -15,6 +18,12 @@ const editVehicle = async (req, res) => {
   try {
     const { VehicleRegistrationNumber,VehicleName, VehicleCondition, MaintenanceDate } = req.body;
     const { RegistrationNumber } = req.params;
+
+//Validation
+
+textValidator(VehicleCondition,VehicleCondition)
+dateValidator(MaintenanceDate)
+
 
     const updatedVehicle = await prisma.vehicle.update({
       where: { VehicleRegistrationNumber: RegistrationNumber},
@@ -43,6 +52,11 @@ const deleteVehicle = async (req, res) => {
 const addVehicle = async (req, res) => {
   try {
     const { VehicleRegistrationNumber, VehicleName, VehicleCondition, MaintenanceDate, matriculationNumberSadmin } = req.body;
+//Validations
+
+textValidator(VehicleRegistrationNumber,VehicleName)
+
+
 
     const newVehicle = await prisma.vehicle.create({
       data: { VehicleRegistrationNumber, VehicleName, VehicleCondition, MaintenanceDate, matriculationNumberSadmin },

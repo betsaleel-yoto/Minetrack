@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const {textValidator}=require('../validation/TextValidation')
 
 const getAll =  async(req,res)=>{
   try {
@@ -15,6 +16,11 @@ const edit = async (req, res) => {
   try {
     const { MaterialName,RelatedShipment,InitialQte,CurrentQte,matriculationNumberSadmin } = req.body;
     const { id } = req.params; // Récupérer le matriculationNumber des paramètres de la requête
+//validation
+
+
+textValidator(CurrentQte,CurrentQte)
+
     await prisma.$transaction(async(prisma)=>{
       const updatedMaterial = await prisma.Material.update({
         where: {
@@ -62,6 +68,12 @@ res.status(500).json({error:"Internal Server Error"})
 const addMaterial = async (req, res) => {
   try {
     const { MaterialName, RelatedShipment, InitialQte, CurrentQte, matriculationNumberSadmin } = req.body;
+
+    // Validation
+
+textValidator(MaterialName,RelatedShipment)
+textValidator(InitialQte,CurrentQte)
+textValidator(matriculationNumberSadmin,matriculationNumberSadmin)
 
     // Créez un nouveau matériau en utilisant la méthode create de Prisma
     const newMaterial = await prisma.material.create({
